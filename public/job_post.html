@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Post</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            position: relative;
+            max-width: 600px;
+            margin: 60px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-button button {
+            padding: 8px 12px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button button:hover {
+            background-color: #555;
+        }
+
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-control {
+            margin-bottom: 20px;
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control input {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back-button">
+            <button onclick="history.back()" title="Go Back">
+                &#8592; Back
+            </button>
+        </div>
+    <div class="container">
+        
+
+        <h1>Fill the Job/Internship Form</h1>
+        <form action="http://localhost:8080/job_post" method="post">
+            <div class="form-control">
+                <label>Title</label>
+                <input type="text" placeholder="Title" name="Title">
+            </div>
+            <div class="form-control">
+                <label>Type</label>
+                <input type="text" placeholder="Type" name="Type">
+            </div>
+            <div class="form-control">
+                <label>Location</label>
+                <input type="text" placeholder="Location" name="Location">
+            </div>
+            <div class="form-control">
+                <label>Duration</label>
+                <input type="text" placeholder="Duration" name="Duration">
+            </div>
+            <div class="form-control">
+                <label>Description</label>
+                <input type="text" placeholder="Description" name="Description">
+            </div>
+            <div class="form-control">
+                <label>Requirement</label>
+                <input type="text" placeholder="Requirement" name="Requirement">
+            </div>
+            <div class="form-control">
+                <label>Benefits</label>
+                <input type="text" placeholder="Benefits" name="Benefits">
+            </div>
+            <div class="form-control">
+                <label>Deadline</label>
+                <input type="date" placeholder="Deadline" name="Deadline">
+            </div>
+            <div class="form-control">
+                <label>Form Link</label>
+                <input type="url" placeholder="form-link" name="Form_Link">
+            </div>
+            <div class="form-control">
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

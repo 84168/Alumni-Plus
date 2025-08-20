@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Alumni Connect</title>
+    <!-- <link rel="icon" href="/images/alumni.png" type="image/png"> -->
+
+    <style>
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: transparent transparent;
+            overflow-y: scroll;
+        }
+
+        html:hover {
+            scrollbar-color: auto;
+        }
+
+        html::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+
+        html:hover::-webkit-scrollbar {
+            background: #f1f1f1;
+        }
+
+        html::-webkit-scrollbar-thumb {
+            background-color: transparent;
+            border-radius: 10px;
+            border: 2px solid transparent;
+        }
+
+        html:hover::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex min-h-screen flex-col">
+
+    <!-- Header -->
+    <div class="user-name">
+        <p id="user-name">hello</p>
+    </div>
+
+    <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
+        <div class="container flex h-16 items-center justify-between mx-auto px-4">
+            <div class="flex items-center gap-2">
+                <span class="text-3xl">🎓</span>
+                <span class="text-xl font-bold">Alumni Connect</span>
+                <!-- <span class="hidden text-sm text-gray-500 sm:inline-block">| CSE Department</span> -->
+            </div>
+
+            <nav class="hidden md:flex gap-6">
+                <a href="#" class="text-sm font-medium hover:text-blue-600">Home</a>
+                <a href="#alumni" class="text-sm font-medium text-gray-500 hover:text-blue-600">Alumni</a>
+                <a href="#news" class="text-sm font-medium text-gray-500 hover:text-blue-600">News</a>
+                <!-- <a href="#events" class="text-sm font-medium text-gray-500 hover:text-blue-600">Events</a> -->
+                <a href="#jobs" class="text-sm font-medium text-gray-500 hover:text-blue-600">Jobs</a>
+                <a href="#endowment" class="text-sm font-medium text-gray-500 hover:text-blue-600">Endowment</a>
+                <a href="#about" class="text-sm font-medium text-gray-500 hover:text-blue-600">About</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <!-- <input type="text" placeholder="Search..." class="border rounded-md px-2 py-1" /> -->
+                <!-- <button class="border px-3 py-1 rounded hidden md:flex">Sign In</button> -->
+                <button class="bg-blue-600 text-white px-3 py-1 rounded">Join Network</button>
+                <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+                    id="chat-box">Chat-Box</button>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="w-full py-20 bg-gradient-to-b from-white to-gray-100">
+        <div class="container grid lg:grid-cols-2 gap-12 px-6 mx-auto">
+            <div class="flex flex-col justify-center space-y-6">
+                <h1 class="text-4xl font-bold">Connect with CSE Alumni Network</h1>
+                <p class="text-gray-600">
+                    Join our vibrant community of Computer Science & Engineering graduates to network, mentor, and grow
+                    together.
+                </p>
+                <div class="flex gap-4">
+                    <button class="bg-blue-600 text-white px-6 py-3 rounded">Join the Network</button>
+                    <button class="border px-6 py-3 rounded">Learn More</button>
+                </div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80"
+                alt="CSE Alumni networking" class="rounded-xl shadow-lg hover:scale-[1.02] transform transition">
+        </div>
+    </section>
+
+    <!-- Alumni Directory (static example only) -->
+    <section id="alumni" class="w-full py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Alumni Directory</h2>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <!-- Example alumni card -->
+                <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                        class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
+                        alt="Priya Sharma - Senior Software Engineer at Google">
+                    <h3 class="font-semibold text-lg">Priya Sharma</h3>
+                    <p class="text-sm text-gray-500">Senior Software Engineer @ Google</p>
+                </div>
+                <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
+                    <img src="https://randomuser.me/api/portraits/men/23.jpg"
+                        class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
+                        alt="Rahul Patel - Product Manager at Microsoft">
+                    <h3 class="font-semibold text-lg">Rahul Patel</h3>
+                    <p class="text-sm text-gray-500">Product Manager @ Microsoft</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="w-full py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Latest News</h2>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="border rounded-lg overflow-hidden shadow">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
+                        class="w-full object-cover" alt="News: Innovative Alumni Startup">
+                    <div class="p-4">
+                        <h3 class="font-bold">CSE Alumni Launches Innovative Startup</h3>
+                        <p class="text-gray-600 text-sm mt-2">John Doe (Class of 2018) secures $2M funding...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs -->
+    <section id="jobs" class="w-full py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Jobs & Internships</h2>
+
+            <!-- ✅ New Buttons  to POST JOB-->
+            <div class="mb-8 flex justify-center sm:justify-between gap-4">
+
+                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700" id="job-button">
+                    Post Job or Intern
+                </button>
+
+                <!-- Right Button TO VIEW ALL JOB -->
+                <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" id="job-list">
+                    view All
+                </button>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="p-4 border rounded-lg bg-white shadow">
+                    <h3 class="font-bold">Software Engineer</h3>
+                    <p class="text-sm">TechCorp (Hybrid), Deadline: June 30</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Endowment -->
+    <section id="endowment" class="w-full py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Endowment & Giving</h2>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="border rounded-lg p-4 bg-gray-50 shadow">
+                    <h3 class="font-bold">Dr. Sharma Memorial Scholarship</h3>
+                    <p class="text-sm text-gray-600">Supporting underprivileged students with tuition aid.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section id="about" class="w-full py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold">Building Bridges Since 1985</h2>
+            <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+                The CSE Alumni Connect platform was established to foster meaningful connections between graduates,
+                current students, and faculty members.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full border-t bg-gray-50 mt-10">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
+            © 2025 CSE Alumni Connect. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+<script>
+
+    const btn = document.getElementById('job-button');
+    btn.addEventListener('click', () => {
+        window.location.href = "/job_post.html";
+    });
+
+    const btn1 = document.getElementById('job-list');
+    btn1.addEventListener('click', () => {
+        window.location.href = "/job_read";
+    });
+
+
+
+    console.log('Logged in role:', "<%= userType ? userType : 'no userType passed' %>");
+    console.log('Logged in username:', "<%= userName ? userName : 'no userType passed' %>");
+    const usertype = "<%= userType %>";
+
+
+    if (usertype === 'alumni') {
+        document.getElementById('job-button').style.display = 'inline-block';
+    } else {
+        document.getElementById('job-button').style.display = 'none';
+    }
+
+    const btn2 = document.getElementById('chat-box');
+    btn2.addEventListener('click', () => {
+        const userName = "<%= userName %>";
+        console.log(userName);
+        // Encode username for URL safety
+        const encodedUserName = encodeURIComponent(userName);
+        window.location.href = `http://localhost:9000/chat_box?userName=${encodedUserName}`;
+        // window.location.href = "/chat_box";
+    });
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Dashboard</title>
+</head>
+
+<body>
+    <h1>this is my home Dashboard</h1>
+    <button id="chat-box">Chat with Alumni</button>
+    <button id="job-button">Job/Internship</button>
+    <button id="job-list">view Job/Internship</button>
+</body>
+<script>
+
+    const btn = document.getElementById('job-button');
+    btn.addEventListener('click', () => {
+        // alert("this is clicked");
+        window.location.href = "/job_post.html";
+    })
+    
+    const btn1 = document.getElementById('job-list');
+    btn1.addEventListener('click', () => {
+        window.location.href = "/job_read";
+    })
+
+    const btn2 = document.getElementById("chat-box");
+    btn2.addEventListener('click' , ()=>{
+       window.location.href = "http://localhost:9000";
+       // window.location.href = "/chat_box";
+    })
+
+</script>
+
+</html> -->

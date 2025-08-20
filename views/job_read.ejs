@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Internship Opportunity</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+
+    .back-button button {
+      padding: 8px 12px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <div class="back-button">
+    <button onclick="history.back()" title="Go Back">
+      &#8592; Back
+    </button>
+  </div>
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Internship Opportunity</h1>
+    <% if (rows.length> 0) { %>
+
+      <% rows.map((eachData)=>{ %>
+        <div class="card text-center position-relative mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+
+            <form action="/delete/<%-eachData.ID %>" method="POST" class="mb-0">
+              <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+
+            <ul class="nav nav-tabs card-header-tabs" id="internshipTabs-<%- eachData.ID %>" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active" id="details-tab-<%- eachData.ID %>" data-bs-toggle="tab"
+                  data-bs-target="#details" type="button" role="tab">Details</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" id="requirements-tab-<%- eachData.ID %>" data-bs-toggle="tab"
+                  data-bs-target="#requirements" type="button" role="tab">Requirements</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" id="benefits-tab-<%- eachData.ID %>" data-bs-toggle="tab"
+                  data-bs-target="#benefits" type="button" role="tab">Benefits</button>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body tab-content" id="internshipTabsContent-<%- eachData.ID %>">
+            <div class="tab-pane fade show active" id="details-<%- eachData.ID %>" role="tabpanel">
+              <h5 class="card-title"><%- eachData.Title %>></h5>
+              <p class="card-text"><%- eachData.Description %></p>
+              <p><strong>Location:</strong> <%- eachData.Location %></p>
+              <p><strong>Deadline:</strong> <%- eachData.Deadline %></p>
+              <a href=<%- eachData.Form_Link %> class="btn btn-primary" target="_blank">Apply Now</a>
+            </div>
+            <div class="tab-pane fade" id="requirements-<%- eachData.ID %>" role="tabpanel">
+              <p class="card-text"><%- eachData.Requirement %></p>
+            </div>
+            <div class="tab-pane fade" id="benefits-<%- eachData.ID %>" role="tabpanel">
+              <p class="card-text"><%- eachData.Benefits %></p>
+            </div>
+          </div>
+        </div>
+  </div>
+  <br><br><br>
+
+  <%}); %>
+    <% } else { %>
+      <div class="condition-msg">
+        <h3>No Internship and job offers yet!</h3>
+      </div>
+      <% } %>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</html>

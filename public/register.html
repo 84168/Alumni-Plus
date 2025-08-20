@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Educational Institution</title>
+    <link rel="stylesheet" href="register-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Import the same variables from login page */
+        :root {
+            /* Color Variables - Matching Login Page */
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            /* Text Colors */
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+
+            /* Border & Shadow */
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-form {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-xl);
+            margin: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Header Styling - Same as Login Page */
+        .register-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-md);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .register-header h1 {
+            color: var(--text-primary);
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .register-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Role Selection - Same as Login Page */
+        .role-selection {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .role-selection h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .role-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .role-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .role-card i {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .role-card span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .role-option input[type="radio"]:checked+.role-card {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .role-option input[type="radio"]:checked+.role-card i {
+            color: var(--primary-color);
+        }
+
+        .role-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Form Groups - Enhanced for Registration */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-size: 0.875rem;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            color: var(--text-muted);
+            z-index: 1;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 2.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--error-color);
+        }
+
+        .form-group input.success,
+        .form-group select.success {
+            border-color: var(--success-color);
+        }
+
+        /* Select Dropdown Styling */
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--spacing-xs);
+            z-index: 1;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-secondary);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: var(--spacing-sm);
+        }
+
+        .strength-bar {
+            height: 4px;
+            width: 100%;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .strength-bar::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-bar.weak::after {
+            width: 33%;
+            background: var(--error-color);
+        }
+
+        .strength-bar.medium::after {
+            width: 66%;
+            background: var(--warning-color);
+        }
+
+        .strength-bar.strong::after {
+            width: 100%;
+            background: var(--success-color);
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .strength-text.weak {
+            color: var(--error-color);
+        }
+
+        .strength-text.medium {
+            color: var(--warning-color);
+        }
+
+        .strength-text.strong {
+            color: var(--success-color);
+        }
+
+        /* Checkbox Container */
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+            height: 18px;
+            margin-right: var(--spacing-sm);
+            margin-top: 2px;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .terms-link,
+        .privacy-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .terms-link:hover,
+        .privacy-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Register Button */
+        .register-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .register-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Login Section */
+        .login-section {
+            text-align: center;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .login-section p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .login-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Messages */
+        .error-message {
+            display: block;
+            color: var(--error-color);
+            font-size: 0.75rem;
+            margin-top: var(--spacing-xs);
+            min-height: 1rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Loading States */
+        .register-btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .register-btn.loading span {
+            opacity: 0;
+        }
+
+        .register-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            body {
+                padding: var(--spacing-sm);
+            }
+
+            .register-form {
+                padding: var(--spacing-lg);
+                margin: 0;
+            }
+
+            .role-options {
+                grid-template-columns: 1fr;
+            }
+
+            .register-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .checkbox-container {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .role-card {
+                padding: var(--spacing-md);
+            }
+
+            .register-form {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Focus styles for accessibility */
+        .role-option:focus-within .role-card {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        input:focus,
+        select:focus,
+        button:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        .register-form {
+    /* existing styles... */
+    max-height: 90vh;
+    overflow-y: auto;
+
+    /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.register-form::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <div class="register-form">
+            <div class="register-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1>Create Account</h1>
+                <p>Join our educational community</p>
+            </div>
+
+            <form id="registerForm" action="/user_data" method="post" class="form" novalidate>
+                <!-- Full Name Field -->
+                <div class="form-group">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required
+                            autocomplete="name">
+                    </div>
+                    <span class="error-message" id="fullNameError"></span>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required
+                            autocomplete="email">
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="role-selection">
+                    <h3>I am a:</h3>
+                    <div class="role-options">
+                        <label class="role-option">
+                            <input type="radio" name="role" value="student" checked>
+                            <span class="role-card">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Student</span>
+                            </span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role" value="alumni">
+                            <span class="role-card">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Alumni</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Batch Year -->
+                <div class="form-group">
+                    <label for="batchYear" class="form-label">Batch Year</label>
+                    <div class="input-group">
+                        <i class="fas fa-calendar input-icon"></i>
+                        <input type="number" name="batch" id="batch">
+                    </div>
+                    <span class="error-message" id="batchYearError"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" placeholder="Create a strong password"
+                            required autocomplete="new-password">
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                        <span class="strength-text" id="strengthText">Password strength</span>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Confirm your password" required autocomplete="new-password">
+                        <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="form-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" name="terms" id="termsAccepted" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#" class="terms-link">Terms and Conditions</a> and <a href="#"
+                            class="privacy-link">Privacy Policy</a>
+                    </label>
+                    <span class="error-message" id="termsError"></span>
+                </div>
+
+                <!-- Register Button -->
+                <button type="submit" class="register-btn" id="register-btn">
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <!-- Login Link -->
+                <div class="login-section">
+                    <p>Already have an account? <a href="login.html" class="login-link">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="register-script.js"></script>
+</body>
+
+</html>

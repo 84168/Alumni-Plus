@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHAT</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #messages {
+      border: 1px solid #ccc;
+      background: #fff;
+      height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    #input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    #message {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #sendBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+
+    .back-button button {
+      padding: 8px 12px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button button:hover {
+      background-color: #555;
+    }
+
+    /* Container wrapping each message */
+    .message-container {
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background-color: #2f3136;
+      max-width: 70%;
+      /* Adjust width as needed */
+      color: #dcddde;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Sender's name styles */
+    .message-container .sender-name {
+      font-weight: 700;
+      color: #7289da;
+      /* Discord-like blue */
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    /* Message text styles */
+    .message-container .message-text {
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="back-button">
+    <button onclick="history.back()" title="Go Back">
+      &#8592; Back
+    </button>
+  </div>
+  <div id="chat-container">
+    <div id="header">
+      <h1>Chat Room</h1>
+    </div>
+
+    <div id="messages"></div>
+    <div id="input-area">
+      <input type="text" id="message" placeholder="Enter your message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const sendBtn = document.getElementById("sendBtn");
+    const messageInput = document.getElementById("message");
+    const allmessages = document.getElementById("messages");
+
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const userName = getQueryParam('userName');
+    if (userName) {
+      console.log('Username passed:', userName);
+      // Use userName in your chat UI or socket communication
+    } else {
+      console.log('No username found in URL');
+    }
+
+    sendBtn.addEventListener("click", (e) => {
+      const message = messageInput.value;
+
+      // socket.emit("user-message", message); // user-message = message i sended to server 
+      socket.emit("user-message", { userName, message });
+      messageInput.value = "";
+    })
+
+
+    socket.on("message", (data) => {
+      const container = document.createElement('div'); // container for one message
+      container.style.backgroundColor = "whitesmoke";
+
+      const p1 = document.createElement('p'); // sender name
+      p1.classList.add('sender-name');
+      p1.innerText = data.userName;
+      p1.innerHTML = `<span style="text-decoration: underline; font-size: 0.65em; padding-top:20px">${data.userName}</span>`;
+      
+
+      const p = document.createElement('p'); // message text
+      p.classList.add('message-text');
+      p.innerText = data.message;
+
+      container.appendChild(p1);
+      container.appendChild(p);
+      allmessages.appendChild(container);
+    })
+
+  </script>
+</body>
+
+</html>
