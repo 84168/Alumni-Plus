@@ -20,17 +20,17 @@ app.use(express.static(path.join(__dirname , "public")));
 io.on("connection" , (socket)=>{
     console.log(`a new user is connected ${socket.id}`);
 
-    socket.on("user-message" , (message) =>{
+    socket.on("user-message" , (data) =>{
        // console.log("A new user message", message);
-       
-       io.emit("message" , message); // server sended to connected socket 
+       console.log(data.userName , data.message);
+       io.emit("message" , data); // server sended to connected socket 
     });
 });
 
 
-app.get(`/chat_box` , (req,res)=>{
+// app.get(`/chat_box` , (req,res)=>{
 
-    res.sendFile(path.join(__dirname, "public", "chat_box.html"));
-})
+//     res.sendFile(path.join(__dirname, "public", "chat_box.html"));
+// })
 
 server.listen(port,()=> console.log(`server is running at port ${port}`));
