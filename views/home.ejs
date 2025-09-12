@@ -4,134 +4,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSE Alumni Plus</title>
-    <!-- <link rel="icon" href="/images/alumni.png" type="image/png"> -->
+    <title>AlumniPlus - Connecting Graduates Worldwide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: transparent transparent;
-            overflow-y: scroll;
+        /* Custom styles for hover effects */
+        #profile-btn:hover,
+        #mobile-profile-btn:hover {
+            color: #3b82f6;
+            transform: scale(1.1);
+            transition: all 0.3s ease;
         }
 
-        html:hover {
-            scrollbar-color: auto;
+        .nav-link:hover {
+            color: #3b82f6;
+            transform: translateY(-2px);
         }
 
-        html::-webkit-scrollbar {
-            width: 8px;
-            background: transparent;
+        .join-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        html:hover::-webkit-scrollbar {
-            background: #f1f1f1;
+        .signup-btn:hover {
+            background-color: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        html::-webkit-scrollbar-thumb {
-            background-color: transparent;
-            border-radius: 10px;
-            border: 2px solid transparent;
+        /* Smooth transitions */
+        .nav-link,
+        .join-btn,
+        .signup-btn {
+            transition: all 0.3s ease;
         }
 
-        html:hover::-webkit-scrollbar-thumb {
-            background-color: #888;
+        /* Mobile menu animation */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .mobile-menu {
+            animation: slideIn 0.3s ease-out;
         }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body class="flex min-h-screen flex-col">
 
-    <!-- Header -->
-    <!-- <div class="user-name">
-        <p id="user-name">hello</p>
-    </div> -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-6">
+            <nav class="flex items-center justify-between h-20">
+                <!-- Logo with graduation cap -->
+                <div class="flex items-center mr-[25px]">
+                    <a href="#" class="flex items-center">
+                        <i class="fas fa-graduation-cap text-blue-600 text-3xl"></i>
+                        <span class="ml-3 text-2xl font-bold text-gray-800">Alumni<span
+                                class="text-black font-black">Plus</span></span>
+                    </a>
+                </div>
 
-    <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-        <div class="container flex h-16 items-center justify-between mx-auto px-4">
-            <div class="flex items-center gap-2">
-                <span class="text-3xl">🎓</span>
-                <span class="text-xl font-bold">Alumni Plus</span>
-                <!-- <span class="hidden text-sm text-gray-500 sm:inline-block">| CSE Department</span> -->
-            </div>
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-10">
+                    <a href="#home"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Home</a>
+                    <a href="#alumni"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Alumni</a>
+                    <a href="#mentorship"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Mentorship
+                        Request</a>
+                    <a href="#jobs"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Jobs</a>
+                    <a href="#endowment"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Endowment</a>
+                    <a href="#about"
+                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors mr-10">About</a>
+                </div>
 
-            <nav class="hidden md:flex gap-6">
-                <a href="#" class="text-sm font-medium hover:text-blue-600">Home</a>
-                <a href="#alumni" class="text-sm font-medium text-gray-500 hover:text-blue-600">Alumni</a>
-                <a href="#news" class="text-sm font-medium text-gray-500 hover:text-blue-600">News</a>
-                <!-- <a href="#events" class="text-sm font-medium text-gray-500 hover:text-blue-600">Events</a> -->
-                <a href="#jobs" class="text-sm font-medium text-gray-500 hover:text-blue-600">Jobs</a>
-                <a href="#endowment" class="text-sm font-medium text-gray-500 hover:text-blue-600">Endowment</a>
-                <a href="#about" class="text-sm font-medium text-gray-500 hover:text-blue-600">About</a>
+                <!-- Desktop Actions -->
+                <div class="flex items-center gap-2">
+                    <button class="bg-blue-600 text-white px-3 py-1 rounded" id="join_network">Join Network</button>
+                    <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+                        id="log-in">LogIn</button>
+                    <a id="profile_btn" class="p-2.5 text-gray-700 hover:text-blue-600 focus:outline-none transition">
+                        <i class="fas fa-user-circle text-3xl"></i>
+                    </a>
+                </div>
             </nav>
-            <div class="flex items-center gap-2">
-                <!-- <input type="text" placeholder="Search..." class="border rounded-md px-2 py-1" /> -->
-                <!-- <button class="border px-3 py-1 rounded hidden md:flex">Sign In</button> -->
-                <button class="bg-blue-600 text-white px-3 py-1 rounded">Join Network</button>
-                <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-                    id="chat-box">Chat-Box</button>
-
-            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="w-full py-20 bg-gradient-to-b from-white to-gray-100">
         <div class="container grid lg:grid-cols-2 gap-12 px-6 mx-auto">
+            <!-- Left: Heading + Typing Intro -->
             <div class="flex flex-col justify-center space-y-6">
                 <h1 class="text-4xl font-bold">Connect with CSE Alumni Network</h1>
-                <p class="text-gray-600">
-                    Join our vibrant community of Computer Science & Engineering graduates to network, mentor, and grow
-                    together.
-                </p>
-                <div class="flex gap-4">
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded">Join the Network</button>
-                    <button class="border px-6 py-3 rounded">Learn More</button>
-                </div>
+
+                <!-- Typing wrapper -->
+                <p id="typing-text" class="text-gray-700 text-lg leading-7"></p>
             </div>
+
+            <!-- Right: Image -->
             <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80"
-                alt="CSE Alumni networking" class="rounded-xl shadow-lg hover:scale-[1.02] transform transition">
+                alt="CSE Alumni networking" class="rounded-xl shadow-lg hover:scale-[1.02] transform transition" />
         </div>
     </section>
+
+
 
     <!-- Alumni Directory (static example only) -->
     <section id="alumni" class="w-full py-20 bg-gray-100">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-6">Alumni Directory</h2>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Popular Alumni</h2>
+                <button id="alumni_list"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
+                    Search Alumni
+                </button>
+            </div>
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <!-- Example alumni card -->
-                <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                        class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
-                        alt="Priya Sharma - Senior Software Engineer at Google">
-                    <h3 class="font-semibold text-lg">Priya Sharma</h3>
-                    <p class="text-sm text-gray-500">Senior Software Engineer @ Google</p>
-                </div>
-                <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
-                    <img src="https://randomuser.me/api/portraits/men/23.jpg"
-                        class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
-                        alt="Rahul Patel - Product Manager at Microsoft">
-                    <h3 class="font-semibold text-lg">Rahul Patel</h3>
-                    <p class="text-sm text-gray-500">Product Manager @ Microsoft</p>
-                </div>
+
+                <% rows.forEach(r=> { %>
+                    <!-- <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
+                        <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/non_2x/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+                            class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
+                            alt="Priya Sharma - Senior Software Engineer at Google">
+                        <h3 class="font-semibold text-lg">
+                            <%= r.Full_Name %>
+                        </h3>
+                        <p class="text-sm text-gray-500">Batch: <%= r.Batch %>
+                        </p>
+                    </div> -->
+
+                    <div
+                        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex justify-center mb-4">
+                            <img src="http://static.photos/people/200x200/1" alt="Alumni"
+                                class="rounded-full w-24 h-24 object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-center text-gray-800">
+                            <%=r.Full_Name%>
+                        </h3>
+                        <p class="text-gray-600 text-center">
+                            <%=r.Batch%>
+                        </p>
+                    </div>
+                    <% }) %>
             </div>
         </div>
     </section>
 
-    <!-- News Section -->
-    <section id="news" class="w-full py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-6">Latest News</h2>
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="border rounded-lg overflow-hidden shadow">
-                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
-                        class="w-full object-cover" alt="News: Innovative Alumni Startup">
-                    <div class="p-4">
-                        <h3 class="font-bold">CSE Alumni Launches Innovative Startup</h3>
-                        <p class="text-gray-600 text-sm mt-2">John Doe (Class of 2018) secures $2M funding...</p>
+    <!-- Mentorship Section -->
+    <section id="mentorship" class="py-20 px-4 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Upcoming Mentorship Sessions</h2>
+            <button id="mentorship_request"
+                class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
+                View All
+            </button>
+            <!-- <p class="text-xl text-gray-600 mb-12 text-center">Learn directly from experienced alumni</p> -->
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Mentorship Card 1 -->
+                <div
+                    class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="flex justify-center mb-4">
+                        <img src="http://static.photos/people/200x200/9" alt="Mentor"
+                            class="rounded-full w-24 h-24 object-cover">
                     </div>
+                    <h3 class="text-xl font-bold text-center text-gray-800 mb-2">Dr. Anjali Verma</h3>
+                    <p class="text-gray-600 text-center mb-2">Sept 20 – Sept 22, 2025</p>
+                    <p class="text-gray-500 text-center text-sm mb-4">Online Session</p>
+
                 </div>
+
             </div>
         </div>
     </section>
@@ -144,22 +203,39 @@
             <!-- ✅ New Buttons  to POST JOB-->
             <div class="mb-8 flex justify-center sm:justify-between gap-4">
 
-                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700" id="job-button">
+                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700" id="job_button">
                     Post Job or Intern
                 </button>
 
                 <!-- Right Button TO VIEW ALL JOB -->
-                <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" id="job-list">
+                <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" id="job_list">
                     view All
                 </button>
             </div>
 
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="p-4 border rounded-lg bg-white shadow">
-                    <h3 class="font-bold">Software Engineer</h3>
-                    <p class="text-sm">TechCorp (Hybrid), Deadline: June 30</p>
-                </div>
+            <div class="job-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <% rows1.forEach(r=> { %>
+                    <div class="job-card p-4 border rounded-lg bg-white shadow">
+                        <h3 class="font-bold text-lg mb-2">
+                            <%= r.Title %>
+                        </h3>
+                        <p class="text-sm text-gray-600"><strong>Duration:</strong>
+                            <%= r.Duration %>
+                        </p>
+                        <p class="text-sm text-gray-700">
+                            <%= r.Description %>
+                        </p>
+                        <p class="text-sm text-gray-600"><strong>Requirements:</strong>
+                            <%= r.Requirement %>
+                        </p>
+                        <p class="text-sm text-red-500"><strong>Deadline:</strong>
+                            <%= new Date(r.Deadline).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long' ,
+                                year: 'numeric' }) %>
+                        </p>
+                    </div>
+                    <% }) %>
             </div>
+
         </div>
     </section>
 
@@ -167,12 +243,13 @@
     <section id="endowment" class="w-full py-20 bg-white">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-6">Endowment & Giving</h2>
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <h3>Currently not Present </h3>
+            <!-- <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <div class="border rounded-lg p-4 bg-gray-50 shadow">
                     <h3 class="font-bold">Dr. Sharma Memorial Scholarship</h3>
                     <p class="text-sm text-gray-600">Supporting underprivileged students with tuition aid.</p>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -192,93 +269,221 @@
         <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
             © 2025 CSE Alumni Connect. All rights reserved.
         </div>
+        <!-- Profile Modal -->
+        <% if(authUser) { %>
+            <div id="profileModal"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div
+                    class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0">
+                    <div class="flex justify-between items-center p-6 border-b">
+                        <h2 class="text-2xl font-bold text-gray-800">Welcome, <%= authUser.Role %>
+                        </h2>
+                        <button id="closeModal"
+                            class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="relative">
+                                <img src="http://static.photos/people/200x200/1" alt="User avatar"
+                                    class="w-24 h-24 rounded-full object-cover border-4 border-blue-100">
+                                <button id="edit_profile"
+                                    class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">Name</label>
+                                <p class="text-lg font-semibold text-gray-800">
+                                    <%= authUser.Full_Name %>
+                                </p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">Email</label>
+                                <p class="text-lg font-semibold text-gray-800">
+                                    <%= authUser.Email_ID %>
+                                </p>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">Batch</label>
+                                <p class="text-lg font-semibold text-gray-800">
+                                    <%= authUser.Batch %>
+                                </p>
+                            </div>
+                            <% if (authUser.Enrollment_No) { %>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Enrollment No</label>
+                                    <p class="text-lg font-semibold text-gray-800">
+                                        <%= authUser.Enrollment_No %>
+                                    </p>
+                                </div>
+                                <% } %>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Contact</label>
+                                        <p class="text-lg font-semibold text-gray-800">
+                                            <%= authUser.Contact_no %>
+                                        </p>
+                                    </div>
+                        </div>
+                    </div>
+                    <div class="p-6 border-t flex justify-between">
+                        <form action="/logout" method="POST" class="w-full">
+                            <button type="submit"
+                                class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <%}%>
     </footer>
 
 </body>
 <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Typing Effect Setup
+        const introMessage =
+            "Welcome to the CSE Alumni Network — a community where graduates connect, mentor, and grow together.\n" +
+            "Discover opportunities, share experiences, and stay engaged with your CSE family.";
 
-    const btn = document.getElementById('job-button');
-    btn.addEventListener('click', () => {
-        window.location.href = "/job_post.html";
-    });
+        const el = document.getElementById("typing-text");
+        const typeDelay = 28;
+        const pauseOnLineBreak = 250;
 
-    const btn1 = document.getElementById('job-list');
-    btn1.addEventListener('click', () => {
-        window.location.href = "/job_read";
-    });
+        function typeText(text, node, i = 0) {
+            if (i >= text.length) return;
+            const char = text[i];
+            node.textContent += char;
 
+            let nextDelay = typeDelay;
+            if (char === "\n") nextDelay += pauseOnLineBreak;
+            if (/[.,;:!?]/.test(char)) nextDelay += 70;
 
+            setTimeout(() => typeText(text, node, i + 1), nextDelay);
+        }
 
-    console.log('Logged in role:', "<%= userType ? userType : 'no userType passed' %>");
-    console.log('Logged in username:', "<%= userName ? userName : 'no userType passed' %>");
-    const usertype = "<%= userType %>";
+        if (el) {
+            el.textContent = "";
+            typeText(introMessage, el);
+        }
 
+        // Button References
+        const btnPostJob = document.getElementById('job_button');//post job
+        const btnViewJobs = document.getElementById('job_list');//
+        const btnLogin = document.getElementById('log-in');
+        const btnJoin = document.getElementById('join_network');//
+        const profileBtn = document.getElementById("profile_btn");
+        const alumniListBtn = document.getElementById("alumni_list");// 
+        const editProfileBtn = document.getElementById("edit_profile");
+        const mentorshipRequestBtn = document.getElementById("mentorship_request");
 
-    if (usertype === 'alumni') {
-        document.getElementById('job-button').style.display = 'inline-block';
-    } else {
-        document.getElementById('job-button').style.display = 'none';
-    }
+        // Profile Panel Elements
+        const btnToggleProfile = document.getElementById('profileToggle');
+        const panel = document.getElementById('profilePanel');
+        const closeBtn = document.getElementById('profileClose');
+        const overlay = document.getElementById('overlay');
 
-    const btn2 = document.getElementById('chat-box');
-    btn2.addEventListener('click', () => {
-        const userName = "<%= userName %>";
-        console.log(userName);
-        // Encode username for URL safety
-        const encodedUserName = encodeURIComponent(userName);
-        window.location.href = `http://localhost:9000/chat_box?userName=${encodedUserName}`;
-        // window.location.href = "/chat_box";
+        // Default visibility
+        btnPostJob.style.display = "none";
+        btnViewJobs.style.display = "none";
+        profileBtn.style.display = "none";
+        alumniListBtn.style.display = "none";
+        mentorshipRequestBtn.style.display = "none";
+
+        // Navigation actions
+
+        btnPostJob.addEventListener('click', () => {
+            window.location.href = "/job_post.html";
+        });
+
+        btnViewJobs.addEventListener('click', () => {
+            window.location.href = "/job_read";
+        });
+
+        btnLogin.addEventListener('click', () => {
+            window.location.href = "/login.html";
+        });
+
+        btnJoin.addEventListener('click', () => {
+            window.location.href = "/register.html";
+        });
+
+    <% if (authUser) { %> 
+        const userName = "<%= authUser.Full_Name %>";
+            const userType = "<%= authUser.Role %>";
+            console.log("Logged in as:", userName, "Role:", userType); 
+    <% } else { %> 
+        const userName = null;
+            const userType = null;
+            console.log("No user is logged in."); 
+    <% } %> ;
+
+        if (userName != null) {
+            btnLogin.innerText = "Chat-Box"
+            btnJoin.innerText = "Support Desk"
+            alumniListBtn.style.display = "block";
+            mentorshipRequestBtn.style.display = "block";
+
+            alumniListBtn.addEventListener("click", () => {
+                window.location.href = "/alumni_read"
+            })
+            btnLogin.addEventListener('click', () => {
+                window.location.href = "/chat_box.html";
+            })
+
+            btnJoin.addEventListener('click', () => {
+                window.location.href = "/support_desk"
+            })
+            mentorshipRequestBtn.addEventListener('click' , ()=>{
+                window.location.href = "/mentorship_page.html";
+            })
+        }
+        if (userType == "student") {
+            btnViewJobs.style.display = "block";
+            profileBtn.style.display = "block";
+        }
+        if (userType == "alumni") {
+            btnViewJobs.style.display = "block";
+            profileBtn.style.display = "block";
+            btnPostJob.style.display = "block";
+        }
+        // Profile Modal Logic
+        const profileModal = document.getElementById('profileModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalContent = profileModal.querySelector('.bg-white');
+
+        function openProfileModal() {
+            profileModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                profileModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Event listeners for profile modal
+        profileBtn.addEventListener('click', openProfileModal);
+        closeModal.addEventListener('click', closeProfileModal);
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) closeProfileModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !profileModal.classList.contains('hidden')) {
+                closeProfileModal();
+            }
+        });
     });
 </script>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Dashboard</title>
-</head>
-
-<body>
-    <h1>this is my home Dashboard</h1>
-    <button id="chat-box">Chat with Alumni</button>
-    <button id="job-button">Job/Internship</button>
-    <button id="job-list">view Job/Internship</button>
-</body>
-<script>
-
-    const btn = document.getElementById('job-button');
-    btn.addEventListener('click', () => {
-        // alert("this is clicked");
-        window.location.href = "/job_post.html";
-    })
-    
-    const btn1 = document.getElementById('job-list');
-    btn1.addEventListener('click', () => {
-        window.location.href = "/job_read";
-    })
-
-    const btn2 = document.getElementById("chat-box");
-    btn2.addEventListener('click' , ()=>{
-       window.location.href = "http://localhost:9000";
-       // window.location.href = "/chat_box";
-    })
-
-</script>
-
-</html> -->

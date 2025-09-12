@@ -6,91 +6,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Post</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9f9f9;
+        /* Reset and base styles */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        .container {
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            /* Animated gradient background */
+            background: linear-gradient(-45deg, #4e54c8, #8f94fb, #6a82fb, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             position: relative;
-            max-width: 600px;
-            margin: 60px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        /* Gradient animation */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Particle container */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(1);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Back button */
         .back-button {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 1000;
+            z-index: 2;
         }
 
         .back-button button {
-            padding: 8px 12px;
-            background-color: #333;
-            color: white;
+            background-color: #fff;
+            color: #4e54c8;
             border: none;
+            padding: 8px 16px;
             border-radius: 6px;
-            cursor: pointer;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
         }
 
         .back-button button:hover {
-            background-color: #555;
+            background-color: #e0e4ff;
         }
 
+        /* Form container */
+        .container {
+            background: #fff;
+            width: 500px;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            padding: 30px;
+            z-index: 1;
+            position: relative;
+            scrollbar-width: none;
+        }
+
+        .container::-webkit-scrollbar {
+            display: none;
+        }
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #333;
         }
 
+        /* Form controls */
         .form-control {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .form-control label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
+        label {
+            margin-bottom: 5px;
+            color: #444;
+            font-weight: 500;
         }
 
-        .form-control input {
-            width: 100%;
-            padding: 12px;
-            font-size: 15px;
+        input[type="text"],
+        input[type="date"],
+        input[type="url"] {
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-control input:focus {
-            border-color: #007bff;
             outline: none;
+            font-size: 14px;
         }
 
+        /* Submit button */
         button[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
+            background-color: #4e54c8;
+            color: #fff;
             border: none;
+            padding: 12px;
             border-radius: 6px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background 0.3s;
         }
 
         button[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #3b40a4;
         }
     </style>
 </head>
@@ -98,50 +170,50 @@
 <body>
 
     <div class="back-button">
-            <button onclick="history.back()" title="Go Back">
-                &#8592; Back
-            </button>
-        </div>
+        <button onclick="history.back()" title="Go Back">
+            &#8592; Back
+        </button>
+    </div>
     <div class="container">
-        
+
 
         <h1>Fill the Job/Internship Form</h1>
         <form action="http://localhost:8080/job_post" method="post">
             <div class="form-control">
                 <label>Title</label>
-                <input type="text" placeholder="Title" name="Title">
+                <input type="text" placeholder="Enter job or internship title" name="Title">
             </div>
             <div class="form-control">
                 <label>Type</label>
-                <input type="text" placeholder="Type" name="Type">
+                <input type="text" placeholder="Enter type (e.g., Internship, Full-Time)" name="Type">
             </div>
             <div class="form-control">
                 <label>Location</label>
-                <input type="text" placeholder="Location" name="Location">
+                <input type="text" placeholder="Enter location (e.g., Remote, Delhi)" name="Location">
             </div>
             <div class="form-control">
                 <label>Duration</label>
-                <input type="text" placeholder="Duration" name="Duration">
+                <input type="text" placeholder="Enter duration (e.g., 6 months)" name="Duration">
             </div>
             <div class="form-control">
                 <label>Description</label>
-                <input type="text" placeholder="Description" name="Description">
+                <input type="text" placeholder="Enter a brief job description" name="Description">
             </div>
             <div class="form-control">
                 <label>Requirement</label>
-                <input type="text" placeholder="Requirement" name="Requirement">
+                <input type="text" placeholder="Enter required skills or qualifications" name="Requirement">
             </div>
             <div class="form-control">
                 <label>Benefits</label>
-                <input type="text" placeholder="Benefits" name="Benefits">
+                <input type="text" placeholder="Enter offered benefits or perks" name="Benefits">
             </div>
             <div class="form-control">
                 <label>Deadline</label>
-                <input type="date" placeholder="Deadline" name="Deadline">
+                <input type="date" placeholder="Enter application deadline" name="Deadline">
             </div>
             <div class="form-control">
                 <label>Form Link</label>
-                <input type="url" placeholder="form-link" name="Form_Link">
+                <input type="url" placeholder="Enter application form URL" name="Form_Link">
             </div>
             <div class="form-control">
                 <button type="submit">Submit</button>
@@ -149,6 +221,16 @@
 
         </form>
     </div>
+    <div class="particles">
+        <div class="particle" style="left: 5%; width: 12px; height: 12px; animation-duration: 14s;"></div>
+        <div class="particle" style="left: 15%; width: 20px; height: 20px; animation-duration: 18s;"></div>
+        <div class="particle" style="left: 30%; width: 10px; height: 10px; animation-duration: 12s;"></div>
+        <div class="particle" style="left: 45%; width: 16px; height: 16px; animation-duration: 20s;"></div>
+        <div class="particle" style="left: 60%; width: 24px; height: 24px; animation-duration: 22s;"></div>
+        <div class="particle" style="left: 75%; width: 14px; height: 14px; animation-duration: 16s;"></div>
+        <div class="particle" style="left: 90%; width: 18px; height: 18px; animation-duration: 19s;"></div>
+    </div>
+
 </body>
 
 </html>

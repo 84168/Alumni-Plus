@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mentorship Sessions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, #4e54c8, #8f94fb, #6a82fb, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c2c2c;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        .request-btn {
+            display: block;
+            margin: 0 auto 40px;
+            background-color: #4e54c8;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background-color: #3b40a4;
+        }
+
+        .card {
+            background-color: #fdfdfd;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 30px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card-header {
+            background-color: #f1f1f1;
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .nav-tabs .nav-link {
+            font-weight: 500;
+            color: #4e54c8;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #4e54c8;
+            color: #fff;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-content {
+            padding-top: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4e54c8;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #3b40a4;
+        }
+
+        .condition-msg {
+            text-align: center;
+            margin-top: 50px;
+            color: #888;
+        }
+
+        .session-block {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .session-block span {
+            font-weight: 600;
+            color: #ff7f4d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upcoming Mentorship Sessions</h1>
+        <p>Explore sessions hosted by alumni and faculty. Register to gain insights, guidance, and support for your
+            journey.</p>
+        <button class="request-btn" id="requestMentorship">Request for Mentorship</button>
+
+        <!-- Sample Mentorship Card -->
+        <div class="card text-center position-relative">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <ul class="nav nav-tabs card-header-tabs" id="mentorTabs-1" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="details-tab-1" data-bs-toggle="tab"
+                            data-bs-target="#details-1" type="button" role="tab">Details</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="requirements-tab-1" data-bs-toggle="tab"
+                            data-bs-target="#requirements-1" type="button" role="tab">Session Timing</button>
+                    </li>
+                    <!-- <li class="nav-item">
+            <button class="nav-link" id="benefits-tab-1" data-bs-toggle="tab"
+              data-bs-target="#benefits-1" type="button" role="tab">Benefits</button>
+          </li> -->
+                </ul>
+            </div>
+
+            <div class="card-body tab-content" id="mentorTabsContent-1">
+                <div class="tab-pane fade show active" id="details-1" role="tabpanel">
+                    <h5 class="card-title">Building a Startup from Scratch</h5>
+                    <p><span style="font-weight:600; color:#4e54c8;">Industry Expert</span> &nbsp; Kartik Baghel</p>
+                    <div class="session-block">
+                        <p class="card-text">
+                            <span>Session For:</span><br>
+                            Learn how to launch a tech startup, build a team, and pitch to investors from someone who's
+                            done it successfully.
+                        </p>
+                    </div>
+
+                    <a href="#"><button class="btn btn-primary" target="_blank">Register</button></a>
+                </div>
+
+                <div class="tab-pane fade" id="requirements-1" role="tabpanel">
+                    <p><strong>Mode:</strong> In-person</p>
+                    <p><strong>Date:</strong> September 25, 2025</p>
+                    <p><strong>Venue:</strong> Seminar Hall, Block B</p>
+                    <p><strong>Topic:</strong> Career in Tech Startups</p>
+                </div>
+
+                <div class="tab-pane fade" id="benefits-1" role="tabpanel">
+                    <p class="card-text">Networking with founders, pitch feedback, startup toolkit, and internship
+                        opportunities in early-stage ventures.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message if no sessions -->
+        <!-- <div class="condition-msg">
+      <h3>No mentorship sessions available yet!</h3>
+    </div> -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const requestMentorshipbtn = document.getElementById("requestMentorship");
+        requestMentorshipbtn.addEventListener('click' , ()=>{
+            window.location.href = "/mentorship_request.html"
+        })
+    </script>
+</body>
+
+</html>

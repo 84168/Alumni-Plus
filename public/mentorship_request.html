@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mentorship Request</title>
+    <style>
+    /* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #4e54c8, #8f94fb, #6a82fb, #a1c4fd);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  position: relative;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Particle animation */
+.particles {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(1); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+}
+
+/* Back button */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.back-button button {
+  background-color: #fff;
+  color: #4e54c8;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
+}
+
+.back-button button:hover {
+  background-color: #e0e4ff;
+}
+
+/* Form container */
+.container {
+  background: #fff;
+  width: 500px;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  padding: 30px;
+  z-index: 1;
+  position: relative;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form controls */
+.form-control {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  color: #444;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #4e54c8;
+}
+
+/* Textarea */
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  background-color: #4e54c8;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #3b40a4;
+}
+
+/* Dropdown for mentorship category */
+.dropdown {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.dropdown > button {
+  background-color: #4e54c8;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  text-align: left;
+}
+
+.dropdown > button:hover {
+  background-color: #3b40a4;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdown-content label {
+  display: block;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdown-content label:hover {
+  background-color: #f0f0f0;
+}
+
+.show {
+  display: block;
+}
+
+/* Selected tags */
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  background-color: #4e54c8;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.tag .remove-tag {
+  margin-left: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+    <div class="back-button">
+        <button onclick="history.back()">&#8592; Back</button>
+    </div>
+
+    <div class="container">
+        <h1>Mentorship Request Form</h1>
+        <form id="mentorshipForm" action="http://localhost:8080/mentorship_request" method="post">
+            <!-- Personal Info -->
+            <div class="form-control">
+                <label>Full Name</label>
+                <input type="text" name="fullName" required />
+            </div>
+            <div class="form-control">
+                <label>Email Address</label>
+                <input type="email" name="email" required />
+            </div>
+            <div class="form-control">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" required />
+            </div>
+            <div class="form-control">
+                <label>University Roll Number</label>
+                <input type="text" name="rollNumber" required />
+            </div>
+            <div class="form-control">
+                <label>Current Year of Study</label>
+                <input type="text" name="yearOfStudy" />
+            </div>
+            
+            <!-- MENTORSHIP CATEGORY -->
+            <div class="dropdown">
+                <button onclick="toggleDropdown()">Select Mentorship Categories</button>
+                <div id="options" class="dropdown-content">
+                    <label><input type="checkbox" value="Academic Guidance"> Academic Guidance</label>
+                    <label><input type="checkbox" value="Career Planning"> Career Planning</label>
+                    <label><input type="checkbox" value="Entrepreneurship"> Entrepreneurship</label>
+                    <label><input type="checkbox" value="Higher Education"> Higher Education</label>
+                    <label><input type="checkbox" value="Industry Insights"> Industry Insights</label>
+                    <label><input type="checkbox" value="Personal Development"> Personal Development</label>
+                    <label><input type="checkbox" value="Networking & Opportunities"> Networking & Opportunities</label>
+                    <label><input type="checkbox" value="Other"> Other</label>
+                </div>
+            </div>
+
+            <div class="selected-items" id="selectedItems"></div>
+            <input type="hidden" name="mentorshipCategories" id="categoryHidden" />
+
+            <div class="form-control">
+                <label>Reason for Requesting Mentorship</label>
+                <textarea name="reason" placeholder="Describe your goals or expectations"></textarea>
+            </div>
+            <!-- <div class="form-control">
+                <label>Preferred Mentor Type</label>
+                <select name="mentorType">
+                    <option value="">Select Type</option>
+                    <option>Faculty</option>
+                    <option>Alumni</option>
+                    <option>Industry Professional</option>
+                </select>
+            </div> -->
+
+            <!-- Availability -->
+            <div class="form-control">
+                <label>Preferred Mode of Mentorship</label>
+                <select name="mode">
+                    <option>Online</option>
+                    <option>In-person</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Preferred Time Slots</label>
+                <input type="text" name="timeSlots" placeholder="e.g., Weekends, Evenings" />
+            </div>
+
+            <div class="form-control">
+                <label>LinkedIn / Portfolio URL</label>
+                <input type="url" name="portfolio" />
+            </div>
+
+            <!-- Consent -->
+            <div class="form-control">
+                <label>
+                    <input type="checkbox" name="consent" required />
+                    I agree to share my details with the mentor and understand this is a voluntary guidance program.
+                </label>
+            </div>
+
+            <div class="form-control">
+                <button type="submit">Submit Request</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="particles">
+        <div class="particle" style="left: 5%; width: 12px; height: 12px; animation-duration: 14s;"></div>
+        <div class="particle" style="left: 15%; width: 20px; height: 20px; animation-duration: 18s;"></div>
+        <div class="particle" style="left: 30%; width: 10px; height: 10px; animation-duration: 12s;"></div>
+        <div class="particle" style="left: 45%; width: 16px; height: 16px; animation-duration: 20s;"></div>
+        <div class="particle" style="left: 60%; width: 24px; height: 24px; animation-duration: 22s;"></div>
+    </div>
+    <script>
+        function toggleDropdown() {
+      document.getElementById("options").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropdown button')) {
+        let dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+          let openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    const selectedItemsContainer = document.getElementById('selectedItems');
+    const hiddenInput = document.getElementById('categoryHidden');
+    const selectedValues = new Set();
+
+    document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', function () {
+        const value = this.value;
+        if (this.checked) {
+          if (!selectedValues.has(value)) {
+            selectedValues.add(value);
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.setAttribute('data-value', value);
+            tag.innerHTML = `${value} <span class="remove-tag" onclick="removeTag('${value}')">×</span>`;
+            selectedItemsContainer.appendChild(tag);
+            updateHiddenInput();
+          }
+        } else {
+          removeTag(value);
+        }
+      });
+    });
+
+    function removeTag(value) {
+      selectedValues.delete(value);
+      const tag = selectedItemsContainer.querySelector(`[data-value="${value}"]`);
+      if (tag) tag.remove();
+      const checkbox = document.querySelector(`.dropdown-content input[value="${value}"]`);
+      if (checkbox) checkbox.checked = false;
+      updateHiddenInput();
+    }
+
+    function updateHiddenInput() {
+      hiddenInput.value = Array.from(selectedValues).join(',');
+    }
+    </script>
+</body>
+
+</html>

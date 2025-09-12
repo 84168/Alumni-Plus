@@ -28,74 +28,171 @@
     .back-button button:hover {
       background-color: #555;
     }
+
+    body.bg-light {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .back-button {
+      margin: 20px;
+    }
+
+    .back-button button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .back-button button:hover {
+      background-color: #0056b3;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #dee2e6;
+      padding: 10px 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .card-text {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .nav-tabs .nav-link {
+      font-weight: 500;
+      color: #007bff;
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: #e9ecef;
+      border-color: #dee2e6 #dee2e6 #fff;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .condition-msg {
+      text-align: center;
+      margin-top: 50px;
+      color: #888;
+    }
   </style>
 </head>
 
 <body class="bg-light">
-
   <div class="back-button">
-    <button onclick="history.back()" title="Go Back">
-      &#8592; Back
-    </button>
+    <button onclick="history.back()" title="Go Back">&#8592; Back</button>
   </div>
+
   <div class="container py-5">
     <h1 class="text-center mb-4">Internship Opportunity</h1>
+
     <% if (rows.length> 0) { %>
+      <% rows.map((eachData)=> { %>
+        <div class="row justify-content-center">
+          <div class="col-md-10 col-lg-8">
+            <div class="card text-center position-relative mb-4">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <ul class="nav nav-tabs card-header-tabs" id="internshipTabs-<%= eachData.ID %>" role="tablist">
+                  <li class="nav-item">
+                    <button class="nav-link active" id="details-tab-<%= eachData.ID %>" data-bs-toggle="tab"
+                      data-bs-target="#details-<%= eachData.ID %>" type="button" role="tab">Details</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" id="requirements-tab-<%= eachData.ID %>" data-bs-toggle="tab"
+                      data-bs-target="#requirements-<%= eachData.ID %>" type="button" role="tab">Requirements</button>
+                  </li>
+                  <li class="nav-item">
+                    <button class="nav-link" id="benefits-tab-<%= eachData.ID %>" data-bs-toggle="tab"
+                      data-bs-target="#benefits-<%= eachData.ID %>" type="button" role="tab">Benefits</button>
+                  </li>
+                </ul>
+              </div>
 
-      <% rows.map((eachData)=>{ %>
-        <div class="card text-center position-relative mb-4">
-          <div class="card-header d-flex justify-content-between align-items-center">
+              <div class="card-body tab-content" id="internshipTabsContent-<%= eachData.ID %>">
+                <div class="tab-pane fade show active" id="details-<%= eachData.ID %>" role="tabpanel">
+                  <h5 class="card-title">
+                    <%= eachData.Title %>
+                  </h5>
+                  <p class="card-text">
+                    <%= eachData.Description %>
+                  </p>
+                  <p><strong>Location:</strong>
+                    <%= eachData.Location %>
+                  </p>
+                  <p><strong>Deadline:</strong>
+                    <%= new Date(eachData.Deadline).toLocaleDateString('en-IN', { day: '2-digit' , month: 'long' ,
+                      year: 'numeric' }) %>
+                  </p>
+                  <a href="<%= eachData.Form_Link %>" class="btn btn-primary" target="_blank">Apply Now</a>
+                </div>
 
-            <form action="/delete/<%-eachData.ID %>" method="POST" class="mb-0">
-              <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
-                <i class="bi bi-trash"></i>
-              </button>
-            </form>
+                <div class="tab-pane fade" id="requirements-<%= eachData.ID %>" role="tabpanel">
+                  <p class="card-text">
+                    <%= eachData.Requirement %>
+                  </p>
+                </div>
 
-            <ul class="nav nav-tabs card-header-tabs" id="internshipTabs-<%- eachData.ID %>" role="tablist">
-              <li class="nav-item">
-                <button class="nav-link active" id="details-tab-<%- eachData.ID %>" data-bs-toggle="tab"
-                  data-bs-target="#details" type="button" role="tab">Details</button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link" id="requirements-tab-<%- eachData.ID %>" data-bs-toggle="tab"
-                  data-bs-target="#requirements" type="button" role="tab">Requirements</button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link" id="benefits-tab-<%- eachData.ID %>" data-bs-toggle="tab"
-                  data-bs-target="#benefits" type="button" role="tab">Benefits</button>
-              </li>
-            </ul>
-          </div>
-          <div class="card-body tab-content" id="internshipTabsContent-<%- eachData.ID %>">
-            <div class="tab-pane fade show active" id="details-<%- eachData.ID %>" role="tabpanel">
-              <h5 class="card-title"><%- eachData.Title %>></h5>
-              <p class="card-text"><%- eachData.Description %></p>
-              <p><strong>Location:</strong> <%- eachData.Location %></p>
-              <p><strong>Deadline:</strong> <%- eachData.Deadline %></p>
-              <a href=<%- eachData.Form_Link %> class="btn btn-primary" target="_blank">Apply Now</a>
-            </div>
-            <div class="tab-pane fade" id="requirements-<%- eachData.ID %>" role="tabpanel">
-              <p class="card-text"><%- eachData.Requirement %></p>
-            </div>
-            <div class="tab-pane fade" id="benefits-<%- eachData.ID %>" role="tabpanel">
-              <p class="card-text"><%- eachData.Benefits %></p>
+                <div class="tab-pane fade" id="benefits-<%= eachData.ID %>" role="tabpanel">
+                  <p class="card-text">
+                    <%= eachData.Benefits %>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <% }) %>
+          <% } else { %>
+            <div class="condition-msg">
+              <h3>No Internship and job offers yet!</h3>
+            </div>
+            <% } %>
   </div>
-  <br><br><br>
 
-  <%}); %>
-    <% } else { %>
-      <div class="condition-msg">
-        <h3>No Internship and job offers yet!</h3>
-      </div>
-      <% } %>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
 </html>
