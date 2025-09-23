@@ -150,18 +150,291 @@
             font-weight: 600;
             color: #ff7f4d;
         }
+
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeInUp 0.4s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  height: 65vh;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: pop 0.4s ease-in-out;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable Form */
+.modal-content form {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-grow: 1;
+}
+
+.modal-content form::-webkit-scrollbar {
+  display: none;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* Form Controls */
+.form-control {
+  margin-bottom: 20px;
+}
+
+.form-control label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-control input[type="text"],
+.form-control textarea,
+.form-control select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control input:focus,
+.form-control textarea:focus,
+.form-control select:focus {
+  border-color: #4e54c8;
+  outline: none;
+}
+
+/* Submit Button */
+.form-control button[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(to right, #4e54c8, #8f94fb);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-control button[type="submit"]:hover {
+  background: linear-gradient(to right, #3b40a4, #6a82fb);
+}
+
+/* Dropdown Styling */
+.dropdown {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 10px;
+}
+
+.dropdown-content label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+/* Selected Tags */
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  background-color: #e0e4ff;
+  color: #333;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.remove-tag {
+  cursor: pointer;
+  font-weight: bold;
+  color: #4e54c8;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .form-control button[type="submit"] {
+    font-size: 14px;
+  }
+}
+
+
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Upcoming Mentorship Sessions</h1>
-        <p>Explore sessions hosted by alumni and faculty. Register to gain insights, guidance, and support for your
-            journey.</p>
-        <button class="request-btn" id="requestMentorship">Request for Mentorship</button>
+    <div class="container mt-4">
+        <h1 class="mb-3">Upcoming Mentorship Sessions</h1>
+        <p class="mb-4">Explore sessions hosted by alumni and faculty. Register to gain insights, guidance, and support
+            for your journey.</p>
+        <button class="btn btn-outline-primary mb-4" id="requestMentorship">Request for Mentorship</button>
+
+
+
+        <!-- Mentorship Modal -->
+        <div id="mentorshipModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-btn" id="closeMentorshipModal">&times;</span>
+                <h1>Mentorship Request Form</h1>
+                <!-- Mentorship Form -->
+                <form id="mentorshipForm" action="/mentorship_request" method="post">
+                    <div class="form-control">
+                        <label>Enrollment No.</label>
+                        <input type="text" name="Enrollment_No" required />
+                    </div>
+
+                    <div class="dropdown">
+                        <button type="button" onclick="toggleDropdown()">Select Mentorship Categories</button>
+                        <div id="options" class="dropdown-content">
+                            <label><input type="checkbox" value="Academic Guidance"> Academic Guidance</label>
+                            <label><input type="checkbox" value="Career Planning"> Career Planning</label>
+                            <label><input type="checkbox" value="Entrepreneurship"> Entrepreneurship</label>
+                            <label><input type="checkbox" value="Higher Education"> Higher Education</label>
+                            <label><input type="checkbox" value="Industry Insights"> Industry Insights</label>
+                            <label><input type="checkbox" value="Personal Development"> Personal Development</label>
+                            <label><input type="checkbox" value="Networking & Opportunities"> Networking &
+                                Opportunities</label>
+                            <label><input type="checkbox" value="Other"> Other</label>
+                        </div>
+                    </div>
+
+                    <div class="selected-items" id="selectedItems"></div>
+                    <input type="hidden" name="mentorshipCategories" id="categoryHidden" />
+
+                    <div class="form-control">
+                        <label>Reason for Requesting Mentorship</label>
+                        <textarea name="reason" placeholder="Describe your goals or expectations"></textarea>
+                    </div>
+
+                    <div class="form-control">
+                        <label>Preferred Mode of Mentorship</label>
+                        <select name="mode">
+                            <option>Online</option>
+                            <option>In-person</option>
+                        </select>
+                    </div>
+
+                    <div class="form-control">
+                        <label>
+                            <input type="checkbox" name="consent" required />
+                            I agree to share my details with the mentor and understand this is a voluntary guidance
+                            program.
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <button type="submit">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
         <!-- Sample Mentorship Card -->
-        <div class="card text-center position-relative">
+        <div class="card shadow-sm mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <ul class="nav nav-tabs card-header-tabs" id="mentorTabs-1" role="tablist">
                     <li class="nav-item">
@@ -172,55 +445,129 @@
                         <button class="nav-link" id="requirements-tab-1" data-bs-toggle="tab"
                             data-bs-target="#requirements-1" type="button" role="tab">Session Timing</button>
                     </li>
-                    <!-- <li class="nav-item">
-            <button class="nav-link" id="benefits-tab-1" data-bs-toggle="tab"
-              data-bs-target="#benefits-1" type="button" role="tab">Benefits</button>
-          </li> -->
                 </ul>
             </div>
 
             <div class="card-body tab-content" id="mentorTabsContent-1">
+                <!-- Details Tab -->
                 <div class="tab-pane fade show active" id="details-1" role="tabpanel">
                     <h5 class="card-title">Building a Startup from Scratch</h5>
-                    <p><span style="font-weight:600; color:#4e54c8;">Industry Expert</span> &nbsp; Kartik Baghel</p>
-                    <div class="session-block">
+                    <p><span class="fw-semibold text-primary">Industry Expert</span> &nbsp; Kartik Baghel</p>
+                    <div class="session-block mb-3">
                         <p class="card-text">
-                            <span>Session For:</span><br>
+                            <span class="fw-bold">Session For:</span><br>
                             Learn how to launch a tech startup, build a team, and pitch to investors from someone who's
                             done it successfully.
                         </p>
                     </div>
-
-                    <a href="#"><button class="btn btn-primary" target="_blank">Register</button></a>
+                    <a href="#"><button class="btn btn-primary">Register</button></a>
                 </div>
 
+                <!-- Session Timing Tab -->
                 <div class="tab-pane fade" id="requirements-1" role="tabpanel">
-                    <p><strong>Mode:</strong> In-person</p>
-                    <p><strong>Date:</strong> September 25, 2025</p>
-                    <p><strong>Venue:</strong> Seminar Hall, Block B</p>
-                    <p><strong>Topic:</strong> Career in Tech Startups</p>
-                </div>
-
-                <div class="tab-pane fade" id="benefits-1" role="tabpanel">
-                    <p class="card-text">Networking with founders, pitch feedback, startup toolkit, and internship
-                        opportunities in early-stage ventures.</p>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <p><strong>Mode:</strong> <span id="mode">Online</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Date:</strong> September 25, 2025</p>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <p><strong>Venue:</strong> Seminar Hall, Block B</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Topic:</strong> Career in Tech Startups</p>
+                        </div>
+                    </div>
+                    <div class="row" id="join-link" style="display: none;">
+                        <div class="col-12">
+                            <p><strong>Join Link:</strong>
+                                <a href="https://example.com/join-session" target="_blank">Click here to join</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Message if no sessions -->
-        <!-- <div class="condition-msg">
-      <h3>No mentorship sessions available yet!</h3>
-    </div> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const requestMentorshipbtn = document.getElementById("requestMentorship");
-        requestMentorshipbtn.addEventListener('click' , ()=>{
-            window.location.href = "/mentorship_request.html"
-        })
+        // Modal toggle
+  const mentorshipBtn = document.getElementById('requestMentorship');
+  const mentorshipModal = document.getElementById('mentorshipModal');
+  const closeMentorshipModal = document.getElementById('closeMentorshipModal');
+
+  mentorshipBtn.addEventListener('click', () => {
+    mentorshipModal.style.display = 'flex';
+  });
+
+  closeMentorshipModal.addEventListener('click', () => {
+    mentorshipModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === mentorshipModal) {
+      mentorshipModal.style.display = 'none';
+    }
+  });
+
+  // Dropdown logic
+  function toggleDropdown() {
+    document.getElementById("options").classList.toggle("show");
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropdown button')) {
+      let dropdowns = document.getElementsByClassName("dropdown-content");
+      for (let i = 0; i < dropdowns.length; i++) {
+        let openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  const selectedItemsContainer = document.getElementById('selectedItems');
+  const hiddenInput = document.getElementById('categoryHidden');
+  const selectedValues = new Set();
+
+  document.querySelectorAll('.dropdown-content input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const value = this.value;
+      if (this.checked) {
+        if (!selectedValues.has(value)) {
+          selectedValues.add(value);
+          const tag = document.createElement('div');
+          tag.className = 'tag';
+          tag.setAttribute('data-value', value);
+          tag.innerHTML = `${value} <span class="remove-tag" onclick="removeTag('${value}')">×</span>`;
+          selectedItemsContainer.appendChild(tag);
+          updateHiddenInput();
+        }
+      } else {
+        removeTag(value);
+      }
+    });
+  });
+
+  function removeTag(value) {
+    selectedValues.delete(value);
+    const tag = selectedItemsContainer.querySelector(`[data-value="${value}"]`);
+    if (tag) tag.remove();
+    const checkbox = document.querySelector(`.dropdown-content input[value="${value}"]`);
+    if (checkbox) checkbox.checked = false;
+    updateHiddenInput();
+  }
+
+  function updateHiddenInput() {
+    hiddenInput.value = Array.from(selectedValues).join(',');
+  }
     </script>
 </body>
+
 
 </html>

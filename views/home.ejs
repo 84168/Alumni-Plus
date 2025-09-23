@@ -64,47 +64,51 @@
 
 <body class="flex min-h-screen flex-col">
 
-    <header class="sticky top-0 z-50 bg-white shadow-md">
-        <div class="container mx-auto px-6">
-            <nav class="flex items-center justify-between h-20">
-                <!-- Logo with graduation cap -->
-                <div class="flex items-center mr-[25px]">
+    <header class="sticky top-0 z-50 bg-white shadow-md w-full">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex flex-wrap items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
                     <a href="#" class="flex items-center">
                         <i class="fas fa-graduation-cap text-blue-600 text-3xl"></i>
-                        <span class="ml-3 text-2xl font-bold text-gray-800">Alumni<span
-                                class="text-black font-black">Plus</span></span>
+                        <span class="text-2xl font-bold text-gray-800">
+                            Alumni<span class="text-black font-black">Plus</span>
+                        </span>
                     </a>
                 </div>
 
-                <!-- Desktop Navigation -->
-                <div class="hidden lg:flex items-center gap-10">
-                    <a href="#home"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Home</a>
+                <!-- Navigation Links -->
+                <div class="hidden lg:flex flex-wrap items-center gap-6 xl:gap-8">
+                    <a href="#home" class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Home</a>
                     <a href="#alumni"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Alumni</a>
+                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Alumni</a>
                     <a href="#mentorship"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Mentorship
-                        Request</a>
-                    <a href="#jobs"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Jobs</a>
+                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Mentorship Request</a>
+                    <a href="#jobs" class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Jobs</a>
                     <a href="#endowment"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors">Endowment</a>
-                    <a href="#about"
-                        class="nav-link text-gray-700 font-medium hover:underline hover:text-blue-600 transition-colors mr-10">About</a>
+                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Endowment</a>
+                    <a href="#announcements"
+                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Announcements</a>
                 </div>
 
-                <!-- Desktop Actions -->
-                <div class="flex items-center gap-2">
-                    <button class="bg-blue-600 text-white px-3 py-1 rounded" id="join_network">Join Network</button>
-                    <button class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition"
-                        id="log-in">LogIn</button>
-                    <a id="profile_btn" class="p-2.5 text-gray-700 hover:text-blue-600 focus:outline-none transition">
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-3">
+                    <button id="join_network"
+                        class="bg-blue-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition">
+                        Join Network
+                    </button>
+                    <button id="log-in"
+                        class="bg-green-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition">
+                        LogIn
+                    </button>
+                    <a id="profile_btn" class="text-gray-700 hover:text-blue-600 transition">
                         <i class="fas fa-user-circle text-3xl"></i>
                     </a>
                 </div>
             </nav>
         </div>
     </header>
+
 
     <!-- Hero Section -->
     <section class="w-full py-20 bg-gradient-to-b from-white to-gray-100">
@@ -126,6 +130,7 @@
 
 
     <!-- Alumni Directory (static example only) -->
+
     <section id="alumni" class="w-full py-20 bg-gray-100">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center mb-12">
@@ -254,7 +259,7 @@
     </section>
 
     <!-- About Us -->
-    <section id="about" class="w-full py-20 bg-white">
+    <section id="Announcements" class="w-full py-20 bg-white">
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-3xl font-bold">Building Bridges Since 1985</h2>
             <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
@@ -269,8 +274,8 @@
         <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
             © 2025 CSE Alumni Connect. All rights reserved.
         </div>
-        <!-- Profile Modal -->
-        <% if(authUser) { %>
+
+        <% if (authUser) { %>
             <div id="profileModal"
                 class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
                 <div
@@ -292,7 +297,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="space-y-4">
+
+                        <!-- Static Profile View -->
+                        <div class="space-y-4" id="staticProfile">
                             <div>
                                 <label class="text-sm font-medium text-gray-600">Name</label>
                                 <p class="text-lg font-semibold text-gray-800">
@@ -303,12 +310,6 @@
                                 <label class="text-sm font-medium text-gray-600">Email</label>
                                 <p class="text-lg font-semibold text-gray-800">
                                     <%= authUser.Email_ID %>
-                                </p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-600">Batch</label>
-                                <p class="text-lg font-semibold text-gray-800">
-                                    <%= authUser.Batch %>
                                 </p>
                             </div>
                             <% if (authUser.Enrollment_No) { %>
@@ -325,9 +326,52 @@
                                             <%= authUser.Contact_no %>
                                         </p>
                                     </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Batch</label>
+                                        <p class="text-lg font-semibold text-gray-800">
+                                            <%= authUser.Batch %>
+                                        </p>
+                                    </div>
                         </div>
+
+                        <!-- Editable Form -->
+                        <form id="profileForm" action="/update_profile" method="POST" enctype="multipart/form-data"
+                            class="space-y-4 hidden">
+                            <input type="hidden" name="Email_ID" value="<%= authUser.Email_ID %>">
+                            <div>
+                                <label class="text-sm font-medium text-gray-600">Name</label>
+                                <input type="text" name="Full_Name" value="<%= authUser.Full_Name %>"
+                                    class="w-full border rounded px-4 py-2">
+                            </div>
+                            <% if (authUser.Enrollment_No) { %>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Enrollment No</label>
+                                    <input type="text" name="Enrollment_No" value="<%= authUser.Enrollment_No %>"
+                                        class="w-full border rounded px-4 py-2">
+                                </div>
+                                <% } %>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Contact</label>
+                                        <input type="text" name="Contact_no" value="<%= authUser.Contact_no %>"
+                                            class="w-full border rounded px-4 py-2">
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Bio (optional)</label>
+                                        <textarea name="Bio" class="w-full border rounded px-4 py-2"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-medium text-gray-600">Upload Image (optional)</label>
+                                        <input type="file" name="Profile_Image" accept="image/*" class="w-full">
+                                    </div>
+                                    <button type="submit"
+                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                                        Update
+                                    </button>
+                        </form>
                     </div>
-                    <div class="p-6 border-t flex justify-between">
+
+                    <!-- Logout Button -->
+                    <div id="logoutWrapper" class="p-6 border-t flex justify-between">
                         <form action="/logout" method="POST" class="w-full">
                             <button type="submit"
                                 class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
@@ -337,11 +381,25 @@
                     </div>
                 </div>
             </div>
-            <%}%>
+            <% } %>
     </footer>
 
 </body>
 <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    if (message) {
+        alert(decodeURIComponent(message));
+    }
+
+
+    
+    const editBtn = document.getElementById("edit_profile");
+    const staticProfile = document.getElementById("staticProfile");
+    const profileForm = document.getElementById("profileForm");
+    const logoutWrapper = document.getElementById("logoutWrapper");
+
     document.addEventListener("DOMContentLoaded", () => {
         // Typing Effect Setup
         const introMessage =
@@ -421,7 +479,7 @@
     <% } %> ;
 
         if (userName != null) {
-            btnLogin.innerText = "Chat-Box"
+            btnLogin.innerText = "Chat"
             btnJoin.innerText = "Support Desk"
             alumniListBtn.style.display = "block";
             mentorshipRequestBtn.style.display = "block";
@@ -436,7 +494,7 @@
             btnJoin.addEventListener('click', () => {
                 window.location.href = "/support_desk"
             })
-            mentorshipRequestBtn.addEventListener('click' , ()=>{
+            mentorshipRequestBtn.addEventListener('click', () => {
                 window.location.href = "/mentorship_page.html";
             })
         }
@@ -483,6 +541,19 @@
                 closeProfileModal();
             }
         });
+    });
+    
+    editBtn.addEventListener("click", () => {
+        staticProfile.classList.add("hidden");
+        profileForm.classList.remove("hidden");
+        logoutWrapper.classList.add("hidden");
+    });
+
+    document.getElementById("closeModal").addEventListener("click", () => {
+        document.getElementById("profileModal").classList.add("hidden");
+        staticProfile.classList.remove("hidden");
+        profileForm.classList.add("hidden");
+        logoutWrapper.classList.remove("hidden");
     });
 </script>
 

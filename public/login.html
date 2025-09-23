@@ -265,6 +265,23 @@
                 opacity: 0;
             }
         }
+        /* Dropdown styling */
+select {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 14px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
+
     </style>
 </head>
 
@@ -298,6 +315,26 @@
                                 <span>Alumni</span>
                             </span>
                         </label>
+                        <label class="role-option">
+                            <input type="radio" name="role" value="faculty" id="facultyRole">
+                            <span class="role-card">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <span>Faculty</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Student Course Selection -->
+                <div class="form-group" id="courseField" style="display: none;">
+                    <label for="course" class="form-label">Select Course</label>
+                    <div class="input-group">
+                        <i class="fas fa-book input-icon"></i>
+                        <select id="course" name="Course">
+                            <option value="">-- Choose Course --</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="M.Tech">M.Tech</option>
+                        </select>
                     </div>
                 </div>
 
@@ -317,6 +354,15 @@
                     <div class="input-group">
                         <i class="fas fa-envelope input-icon"></i>
                         <input type="text" id="email" name="Email_ID" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <!-- Faculty Employee ID Field -->
+                <div class="form-group" id="employeeField" style="display: none;">
+                    <label for="employeeId" class="form-label">Employee ID</label>
+                    <div class="input-group">
+                        <i class="fas fa-id-badge input-icon"></i>
+                        <input type="text" id="employeeId" name="Employee_ID" placeholder="Enter your employee ID">
                     </div>
                 </div>
 
@@ -354,49 +400,64 @@
         <div class="particle" style="left: 75%; width: 14px; height: 14px; animation-duration: 16s;"></div>
         <div class="particle" style="left: 90%; width: 18px; height: 18px; animation-duration: 19s;"></div>
     </div>
+    
+
+    <script src="login-script.js"></script>
     <script>
-    // Toggle visibility based on role selection
     const studentRadio = document.getElementById("studentRole");
     const alumniRadio = document.getElementById("alumniRole");
+    const facultyRadio = document.getElementById("facultyRole");
+
     const enrollmentField = document.getElementById("enrollmentField");
     const emailField = document.getElementById("emailField");
+    const employeeField = document.getElementById("employeeField");
+    const courseField = document.getElementById("courseField");
 
-    studentRadio.addEventListener("change", () => {
-        enrollmentField.style.display = "block";
-        emailField.style.display = "none";
-    });
+    // Show/hide fields based on selected role
+    function updateFields() {
+        const role = document.querySelector('input[name="role"]:checked').value;
 
-    alumniRadio.addEventListener("change", () => {
-        enrollmentField.style.display = "none";
-        emailField.style.display = "block";
-    });
+        enrollmentField.style.display = role === "student" ? "block" : "none";
+        courseField.style.display = role === "student" ? "block" : "none";
+        emailField.style.display = role === "alumni" ? "block" : "none";
+        employeeField.style.display = role === "faculty" ? "block" : "none";
+    }
 
-    // Clear hidden field before submission
+    // Attach change listeners
+    studentRadio.addEventListener("change", updateFields);
+    alumniRadio.addEventListener("change", updateFields);
+    facultyRadio.addEventListener("change", updateFields);
+
+    // Trigger field setup on initial load
+    window.addEventListener("DOMContentLoaded", updateFields);
+
+    // Clear hidden fields before form submission
     document.getElementById("loginForm").addEventListener("submit", function (e) {
         const role = document.querySelector('input[name="role"]:checked').value;
 
-        if (role === "student") {
-            document.getElementById("email").value = "";
-        } else {
+        if (role !== "student") {
             document.getElementById("enrollment").value = "";
+            document.getElementById("course").value = "";
+        }
+        if (role !== "alumni") {
+            document.getElementById("email").value = "";
+        }
+        if (role !== "faculty") {
+            document.getElementById("employeeId").value = "";
         }
     });
 
-    // Optional: Toggle password visibility
+    // Toggle password visibility
     document.getElementById("passwordToggle").addEventListener("click", () => {
         const passwordInput = document.getElementById("password");
         const icon = document.querySelector("#passwordToggle i");
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            icon.classList.replace("fa-eye", "fa-eye-slash");
-        } else {
-            passwordInput.type = "password";
-            icon.classList.replace("fa-eye-slash", "fa-eye");
-        }
+        const isHidden = passwordInput.type === "password";
+
+        passwordInput.type = isHidden ? "text" : "password";
+        icon.classList.replace(isHidden ? "fa-eye" : "fa-eye-slash", isHidden ? "fa-eye-slash" : "fa-eye");
     });
 </script>
 
-    <script src="login-script.js"></script>
 </body>
 
 </html>

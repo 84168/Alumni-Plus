@@ -25,13 +25,16 @@ app.use(bodyParser.json());
 app.set("view engine", 'ejs');
 app.use('/uploads', express.static('uploads'));
 dotenv.config()
+app.use('/uploads', express.static('uploads'));
+
 // const router = express.Router()
 const otpStore = {}
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
+    // destination: (req, file, cb) => {
+    //     cb(null, 'uploads/');
+    // },
+    destination: 'uploads/',
     filename: (req, file, cb) => {
         const uniqueName = Date.now() + path.extname(file.originalname);
         cb(null, uniqueName);
@@ -94,64 +97,64 @@ const transporter = nodemailer.createTransport({
 })
 
 app.post("/send-otp", async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        otpStore[email] = {
+            code: otp,
+            expiresAt: Date.now() + 5 * 60 * 1000
+        };
+        console.log(process.env.EMAIL_USER);
+        console.log(process.env.EMAIL_PASS)
+        // Email content
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Your Alumni Portal OTP Code",
+            text: `Your OTP is ${otp}. It will expire in 5 minutes.`
+        };
+
+        // Send email
+        await transporter.sendMail(mailOptions);
+
+        res.json({ message: "OTP sent to your email" });
+    } catch (error) {
+        console.error("Error sending OTP:", error);
+        res.status(500).json({ message: "Failed to send OTP" });
     }
-
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    otpStore[email] = {
-      code: otp,
-      expiresAt: Date.now() + 5 * 60 * 1000
-    };
-    console.log(process.env.EMAIL_USER);
-    console.log(process.env.EMAIL_PASS)
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Your Alumni Portal OTP Code",
-      text: `Your OTP is ${otp}. It will expire in 5 minutes.`
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
-
-    res.json({ message: "OTP sent to your email" });
-  } catch (error) {
-    console.error("Error sending OTP:", error);
-    res.status(500).json({ message: "Failed to send OTP" });
-  }
 });
 
 // VERIFY OTP 
 app.post("/verify-otp", (req, res) => {
-  const { email, otp } = req.body;
+    const { email, otp } = req.body;
 
-  if (!email || !otp) {
-    return res.status(400).json({ message: "Email and OTP are required" });
-  }
+    if (!email || !otp) {
+        return res.status(400).json({ message: "Email and OTP are required" });
+    }
 
-  const record = otpStore[email];
+    const record = otpStore[email];
 
-  if (!record) {
-    return res.status(400).json({ message: "No OTP found for this email" });
-  }
+    if (!record) {
+        return res.status(400).json({ message: "No OTP found for this email" });
+    }
 
-  if (Date.now() > record.expiresAt) {
+    if (Date.now() > record.expiresAt) {
+        delete otpStore[email];
+        return res.status(400).json({ message: "OTP expired" });
+    }
+
+    if (record.code !== otp) {
+        return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    // OTP is valid
     delete otpStore[email];
-    return res.status(400).json({ message: "OTP expired" });
-  }
-
-  if (record.code !== otp) {
-    return res.status(400).json({ message: "Invalid OTP" });
-  }
-
-  // OTP is valid
-  delete otpStore[email];
-  res.json({ message: "Email verified successfully!" });
+    res.json({ message: "Email verified successfully!" });
 });
 
 app.get("/email_varification", (req, res) => {
@@ -259,47 +262,36 @@ app.post("/job_post", async (req, res) => {
 })
 
 // FOR REGISTRATION 
-app.post("/user_data", async (req, res) => {
+app.post("/user_data", upload.single('User_ID'), async (req, res) => {
     console.log(req.body); // You should see your submitted form data
     let {
         Full_Name,
+        Enrollment_No,
         Contact_no,
         Email_ID,
+        Course,
         role,
         Batch,
-        Password,
+        Password
     } = req.body;
 
+    const User_ID = req.file.path || null;
+
     try {
-        if (role == "alumni") {
-            await db.execute(`
-            INSERT INTO alumni 
-            (Full_Name, Contact_no, Email_ID, Batch, Password) 
-            VALUES (?, ?, ?, ?, ?)`, [
-                Full_Name,
-                Contact_no,
-                Email_ID,
-                Batch,
-                Password
+        await db.execute(`INSERT INTO user (Full_Name,Enrollment_No, Contact_No, Email_ID, Course, Role, Batch, Password, User_ID) VALUES (?,?,?,?,?,?,?,?,?)`, [
 
-            ]);
-            res.sendFile(path.join(__dirname, "./public/login.html"));
-        }
-        if (role = "student") {
-            await db.execute(`
-            INSERT INTO student 
-            (Full_Name, Contact_no, Email_ID, Batch, Password) 
-            VALUES (?, ?, ?, ?, ?)`, [
-                Full_Name,
-                Contact_no,
-                Email_ID,
-                Batch,
-                Password
+            Full_Name,
+            Enrollment_No,
+            Contact_no,
+            Email_ID,
+            Course,
+            role,
+            Batch,
+            Password,
+            User_ID
+        ]);
+        res.redirect("/?message=After verifying your details, we'll send an invite to your registered email. Thank you!");
 
-            ]);
-            res.sendFile(path.join(__dirname, "./public/login.html"));
-        }
-        // res.send("data received");
 
     } catch (err) {
         console.error(err);
@@ -309,19 +301,28 @@ app.post("/user_data", async (req, res) => {
 
 app.post("/login_check", async (req, res) => {
     console.log(req.body);
-    let { role, Email_ID, Enrollment, Password } = req.body;
-
-
+    let { role, Course, Email_ID, Enrollment, Employee_ID, Password } = req.body;
+    // let {role} = req.body;
     try {
 
         let rows;
         if (role == "student") {
+            //let{ Course, Enrollment,Email_ID,Employee_ID, Password} = req.body;
             [rows] = await db.execute("SELECT * FROM student WHERE Enrollment_No = ? AND Password = ?", [Enrollment, Password]);
-
         } else if (role == "alumni") {
+            // let{ Course, Email_ID, Enrollment, Password} = req.body;
             [rows] = await db.execute("SELECT * FROM alumni WHERE Email_ID = ? AND Password = ?", [Email_ID, Password]);
-        } else {
-            return res.status(400).send("Invalid role specified.");
+        } else if (role == "faculty") {
+            // let{ Course, Email_ID, Enrollment, Password} = req.body;
+            [rows] = await db.execute("SELECT * FROM faculty WHERE Employee_ID = ? AND Password = ?", [Employee_ID, Password]);
+            // console.log("role is : ", role, " email is : ", rows[0].Email_ID);
+            if (rows[0].Email_ID == "csealumniplus1952@gmail.com") {
+                role = "admin";
+            }
+            // console.log("updated role is  : ", role)
+        }
+        else {
+            return res.status(400).send("Invalid role specified. this is the error ");
         }
 
         if (!rows || rows.length === 0) {
@@ -339,7 +340,14 @@ app.post("/login_check", async (req, res) => {
         };
 
         console.log("auth user :", req.session.authUser);
-        res.redirect("/");
+
+        if (req.session.authUser.Role == "admin") {
+            await renderAdminPage(req, res);
+
+        } else {
+            res.redirect("/");
+        }
+
 
     } catch (err) {
         console.error(err);
@@ -350,7 +358,7 @@ app.post("/login_check", async (req, res) => {
 app.post("/edit_profile", upload.single('Image'), async (req, res) => {
     const ID = req.session.ID;
 
-    const { Full_Name, Contact_no, Email_ID, Bio } = req.body;
+    const { Full_Name, Contact_no, Email_ID, Bio } = req.body; SS
     const Image = req.file ? req.file.path : null;
 
     try {
@@ -367,13 +375,38 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
 });
 
 // SUPPORT DESK
-app.get('/support_desk' , (req,res) =>{
+app.get('/support_desk', (req, res) => {
     res.sendFile(path.join(__dirname, "./views/support_desk.html")); // it is ejs file
 })
 // MENTORSHIP REQUEST 
-app.get('/mentorship_request' , (req,res) =>{
-    
-})
+app.post('/mentorship_request', async (req, res) => {
+
+    console.log("Mentorship Request Data : ", req.body)
+    const {
+        Enrollment_No,
+        mentorshipCategories,
+        reason,
+        mode,
+        consent
+    } = req.body;
+
+    try {
+        await db.execute(
+            "INSERT INTO mentorship_requests (Enrollment_No, Mentorship_Categories, Reason, Mode, consent) VALUES (?, ?, ?, ?, ?)",
+            [
+                Enrollment_No,
+                mentorshipCategories,
+                reason,
+                mode,
+                consent === 'on' ? 1 : 0
+            ]
+        );
+        res.redirect("/mentorship_page.html");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Something went wrong");
+    }
+});
 // Logout (destroy session and clear cookie)
 app.post('/logout', (req, res, next) => {
 
@@ -384,6 +417,148 @@ app.post('/logout', (req, res, next) => {
 
     });
 });
+
+app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
+    const { Enrollment_No, Request_Title, Request_Description } = req.body;
+    const FilePath = req.file?.path;
+    try {
+        const [rows] = await db.execute("SELECT `No_of_Request` FROM `support_requests` WHERE Enrollment_No = ?", [Enrollment_No]);
+        if (rows.length === 0) {
+            await db.execute("INSERT INTO `support_requests` (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
+                [Enrollment_No, Request_Title, Request_Description, FilePath, 1]);
+            res.redirect("/support_desk.html?message=Support request submitted successfully"); // THIS NEEDS TO BE .EJS
+        } else {
+            res.redirect("/support_desk.html?message=You can only submit one support request at a time");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+app.post("/HandleSupportRequest", async (req, res) => {
+    const { Enrollment_No, action } = req.body;
+
+    console.log("Handling support request for:", Enrollment_No, "Action:", action);
+
+    try {
+        if (action === "approve") {
+            await db.execute("UPDATE support_requests SET Status = 'Verified' WHERE Enrollment_No = ?", [Enrollment_No]);
+        } else if (action === "reject") {
+            await db.execute("UPDATE support_requests SET Status = 'Rejected' WHERE Enrollment_No = ?", [Enrollment_No]);
+        }
+
+        await renderAdminPage(req, res);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error handling support request.");
+    }
+});
+
+app.post("/HandleUserRequest", async (req, res) => {
+    const { ID, action } = req.body;
+    console.log("handele user request : ", req.body);
+
+    if (!ID || !action) {
+        return res.status(400).send("Missing required fields.");
+    }
+    try {
+        // Fetch user details using the provided ID
+        const [rows] = await db.execute("SELECT * FROM user WHERE ID = ?", [ID]);
+        const user = rows[0];
+        console.log("user is : ", user);
+
+        if (rows.length === 0) {
+            return res.status(404).send("User not found.");
+        }
+
+        if (action === "approve") {
+
+           await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
+            if(user.Role === "Student"){
+                await db.execute(
+                `INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    user.Enrollment_No,
+                    user.Full_Name,
+                    user.Course,
+                    user.Contact_No,
+                    user.Email_ID,
+                    user.Batch,
+                    user.Password
+                ]
+            );
+            }else if(user.Role === "Alumni"){
+                await db.execute(
+                `INSERT INTO alumni (Full_Name, Contact_No, Course,  Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?)`,
+                [
+                    user.Full_Name,
+                    user.Contact_No,
+                    user.Course,
+                    user.Email_ID,
+                    user.Batch,
+                    user.Password
+                ]
+            );
+            }
+            // Send approval email
+            await transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: user.Email_ID,
+                subject: "Application Approved - Welcome to Our Educational Platform",
+                html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="color: #2c5aa0; margin-bottom: 10px;">Application Approved</h1>
+                <div style="width: 50px; height: 3px; background-color: #2c5aa0; margin: 0 auto;"></div>
+            </div>
+            
+            <p>Dear ${user.Full_Name},</p>
+            
+            <p>We are pleased to inform you that your application to join our educational platform as a <strong>${user.Role}</strong> has been <span style="color: #28a745; font-weight: bold;">approved</span>.</p>
+            
+            <div style="background-color: #f8f9fa; padding: 20px; border-left: 4px solid #2c5aa0; margin: 20px 0;">
+                <h3 style="color: #2c5aa0; margin-top: 0;">Next Steps:</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Log in to your account using your registered credentials</li>
+                    <li>Complete your profile setup if not already done</li>
+                    <li>Review the platform guidelines and policies</li>
+                    <li>Explore the available resources and tools</li>
+                </ul>
+            </div>
+            
+            <p>As a ${user.Role}, you will have access to:</p>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li>Comprehensive learning resources</li>
+                <li>Interactive educational tools</li>
+                <li>Community forums and discussions</li>
+                <li>Progress tracking and analytics</li>
+            </ul>
+            
+            
+            <p>We look forward to supporting your educational journey with us.</p>
+            
+            <p>Best regards,<br>
+            <strong>The Academic Team</strong><br>
+            Your Educational Platform</p>
+            
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666; font-size: 12px;">
+                <p>This is an automated message. Please do not reply to this email.</p>
+            </div>
+        </div>
+    `
+            });
+
+           
+        } else if (action === "reject") {
+            await db.execute("UPDATE user SET Status = 'Rejected' WHERE ID = ?", [ID]);
+            
+        }
+        await renderAdminPage(req, res);
+    } catch (err) {
+        console.error(err);
+    }
+
+})
 
 app.post("/delete/:id", async (req, res) => {
     const id = req.params.id;
@@ -398,3 +573,35 @@ app.get("/chat_box", (req, res) => {
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);
 })
+
+// HELPER FUNCTION FOR SUPPORT REQUEST ::::
+async function renderAdminPage(req, res) {
+    try {
+        const [countUserVerification] = await db.execute("SELECT COUNT(*) AS `Pending_User_Count` FROM `user` WHERE Status = 'Pending';");
+        const [countSupport] = await db.execute("SELECT COUNT(*) AS `pending_count` FROM `support_requests` WHERE Status = 'Pending';");
+        const [countMentorshipReq] = await db.execute("SELECT COUNT(*) AS `pendingMentorship_count` FROM `mentorship_requests` WHERE status = 'Pending';");
+        const [row1] = await db.execute("SELECT * FROM user WHERE Status = 'Pending';");
+        const [rows] = await db.execute("SELECT s.*, sr.* FROM student s JOIN support_requests sr ON s.Enrollment_No = sr.Enrollment_No WHERE sr.Status = 'Pending';");
+        const [mentorshipRequests] = await db.execute(`SELECT s.Full_Name, s.Email_ID, s.Contact_no, s.Enrollment_No,mr.Mentorship_Categories, mr.Reason, mr.Mode, mr.status FROM student s JOIN mentorship_requests mr ON s.Enrollment_No = mr.Enrollment_No`);
+
+        req.session.Count = {
+            countSupport: countSupport[0].pending_count,
+            countMentorshipReq: countMentorshipReq[0].pendingMentorship_count,
+            countUserVerification: countUserVerification[0].Pending_User_Count
+        };
+
+        console.log("User table data ", row1);
+
+        res.render(path.join(__dirname, "./views/admin_page"), {
+            supportCount: req.session.Count.countSupport || 0,
+            mentorshipCount: req.session.Count.countMentorshipReq || 0,
+            countUserVerification: req.session.Count.countUserVerification || 0,
+            rows,
+            row1,
+            mentorshipRequests
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error loading admin page.");
+    }
+}

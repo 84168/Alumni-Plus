@@ -295,6 +295,21 @@
                 opacity: 0;
             }
         }
+
+        select#course {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -310,7 +325,33 @@
                 <p>Join our educational community</p>
             </div>
 
-            <form id="registerForm" action="/user_data" method="post" class="form" novalidate>
+            <form id="registerForm" action="/user_data" method="post" class="form" novalidate
+                enctype="multipart/form-data">
+
+
+
+                <!-- Role Selection Not Stored in Alumni Table Because in alumni table only alumni will be Present -->
+                <div class="role-selection">
+                    <h3>I am a:</h3>
+                    <div class="role-options">
+                        <label class="role-option">
+                            <input type="radio" name="role" value="student" checked>
+                            <span class="role-card">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Student</span>
+                            </span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role" value="alumni">
+                            <span class="role-card">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Alumni</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+
 
                 <!-- Full Name Field -->
                 <div class="form-group">
@@ -321,6 +362,17 @@
                             autocomplete="name">
                     </div>
                     <span class="error-message" id="fullNameError"></span>
+                </div>
+
+                <!-- Enrollment Number Field -->
+                <div class="form-group" id="enrollmentNo">
+                    <label for="enrollmentNo" class="form-label">Enrollment Number</label>
+                    <div class="input-group">
+                        <i class="fas fa-id-badge input-icon"></i>
+                        <input type="text"  name="Enrollment_No"
+                            placeholder="Enter your enrollment number" required>
+                    </div>
+                    <span class="error-message" id="enrollmentNoError"></span>
                 </div>
 
 
@@ -347,26 +399,21 @@
                     <span class="error-message" id="emailError"></span>
                 </div>
 
-                <!-- Role Selection Not Stored in Alumni Table Because in alumni table only alumni will be Present -->
-                <div class="role-selection">
-                    <h3>I am a:</h3>
-                    <div class="role-options">
-                        <label class="role-option">
-                            <input type="radio" name="role" value="student" checked>
-                            <span class="role-card">
-                                <i class="fas fa-user-graduate"></i>
-                                <span>Student</span>
-                            </span>
-                        </label>
-                        <label class="role-option">
-                            <input type="radio" name="role" value="alumni">
-                            <span class="role-card">
-                                <i class="fas fa-user-tie"></i>
-                                <span>Alumni</span>
-                            </span>
-                        </label>
+
+                <div class="form-group">
+                    <label for="course" class="form-label">Course</label>
+                    <div class="input-group">
+                        <i class="fas fa-book input-icon"></i>
+                        <select name="Course" id="course" required style="padding-left: 25px;">
+                            <option value="" disabled selected>Select Course</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="M.Tech">M.Tech</option>
+                        </select>
                     </div>
                 </div>
+
+
+
 
 
                 <!-- Batch Year -->
@@ -411,16 +458,16 @@
                     <span class="error-message" id="confirmPasswordError"></span>
                 </div>
 
-                <!-- Terms and Conditions -->
-                <!-- <div class="form-group">
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="terms" id="termsAccepted" required>
-                        <span class="checkmark"></span>
-                        I agree to the <a href="#" class="terms-link">Terms and Conditions</a> and <a href="#"
-                            class="privacy-link">Privacy Policy</a>
-                    </label>
-                    <span class="error-message" id="termsError"></span>
-                </div> -->
+                <!-- College ID Upload Field -->
+                <div class="form-group" id="isUploadGroup">
+                    <label for="collegeId" class="form-label" id="idLabel">Upload College ID</label>
+                    <div class="input-group">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="file" id="collegeId" name="User_ID" accept=".jpg,.jpeg,.png,.pdf" required
+                            style="padding-left: 35px;">
+                    </div>
+                    <span class="error-message" id="collegeIdError"></span>
+                </div>
 
                 <!-- Register Button -->
                 <button type="submit" class="register-btn" id="register-btn">
@@ -448,6 +495,41 @@
 
 
     <script src="register-script.js"></script>
+    <script>
+
+        const roleInputs = document.querySelectorAll('input[name="role"]');
+        const idLabel = document.getElementById('idLabel');
+        const idUploadGroup = document.getElementById('isUploadGroup');
+        const enrollmentField = document.getElementById('enrollmentNo');
+
+        function updateIDField() {
+            const selectedRole = document.querySelector('input[name="role"]:checked').value;
+            const enrollmentField = document.getElementById('enrollmentNo');
+
+            if (selectedRole === "student") {
+                idLabel.textContent = "Upload College ID";
+                idUploadGroup.style.display = "block";
+                enrollmentField.style.display = "block";
+            } else if (selectedRole === "alumni") {
+                idLabel.textContent = "Upload ID"; 
+                idUploadGroup.style.display = "block";
+                enrollmentField.style.display = "none";
+            } else {
+                idUploadGroup.style.display = "none";
+                enrollmentField.style.display = "none";
+            }
+        }
+
+        // Add event listeners to role inputs
+        roleInputs.forEach(input => {
+            input.addEventListener('change', updateIDField);
+        });
+
+        // Initial setup - call the function to set initial state
+        updateIDField();
+
+
+    </script>
 </body>
 
 </html>
