@@ -25,7 +25,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 25%;
             background: #2d3748;
             color: white;
             padding: 0;
@@ -80,10 +80,20 @@
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            padding: 24px;
-        }
 
+            padding: 24px;
+             
+        }
+ .fix{
+    /* background-color: red; */
+   display: flex;
+   flex-direction: column;
+   width:100%;
+   /* margin: auto; */
+ }
+ .b{
+    display: block;
+ }
         .header {
             background: white;
             padding: 16px 24px;
@@ -385,7 +395,8 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content">
+         <div class="fix">
+        <div class="b main-content">
             <div class="header">
                 <h1 id="page-title">Dashboard Overview</h1>
                 <div>
@@ -467,7 +478,8 @@
                                         <button class="btn btn-success btn-sm" style="background-color: cornflowerblue;"
                                             onclick="openUserCard('modal-<%= idx %>')">View Request</button>
 
-                                        <form action="/HandleUserRequest" method="post" onsubmit="return setAction(this)">
+                                        <form action="/HandleUserRequest" method="post"
+                                            onsubmit="return setAction(this)">
                                             <input type="hidden" name="ID" value="<%= r.ID %>">
                                             <input type="hidden" name="action" value="">
                                             <!-- Will be set dynamically -->
@@ -512,10 +524,6 @@
                                     </div>
                                 </div>
                                 <% }) %>
-
-
-
-
                         </tbody>
                     </table>
                 </div>
@@ -553,7 +561,7 @@
                                     <td><span class="status-badge status-pending">Pending</span></td>
                                     <td class="action-buttons">
                                         <button class="btn btn-success btn-sm" style="background-color: cornflowerblue;"
-                                            onclick="openRequestCard('modal-<%= index %>')">View Request</button>
+                                            onclick="openRequestCard('Need_modal-<%= index %>')">View Request</button>
 
                                         <form action="/HandleSupportRequest" method="post"
                                             onsubmit="return setAction(this)">
@@ -568,12 +576,13 @@
                                         </form>
                                     </td>
                                 </tr>
+                                
 
                                 <!-- Individual Modal for Each Request -->
-                                <div id="modal-<%= index %>" class="modal" style="display:none;">
+                                <div id="Need_modal-<%= index %>" class="modal" style="display:none;">
                                     <div class="modal-content">
                                         <span class="close"
-                                            onclick="closeRequestCard('modal-<%= index %>')">&times;</span>
+                                            onclick="closeRequestCard('Need_modal-<%= index %>')">&times;</span>
                                         <h2>Request Information</h2>
                                         <p><strong>Name:</strong>
                                             <%= r.Full_Name %>
@@ -596,21 +605,20 @@
             </div>
 
             <!-- Mentorship Section -->
-            <div id="mentorship-section">
+            <div id="mentorship-section" class="hidden">
                 <div class="content-section">
                     <div class="section-header">
                         <h3>Mentorship Requests</h3>
-                        <button class="btn btn-primary" onclick="showModal('match-mentor')">Auto-Match</button>
+                        <button class="btn btn-primary" id="Schedule_Form">Schedule Session</button>
+                        <button class="btn btn-primary" id="Cancel_Form">Cancel</button>
                     </div>
-                    <table class="table">
+                    <table class="table" id="table">
                         <thead>
                             <tr>
                                 <th>Student</th>
-                                <th>Email</th>
-                                <th>Contact</th>
                                 <th>Categories</th>
                                 <th>Reason</th>
-                                <!-- <th>Status</th> -->
+                                <th>Preffered Mode</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -621,22 +629,15 @@
                                         <%= req.Full_Name %>
                                     </td>
                                     <td>
-                                        <%= req.Email_ID %>
-                                    </td>
-                                    <td>
-                                        <%= req.Contact_no %>
-                                    </td>
-                                    <td>
                                         <%= req.Mentorship_Categories %>
                                     </td>
                                     <td>
                                         <%= req.Reason %>
                                     </td>
-                                    <!-- <td>
-                            <span class="status-badge status-<%= req.status.toLowerCase() %>">
-                                <%= req.Status %>
-                            </span>
-                        </td> -->
+                                    <td>
+                                        <%= req.Mode %>
+                                    </td>
+
                                     <td class="action-buttons">
                                         <button class="btn btn-primary btn-sm"
                                             onclick="scheduleSession('<%= req.Enrollment_No %>')">📅 Schedule</button>
@@ -645,73 +646,152 @@
                                 <% }) %>
                         </tbody>
                     </table>
+
+                    <!-- SESSION FORM -->
+                    <form id="sessionForm" action="/schedule-session" method="POST">
+                        <div class="form-grid"> <!-- Session Title -->
+                            <div class="form-group form-group-full"> <label for="sessionTitle">Session Title <span
+                                        class="required">*</span></label> <input type="text" id="sessionTitle"
+                                    name="sessionTitle" class="form-control"
+                                    placeholder="e.g., Career Guidance in Software Development" required> </div>
+                            <!-- Mentor/Alumni -->
+                            <div class="form-group"> <label for="mentorId">Mentor/Alumni <span class="required">*</span>
+                                </label>
+                                <input type="text" name="Alumni">
+                            </div>
+
+
+                            <!-- Session Description -->
+                            <div class="form-group form-group-full">
+                                <label for="sessionDescription">Session Description <span
+                                        class="required">*</span></label>
+                                <textarea id="sessionDescription" name="Description" class="form-control" rows="4"
+                                    placeholder="Provide a brief overview of the session, topics to be covered, and expected outcomes."
+                                    required></textarea>
+                            </div>
+                            <!-- Session Date -->
+                            <div class="form-group">
+                                <label for="sessionDate">Session Date <span class="required">*</span></label>
+                                <input type="date" id="sessionDate" name="Date" class="form-control" required>
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="form-group">
+                                <label for="sessionDuration">Duration
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" id="sessionDuration" name="Duration" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Mode -->
+                        <div class="form-group form-group-full"> <label>Session Mode <span
+                                    class="required">*</span></label>
+                            <div class="radio-group">
+                                <div class="radio-item"> <input type="radio" id="online" name="mode" value="Online"
+                                        required onchange="toggleVenue()"> <label for="online">🌐 Online</label>
+                                </div>
+                                <div class="radio-item"> <input type="radio" id="inPerson" name="mode" value="Offline"
+                                        required onchange="toggleVenue()"> <label for="inPerson">🏢 In-Person</label>
+                                </div>
+                                <div class="radio-item"> </div>
+                            </div>
+                        </div> <!-- Meeting Link -->
+                        <div class="form-group venue-toggle" id="meetingLinkGroup"> <label for="meetingLink">Meeting
+                                Link/ID</label> <input type="url" id="meetingLink" name="meetingLink"
+                                class="form-control" placeholder="https://zoom.us/j/123456789 or Meeting ID"> </div>
+                        <!-- Venue (for in-person/hybrid) -->
+                        <div class="form-group venue-toggle" id="physicalVenue"> <label
+                                for="venue">Venue/Location</label> <input type="text" id="venue" name="venue"
+                                class="form-control" placeholder="e.g., Conference Room A, Building 2, College Campus">
+                        </div>
+
+                        <!-- Target Audience -->
+                        <div class="form-group"> <label for="targetAudience">Target Audience</label> <select
+                                id="targetAudience" name="targetAudience" class="form-control">
+                                <option value="all">All Students</option>
+                                <option value="first-year">First Year Students</option>
+                                <option value="second-year">Second Year Students</option>
+                                <option value="third-year">Third Year Students</option>
+                                <option value="final-year">Final Year Students</option>
+                                <option value="postgraduate">Postgraduate Students</option>
+                                <option value="recent-graduates">Recent Graduates</option>
+                            </select> </div> <!-- Registration Deadline -->
+                        <div class="form-group"> <label for="registrationDeadline">Registration Deadline</label>
+                            <input type="datetime-local" id="registrationDeadline" name="registrationDeadline"
+                                class="form-control">
+                        </div>
+
+                        <div class="btn-group"><button type="submit" class="btn btn-primary">📅 Schedule
+                                Session</button> </div>
+                    </form>
                 </div>
             </div>
 
+        </div>
 
-            <!-- Announcements Section -->
-            <div id="announcements-section" class="hidden">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Post Announcements</h3>
-                        <button class="btn btn-primary" onclick="showModal('announcement')">Create Announcement</button>
+        <!-- Announcements Section -->
+        <div id="announcements-section" class="b hidden">
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Post Announcements</h3>
+                    <button class="btn btn-primary" onclick="showModal('announcement')">Create Announcement</button>
+                </div>
+                <div style="padding: 24px;">
+                    <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px;">
+                        <h4>Alumni Meetup 2025</h4>
+                        <p style="color: #718096; margin: 8px 0;">Posted on Sep 10, 2025 • Visible to: All Users</p>
+                        <p>Join us for the annual CSE Alumni Meetup on October 15th...</p>
+                        <div style="margin-top: 12px;">
+                            <button class="btn btn-primary btn-sm">Edit</button>
+                            <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
+                        </div>
                     </div>
-                    <div style="padding: 24px;">
-                        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px;">
-                            <h4>Alumni Meetup 2025</h4>
-                            <p style="color: #718096; margin: 8px 0;">Posted on Sep 10, 2025 • Visible to: All Users</p>
-                            <p>Join us for the annual CSE Alumni Meetup on October 15th...</p>
+                    <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
+                        <h4>New Mentorship Program</h4>
+                        <p style="color: #718096; margin: 8px 0;">Posted on Sep 8, 2025 • Visible to: Students Only
+                        </p>
+                        <p>We're launching a new AI/ML mentorship program...</p>
+                        <div style="margin-top: 12px;">
+                            <button class="btn btn-primary btn-sm">Edit</button>
+                            <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Sessions Section -->
+        <div id="sessions-section" class="hidden">
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Mentorship Sessions</h3>
+                    <button class="btn btn-primary" onclick="showModal('create-session')">Schedule Session</button>
+                </div>
+                <div style="padding: 24px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+                        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
+                            <h4>Machine Learning Basics</h4>
+                            <p><strong>Mentor:</strong> Dr. Sarah Connor</p>
+                            <p><strong>Students:</strong> 5 enrolled</p>
+                            <p><strong>Date:</strong> Sep 20, 2025 at 2:00 PM</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-approved">Scheduled</span>
+                            </p>
                             <div style="margin-top: 12px;">
-                                <button class="btn btn-primary btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
+                                <button class="btn btn-primary btn-sm">View Details</button>
+                                <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Cancel</button>
                             </div>
                         </div>
                         <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                            <h4>New Mentorship Program</h4>
-                            <p style="color: #718096; margin: 8px 0;">Posted on Sep 8, 2025 • Visible to: Students Only
-                            </p>
-                            <p>We're launching a new AI/ML mentorship program...</p>
+                            <h4>Career Guidance Workshop</h4>
+                            <p><strong>Mentor:</strong> John Matrix</p>
+                            <p><strong>Students:</strong> 8 enrolled</p>
+                            <p><strong>Date:</strong> Sep 22, 2025 at 3:00 PM</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-pending">Pending</span></p>
                             <div style="margin-top: 12px;">
-                                <button class="btn btn-primary btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sessions Section -->
-            <div id="sessions-section" class="hidden">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Mentorship Sessions</h3>
-                        <button class="btn btn-primary" onclick="showModal('create-session')">Schedule Session</button>
-                    </div>
-                    <div style="padding: 24px;">
-                        <div
-                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
-                            <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                                <h4>Machine Learning Basics</h4>
-                                <p><strong>Mentor:</strong> Dr. Sarah Connor</p>
-                                <p><strong>Students:</strong> 5 enrolled</p>
-                                <p><strong>Date:</strong> Sep 20, 2025 at 2:00 PM</p>
-                                <p><strong>Status:</strong> <span class="status-badge status-approved">Scheduled</span>
-                                </p>
-                                <div style="margin-top: 12px;">
-                                    <button class="btn btn-primary btn-sm">View Details</button>
-                                    <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Cancel</button>
-                                </div>
-                            </div>
-                            <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                                <h4>Career Guidance Workshop</h4>
-                                <p><strong>Mentor:</strong> John Matrix</p>
-                                <p><strong>Students:</strong> 8 enrolled</p>
-                                <p><strong>Date:</strong> Sep 22, 2025 at 3:00 PM</p>
-                                <p><strong>Status:</strong> <span class="status-badge status-pending">Pending</span></p>
-                                <div style="margin-top: 12px;">
-                                    <button class="btn btn-primary btn-sm">View Details</button>
-                                    <button class="btn btn-success btn-sm" style="margin-left: 8px;">Approve</button>
-                                </div>
+                                <button class="btn btn-primary btn-sm">View Details</button>
+                                <button class="btn btn-success btn-sm" style="margin-left: 8px;">Approve</button>
                             </div>
                         </div>
                     </div>
@@ -720,41 +800,29 @@
         </div>
     </div>
 
-    <!-- Modals -->
-    <!-- <div id="announcement-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Create Announcement</h3>
-                <button class="close" onclick="closeModal('announcement-modal')">&times;</button>
-            </div>
-            <form>
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" placeholder="Announcement title">
-                </div>
-                <div class="form-group">
-                    <label>Content</label>
-                    <textarea class="form-control" placeholder="Write your announcement..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Visibility</label>
-                    <select class="form-control">
-                        <option>All Users</option>
-                        <option>Alumni Only</option>
-                        <option>Students Only</option>
-                    </select>
-                </div>
-                <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" class="btn" onclick="closeModal('announcement-modal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary" onclick="createAnnouncement()">Post
-                        Announcement</button>
-                </div>
-            </form>
-        </div>
-    </div> -->
 
     <script>
+        const form = document.getElementById("sessionForm");
+        const Schedule_Form = document.getElementById("Schedule_Form");
+        const table = document.getElementById("table");
+        const Cancel_Form = document.getElementById("Cancel_Form");
 
+        form.style.display = "none";
+        Cancel_Form.style.display = "none";
+
+        Schedule_Form.addEventListener('click', () => {
+            Schedule_Form.style.display = "none";
+            form.style.display = "block";
+            table.style.display = "none";
+            Cancel_Form.style.display = "block";
+        })
+
+        Cancel_Form.addEventListener('click', () => {
+            Schedule_Form.style.display = "block";
+            form.style.display = "none";
+            table.style.display = "block";
+            Cancel_Form.style.display = "none";
+        })
         function openUserCard(id) {
             document.getElementById(id).style.display = "block";
         }
@@ -764,7 +832,6 @@
         function openRequestCard(id) {
             document.getElementById(id).style.display = "block";
         }
-
         function closeRequestCard(id) {
             document.getElementById(id).style.display = "none";
         }
@@ -817,6 +884,68 @@
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const onlineRadio = document.getElementById("online");
+            const inPersonRadio = document.getElementById("inPerson");
+            const meetingLinkGroup = document.getElementById("meetingLinkGroup");
+            const physicalVenue = document.getElementById("physicalVenue");
+            const addressGroup = document.getElementById("addressGroup");
+
+            const startTimeInput = document.getElementById("startTime");
+            const endTimeInput = document.getElementById("endTime");
+            const durationInfo = document.querySelector(".duration-info");
+
+            function toggleVenue() {
+                if (onlineRadio.checked) {
+                    meetingLinkGroup.style.display = "block";
+                    physicalVenue.style.display = "none";
+                    addressGroup.style.display = "none";
+                } else if (inPersonRadio.checked) {
+                    meetingLinkGroup.style.display = "none";
+                    physicalVenue.style.display = "block";
+                    addressGroup.style.display = "block";
+                }
+            }
+
+            function calculateDuration() {
+                const start = startTimeInput.value;
+                const end = endTimeInput.value;
+
+                if (start && end) {
+                    const startDate = new Date(`1970-01-01T${start}:00`);
+                    const endDate = new Date(`1970-01-01T${end}:00`);
+                    const diff = (endDate - startDate) / (1000 * 60); // minutes
+
+                    if (diff > 0) {
+                        const hours = Math.floor(diff / 60);
+                        const minutes = diff % 60;
+                        durationInfo.textContent = `Duration: ${hours}h ${minutes}m`;
+                    } else {
+                        durationInfo.textContent = "End time must be after start time";
+                    }
+                } else {
+                    durationInfo.textContent = "Duration will be calculated automatically";
+                }
+            }
+
+            function resetForm() {
+                document.getElementById("sessionForm").reset();
+                toggleVenue();
+                durationInfo.textContent = "Duration will be calculated automatically";
+            }
+
+            // Event listeners
+            onlineRadio.addEventListener("change", toggleVenue);
+            inPersonRadio.addEventListener("change", toggleVenue);
+            startTimeInput.addEventListener("change", calculateDuration);
+            endTimeInput.addEventListener("change", calculateDuration);
+
+            // Initial setup
+            toggleVenue();
+        });
 
 
     </script>

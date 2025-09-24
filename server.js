@@ -560,6 +560,45 @@ app.post("/HandleUserRequest", async (req, res) => {
 
 })
 
+app.post("/schedule-session", async (req, res) => {
+    const {
+        sessionTitle,
+        Alumni,
+        Description,
+        Date,
+        Duration,
+        mode,
+        meetingLink,
+        venue,
+        targetAudience,
+        registrationDeadline,
+        
+    } = req.body;
+
+    console.log(req.body);
+
+    try {
+        await db.execute(
+            "INSERT INTO mentorship_session (Alumni, Session_Date, Duration, Mode, Topic, Description, Target_Audience, Registration_Deadline, Meeting_Link, Venue) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+                Alumni,
+                Date,
+                Duration,
+                mode,
+                sessionTitle,
+                Description,
+                targetAudience,
+                registrationDeadline,
+                meetingLink,
+                venue
+            ]
+        );
+        await renderAdminPage(req, res)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error scheduling session");
+    }
+});
 app.post("/delete/:id", async (req, res) => {
     const id = req.params.id;
     await db.execute('DELETE FROM `job and internship` WHERE ID = ?', [id]);
