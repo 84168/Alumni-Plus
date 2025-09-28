@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSE Alumni Admin Dashboard</title>
+    
     <style>
         * {
             margin: 0;
@@ -82,18 +83,21 @@
         .main-content {
 
             padding: 24px;
-             
+
         }
- .fix{
-    /* background-color: red; */
-   display: flex;
-   flex-direction: column;
-   width:100%;
-   /* margin: auto; */
- }
- .b{
-    display: block;
- }
+
+        .fix {
+            /* background-color: red; */
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            /* margin: auto; */
+        }
+
+        .b {
+            display: block;
+        }
+
         .header {
             background: white;
             padding: 16px 24px;
@@ -356,6 +360,122 @@
             font-weight: 500;
             color: #2c3e50;
         }
+
+        #announcement-modal .modal-content form {
+            margin-top: 50px;
+            margin-bottom: 60px;
+            height: 54vh;
+            /* 54% of the viewport height */
+            overflow-y: auto;
+            /* enables scrolling if content exceeds height */
+            padding-right: 10px;
+            /* optional: prevents scrollbar from overlapping content */
+
+        }
+        
+
+/* Main Container */
+.fix {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.fix .b.main-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header - Vertical Linear Layout */
+.fix .header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Page Title */
+.fix .header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.2;
+    order: 1;
+}
+
+/* Welcome Message */
+.fix .header > div {
+    margin: 0;
+    order: 2;
+}
+
+.fix .header > div span {
+    font-size: 16px;
+    color: #4a5568;
+    font-weight: 500;
+    display: block;
+}
+
+/* Content Sections */
+.fix .main-content > div:not(.header) {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Section containers */
+[id$="-section"] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 120px);
+}
+
+[id$="-section"].hidden {
+    display: none !important;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .fix .header {
+        padding: 32px 40px;
+        gap: 16px;
+    }
+    
+    .fix .header h1 {
+        font-size: 32px;
+    }
+    
+    .fix .header > div span {
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .fix .header {
+        padding: 40px 48px;
+        gap: 20px;
+    }
+}
+
+/* Optional: Add subtle animation for content changes */
+.fix .header h1 {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Ensure proper spacing for dynamic content */
+.fix .header {
+    min-height: 80px;
+    justify-content: center;
+}
+
     </style>
 </head>
 
@@ -395,413 +515,563 @@
         </div>
 
         <!-- Main Content -->
-         <div class="fix">
-        <div class="b main-content">
-            <div class="header">
-                <h1 id="page-title">Dashboard Overview</h1>
-                <div>
-                    <span>Welcome, Admin</span>
+        <div class="fix">
+            <div class="b main-content">
+                <div class="header">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <div>
+                        <span>Welcome, Admin</span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Overview Section -->
-            <div id="overview-section">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">
-                            <%=countUserVerification%>
+                <!-- Overview Section -->
+                <div id="overview-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">
+                                <%=countUserVerification%>
+                            </div>
+                            <div class="stat-label">Pending User Verifications</div>
                         </div>
-                        <div class="stat-label">Pending User Verifications</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">
-                            <%=supportCount%>
+                        <div class="stat-card">
+                            <div class="stat-number">
+                                <%=supportCount%>
+                            </div>
+                            <div class="stat-label">Student Needs to Review</div>
                         </div>
-                        <div class="stat-label">Student Needs to Review</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">
-                            <%=mentorshipCount%>
+                        <div class="stat-card">
+                            <div class="stat-number">
+                                <%=mentorshipCount%>
+                            </div>
+                            <div class="stat-label">Mentorship Requests</div>
                         </div>
-                        <div class="stat-label">Mentorship Requests</div>
-                    </div>
-                    <!-- <div class="stat-card">
+                        <!-- <div class="stat-card">
                         <div class="stat-number">6</div>
                         <div class="stat-label">Active Sessions</div>
                     </div> -->
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div style="padding: 24px;">
+                            <p>• New alumni verification request from John Doe (Class of 2020)</p>
+                            <p>• Student Alice Brown requested internship guidance</p>
+                            <p>• Mentorship session scheduled between Emma Watson and John Matrix</p>
+                            <p>• 3 new student registrations pending approval</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Recent Activity</h3>
-                    </div>
-                    <div style="padding: 24px;">
-                        <p>• New alumni verification request from John Doe (Class of 2020)</p>
-                        <p>• Student Alice Brown requested internship guidance</p>
-                        <p>• Mentorship session scheduled between Emma Watson and John Matrix</p>
-                        <p>• 3 new student registrations pending approval</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Verification Section -->
-            <div id="user-verification-section" class="hidden">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>User Verification Requests</h3>
-                        <button class="btn btn-primary" onclick="showModal('bulk-verify')">Bulk Actions</button>
-                    </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Requested For Role</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% row1.forEach((r , idx)=> { %>
+                <!-- User Verification Section -->
+                <div id="user-verification-section" class="hidden">
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h3>User Verification Requests</h3>
+                            <!-- <button class="btn btn-primary" onclick="showModal('bulk-verify')">Bulk Actions</button> -->
+                        </div>
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <%=r.Full_Name%>
-                                    </td>
-                                    <td>
-                                        <%=r.Role%>
-                                    </td>
-                                    <td>
-                                        <%=r.Email_ID%>
-                                    </td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-success btn-sm" style="background-color: cornflowerblue;"
-                                            onclick="openUserCard('modal-<%= idx %>')">View Request</button>
-
-                                        <form action="/HandleUserRequest" method="post"
-                                            onsubmit="return setAction(this)">
-                                            <input type="hidden" name="ID" value="<%= r.ID %>">
-                                            <input type="hidden" name="action" value="">
-                                            <!-- Will be set dynamically -->
-
-                                            <button type="submit" class="btn btn-success btn-sm"
-                                                onclick="this.form.action.value='approve'">✓ Approve</button>
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="this.form.action.value='reject'">✗ Reject</button>
-                                        </form>
-                                    </td>
+                                    <th>Name</th>
+                                    <th>Requested For Role</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                <% row1.forEach((r , idx)=> { %>
+                                    <tr>
+                                        <td>
+                                            <%=r.Full_Name%>
+                                        </td>
+                                        <td>
+                                            <%=r.Role%>
+                                        </td>
+                                        <td>
+                                            <%=r.Email_ID%>
+                                        </td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td class="action-buttons">
+                                            <button class="btn btn-success btn-sm"
+                                                style="background-color: cornflowerblue;"
+                                                onclick="openUserCard('modal-<%= idx %>')">View Request</button>
+
+                                            <form action="/HandleUserRequest" method="post"
+                                                onsubmit="return setAction(this)">
+                                                <input type="hidden" name="ID" value="<%= r.ID %>">
+                                                <input type="hidden" name="action" value="">
+                                                <!-- Will be set dynamically -->
+
+                                                <button type="submit" class="btn btn-success btn-sm"
+                                                    onclick="this.form.action.value='approve'">✓ Approve</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="this.form.action.value='reject'">✗ Reject</button>
+                                            </form>
+                                        </td>
+                                    </tr>
 
 
-                                <!-- Individual Modal for Each Request -->
-                                <div id="modal-<%= idx %>" class="modal" style="display:none;">
-                                    <div class="modal-content">
-                                        <span class="close" onclick="closeUserCard('modal-<%= idx %>')">&times;</span>
-                                        <h2>Request Information</h2>
-                                        <p><strong>Name:</strong>
-                                            <%= r.Full_Name %>
-                                        </p>
-                                        <p><strong>Email:</strong>
-                                            <%= r.Email_ID %>
-                                        </p>
-                                        <p><strong>Contact:</strong>
-                                            <%= r.Contact_No %>
-                                        </p>
-                                        <p><strong>Requested For Role:</strong>
-                                            <%= r.Role %>
-                                        </p>
-                                        <p><strong>Course:</strong>
-                                            <%= r.Course %>
-                                        </p>
-                                        <p><strong>User File:</strong>
-                                            <% if (r.User_ID) { %>
-                                                <a href="/<%= r.User_ID %>" target="_blank">View Uploaded File</a>
-                                                <% } else { %>
-                                                    <span>No file uploaded</span>
-                                                    <% } %>
-                                        </p>
+                                    <!-- Individual Modal for Each Request -->
+                                    <div id="modal-<%= idx %>" class="modal" style="display:none;">
+                                        <div class="modal-content">
+                                            <span class="close"
+                                                onclick="closeUserCard('modal-<%= idx %>')">&times;</span>
+                                            <h2>Request Information</h2>
+                                            <p><strong>Name:</strong>
+                                                <%= r.Full_Name %>
+                                            </p>
+                                            <p><strong>Email:</strong>
+                                                <%= r.Email_ID %>
+                                            </p>
+                                            <p><strong>Contact:</strong>
+                                                <%= r.Contact_No %>
+                                            </p>
+                                            <p><strong>Requested For Role:</strong>
+                                                <%= r.Role %>
+                                            </p>
+                                            <p><strong>Course:</strong>
+                                                <%= r.Course %>
+                                            </p>
+                                            <p><strong>User File:</strong>
+                                                <% if (r.User_ID) { %>
+                                                    <a href="/<%= r.User_ID %>" target="_blank">View Uploaded File</a>
+                                                    <% } else { %>
+                                                        <span>No file uploaded</span>
+                                                        <% } %>
+                                            </p>
 
+                                        </div>
                                     </div>
-                                </div>
-                                <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Student Needs Section -->
-            <div id="student-needs-section" class="hidden">
-                <div class="content-section">
-                    <div class="section-header">
-                        <h3>Student Needs Verification</h3>
-                        <!-- <button class="btn btn-primary" onclick="showModal('add-need')">Add Need Category</button> -->
+                                    <% }) %>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Title</th>
-                                <th>Need Description</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% rows.forEach((r, index)=> { %>
+                </div>
+
+                <!-- Student Needs Section -->
+                <div id="student-needs-section" class="hidden">
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h3>Student Needs Verification</h3>
+                            <!-- <button class="btn btn-primary" onclick="showModal('add-need')">Add Need Category</button> -->
+                        </div>
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <%= r.Full_Name %>
-                                    </td>
-                                    <td>
-                                        <%= r.Request_Title %>
-                                    </td>
-                                    <td>
-                                        <%= r.Request_Description %>
-                                    </td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td class="action-buttons">
-                                        <button class="btn btn-success btn-sm" style="background-color: cornflowerblue;"
-                                            onclick="openRequestCard('Need_modal-<%= index %>')">View Request</button>
-
-                                        <form action="/HandleSupportRequest" method="post"
-                                            onsubmit="return setAction(this)">
-                                            <input type="hidden" name="Enrollment_No" value="<%= r.Enrollment_No %>">
-                                            <input type="hidden" name="action" value="">
-                                            <!-- Will be set dynamically -->
-
-                                            <button type="submit" class="btn btn-success btn-sm"
-                                                onclick="this.form.action.value='approve'">✓ Approve</button>
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="this.form.action.value='reject'">✗ Reject</button>
-                                        </form>
-                                    </td>
+                                    <th>Student</th>
+                                    <th>Title</th>
+                                    <th>Need Description</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
-                                
-
-                                <!-- Individual Modal for Each Request -->
-                                <div id="Need_modal-<%= index %>" class="modal" style="display:none;">
-                                    <div class="modal-content">
-                                        <span class="close"
-                                            onclick="closeRequestCard('Need_modal-<%= index %>')">&times;</span>
-                                        <h2>Request Information</h2>
-                                        <p><strong>Name:</strong>
+                            </thead>
+                            <tbody>
+                                <% rows.forEach((r, index)=> { %>
+                                    <tr>
+                                        <td>
                                             <%= r.Full_Name %>
-                                        </p>
-                                        <p><strong>Email:</strong>
-                                            <%= r.Email_ID %>
-                                        </p>
-                                        <p><strong>Contact:</strong>
-                                            <%= r.Contact_no %>
-                                        </p>
-                                        <p><strong>Description:</strong>
+                                        </td>
+                                        <td>
+                                            <%= r.Request_Title %>
+                                        </td>
+                                        <td>
                                             <%= r.Request_Description %>
-                                        </p>
+                                        </td>
+                                        <td><span class="status-badge status-pending">Pending</span></td>
+                                        <td class="action-buttons">
+                                            <button class="btn btn-success btn-sm"
+                                                style="background-color: cornflowerblue;"
+                                                onclick="openRequestCard('Need_modal-<%= index %>')">View
+                                                Request</button>
+
+                                            <form action="/HandleSupportRequest" method="post"
+                                                onsubmit="return setAction(this)">
+                                                <input type="hidden" name="Enrollment_No"
+                                                    value="<%= r.Enrollment_No %>">
+                                                <input type="hidden" name="action" value="">
+                                                <!-- Will be set dynamically -->
+
+                                                <button type="submit" class="btn btn-success btn-sm"
+                                                    onclick="this.form.action.value='approve'">✓ Approve</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="this.form.action.value='reject'">✗ Reject</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+
+
+                                    <!-- Individual Modal for Each Request -->
+                                    <div id="Need_modal-<%= index %>" class="modal" style="display:none;">
+                                        <div class="modal-content">
+                                            <span class="close"
+                                                onclick="closeRequestCard('Need_modal-<%= index %>')">&times;</span>
+                                            <h2>Request Information</h2>
+                                            <p><strong>Name:</strong>
+                                                <%= r.Full_Name %>
+                                            </p>
+                                            <p><strong>Email:</strong>
+                                                <%= r.Email_ID %>
+                                            </p>
+                                            <p><strong>Contact:</strong>
+                                                <%= r.Contact_no %>
+                                            </p>
+                                            <p><strong>Description:</strong>
+                                                <%= r.Request_Description %>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <% }) %>
-                        </tbody>
-                    </table>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- Mentorship Section -->
+                <div id="mentorship-section" class="hidden">
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h3>Mentorship Requests</h3>
+                            <button class="btn btn-primary" id="Schedule_Form">Schedule Session</button>
+                            <button class="btn btn-primary" id="Cancel_Form">Cancel</button>
+                        </div>
+                        <table class="table" id="table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Categories</th>
+                                    <th>Reason</th>
+                                    <th>Preffered Mode</th>
+                                    <!-- <th>Actions</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% mentorshipRequests.forEach((req, index)=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= req.Full_Name %>
+                                        </td>
+                                        <td>
+                                            <%= req.Mentorship_Categories %>
+                                        </td>
+                                        <td>
+                                            <%= req.Reason %>
+                                        </td>
+                                        <td>
+                                            <%= req.Mode %>
+                                        </td>
+
+                                        <!-- <td class="action-buttons">
+                                            <button class="btn btn-primary btn-sm"
+                                                onclick="scheduleSession('<%= req.Enrollment_No %>')">📅
+                                                Schedule</button>
+                                        </td> -->
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+
+                        <!-- SESSION FORM -->
+                        <form id="sessionForm" action="/schedule-session" method="POST">
+                            <div class="form-grid"> <!-- Session Title -->
+                                <div class="form-group form-group-full"> <label for="sessionTitle">Session Title <span
+                                            class="required">*</span></label> <input type="text" id="sessionTitle"
+                                        name="sessionTitle" class="form-control"
+                                        placeholder="e.g., Career Guidance in Software Development" required> </div>
+                                <!-- Mentor/Alumni -->
+                                <div class="form-group"> <label for="mentorId">Mentor/Alumni <span
+                                            class="required">*</span>
+                                    </label>
+                                    <input type="text" name="Alumni">
+                                </div>
+
+
+                                <!-- Session Description -->
+                                <div class="form-group form-group-full">
+                                    <label for="sessionDescription">Session Description <span
+                                            class="required">*</span></label>
+                                    <textarea id="sessionDescription" name="Description" class="form-control" rows="4"
+                                        placeholder="Provide a brief overview of the session, topics to be covered, and expected outcomes."
+                                        required></textarea>
+                                </div>
+                                <!-- Session Date -->
+                                <div class="form-group">
+                                    <label for="sessionDate">Session Date <span class="required">*</span></label>
+                                    <input type="date" id="sessionDate" name="Date" class="form-control" required>
+                                </div>
+
+                                <!-- Duration -->
+                                <div class="form-group">
+                                    <label for="sessionDuration">Duration
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="sessionDuration" name="Duration" class="form-control"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Mode -->
+                            <div class="form-group form-group-full"> <label>Session Mode <span
+                                        class="required">*</span></label>
+                                <div class="radio-group">
+                                    <div class="radio-item"> <input type="radio" id="online" name="mode" value="Online"
+                                            required onchange="toggleVenue()"> <label for="online">🌐 Online</label>
+                                    </div>
+                                    <div class="radio-item"> <input type="radio" id="inPerson" name="mode"
+                                            value="Offline" required onchange="toggleVenue()"> <label for="inPerson">🏢
+                                            In-Person</label>
+                                    </div>
+                                    <div class="radio-item"> </div>
+                                </div>
+                            </div> 
+                            <!-- Meeting Link -->
+                            <div class="form-group venue-toggle" id="meetingLinkGroup"> <label for="meetingLink">Meeting
+                                    Link/ID</label> <input type="url" id="meetingLink" name="meetingLink"
+                                    class="form-control" placeholder="https://zoom.us/j/123456789 or Meeting ID"> </div>
+                            <!-- Venue (for in-person/hybrid) -->
+                            <div class="form-group venue-toggle" id="physicalVenue"> <label
+                                    for="venue">Venue/Location</label> <input type="text" id="venue" name="venue"
+                                    class="form-control"
+                                    placeholder="Don't Fill if Mode is Online">
+                            </div>
+
+                            <!-- Target Audience -->
+                            <div class="form-group"> <label for="targetAudience">Target Audience</label> <select
+                                    id="targetAudience" name="targetAudience" class="form-control">
+                                    <option value="all">All Students</option>
+                                    <option value="first-year">First Year Students</option>
+                                    <option value="second-year">Second Year Students</option>
+                                    <option value="third-year">Third Year Students</option>
+                                    <option value="final-year">Final Year Students</option>
+                                    <option value="postgraduate">Postgraduate Students</option>
+                                    <option value="recent-graduates">Recent Graduates</option>
+                                </select> </div> <!-- Registration Deadline -->
+                            <div class="form-group"> <label for="registrationDeadline">Registration Deadline</label>
+                                <input type="datetime-local" id="registrationDeadline" name="registrationDeadline"
+                                    class="form-control">
+                            </div>
+
+                            <div class="btn-group"><button type="submit" class="btn btn-primary">📅 Schedule
+                                    Session</button> </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Mentorship Section -->
-            <div id="mentorship-section" class="hidden">
+            <!-- Announcements Section -->
+            <div id="announcements-section" class="b hidden">
                 <div class="content-section">
                     <div class="section-header">
-                        <h3>Mentorship Requests</h3>
-                        <button class="btn btn-primary" id="Schedule_Form">Schedule Session</button>
-                        <button class="btn btn-primary" id="Cancel_Form">Cancel</button>
+                        <h3>Post Announcements</h3>
+                        <button class="btn btn-primary" onclick="showModal('announcement')">Create Announcement</button>
                     </div>
-                    <table class="table" id="table">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Categories</th>
-                                <th>Reason</th>
-                                <th>Preffered Mode</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% mentorshipRequests.forEach((req, index)=> { %>
-                                <tr>
-                                    <td>
-                                        <%= req.Full_Name %>
-                                    </td>
-                                    <td>
-                                        <%= req.Mentorship_Categories %>
-                                    </td>
-                                    <td>
-                                        <%= req.Reason %>
-                                    </td>
-                                    <td>
-                                        <%= req.Mode %>
-                                    </td>
+                    <% announcement.forEach((req)=> { %>
+                        <div style="padding: 24px;">
+                            <div
+                                style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px;">
 
-                                    <td class="action-buttons">
-                                        <button class="btn btn-primary btn-sm"
-                                            onclick="scheduleSession('<%= req.Enrollment_No %>')">📅 Schedule</button>
-                                    </td>
-                                </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
-
-                    <!-- SESSION FORM -->
-                    <form id="sessionForm" action="/schedule-session" method="POST">
-                        <div class="form-grid"> <!-- Session Title -->
-                            <div class="form-group form-group-full"> <label for="sessionTitle">Session Title <span
-                                        class="required">*</span></label> <input type="text" id="sessionTitle"
-                                    name="sessionTitle" class="form-control"
-                                    placeholder="e.g., Career Guidance in Software Development" required> </div>
-                            <!-- Mentor/Alumni -->
-                            <div class="form-group"> <label for="mentorId">Mentor/Alumni <span class="required">*</span>
-                                </label>
-                                <input type="text" name="Alumni">
-                            </div>
-
-
-                            <!-- Session Description -->
-                            <div class="form-group form-group-full">
-                                <label for="sessionDescription">Session Description <span
-                                        class="required">*</span></label>
-                                <textarea id="sessionDescription" name="Description" class="form-control" rows="4"
-                                    placeholder="Provide a brief overview of the session, topics to be covered, and expected outcomes."
-                                    required></textarea>
-                            </div>
-                            <!-- Session Date -->
-                            <div class="form-group">
-                                <label for="sessionDate">Session Date <span class="required">*</span></label>
-                                <input type="date" id="sessionDate" name="Date" class="form-control" required>
-                            </div>
-
-                            <!-- Duration -->
-                            <div class="form-group">
-                                <label for="sessionDuration">Duration
-                                    <span class="required">*</span>
-                                </label>
-                                <input type="text" id="sessionDuration" name="Duration" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <!-- Mode -->
-                        <div class="form-group form-group-full"> <label>Session Mode <span
-                                    class="required">*</span></label>
-                            <div class="radio-group">
-                                <div class="radio-item"> <input type="radio" id="online" name="mode" value="Online"
-                                        required onchange="toggleVenue()"> <label for="online">🌐 Online</label>
+                                <div id="title-<%= req.ID %>">
+                                    <h4>
+                                        <%= req.Title %>
+                                    </h4>
                                 </div>
-                                <div class="radio-item"> <input type="radio" id="inPerson" name="mode" value="Offline"
-                                        required onchange="toggleVenue()"> <label for="inPerson">🏢 In-Person</label>
+
+                                <div id="meta-<%= req.ID %>" style="color: #718096; margin: 8px 0;">
+                                    📅 Posted on <%= req.Posted_On %> • 👁️ Visible to: <%= req.Visibility %>
                                 </div>
-                                <div class="radio-item"> </div>
+
+                                <div id="desc-<%= req.ID %>">
+                                    <p>
+                                        <%= req.Description %>
+                                    </p>
+                                </div>
+
+                                <% if (req.Attachment_Url) { %>
+                                    <p style="margin-top: 12px;">
+                                        📎 Attachment:
+                                        <a href="<%= req.Attachment_Url %>" target="_blank" style="color: #3182ce;">
+                                            View File
+                                        </a>
+                                    </p>
+                                    <% } %>
+
+                                        <% if (req.Important_Links) { const links=req.Important_Links.split(','); %>
+                                            <div id="links-<%= req.ID %>" style="margin-top: 12px;">
+                                                🔗 Important Links:
+                                                <ul style="padding-left: 20px;">
+                                                    <% links.forEach(link=> { %>
+                                                        <li>
+                                                            <a href="<%= link.trim() %>" target="_blank"
+                                                                style="color: #3182ce;">
+                                                                <%= link.trim() %>
+                                                            </a>
+                                                        </li>
+                                                        <% }) %>
+                                                </ul>
+                                            </div>
+                                            <% } %>
+
+                                                <div style="margin-top: 12px;" id="actions-<%= req.ID %>">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="editAnnounceCard(<%= req.ID %>, `<%= req.Title %>`, `<%= req.Description %>`, `<%= req.Posted_On %>`, `<%= req.Visibility %>`, `<%= req.Important_Links %>`)">
+                                                        Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm" style="margin-left: 8px;"
+                                                        onclick="deleteAnnounceCard(<%= req.ID %>)">
+                                                        Delete
+                                                    </button>
+                                                </div>
                             </div>
-                        </div> <!-- Meeting Link -->
-                        <div class="form-group venue-toggle" id="meetingLinkGroup"> <label for="meetingLink">Meeting
-                                Link/ID</label> <input type="url" id="meetingLink" name="meetingLink"
-                                class="form-control" placeholder="https://zoom.us/j/123456789 or Meeting ID"> </div>
-                        <!-- Venue (for in-person/hybrid) -->
-                        <div class="form-group venue-toggle" id="physicalVenue"> <label
-                                for="venue">Venue/Location</label> <input type="text" id="venue" name="venue"
-                                class="form-control" placeholder="e.g., Conference Room A, Building 2, College Campus">
                         </div>
+                        <% }) %>
 
-                        <!-- Target Audience -->
-                        <div class="form-group"> <label for="targetAudience">Target Audience</label> <select
-                                id="targetAudience" name="targetAudience" class="form-control">
-                                <option value="all">All Students</option>
-                                <option value="first-year">First Year Students</option>
-                                <option value="second-year">Second Year Students</option>
-                                <option value="third-year">Third Year Students</option>
-                                <option value="final-year">Final Year Students</option>
-                                <option value="postgraduate">Postgraduate Students</option>
-                                <option value="recent-graduates">Recent Graduates</option>
-                            </select> </div> <!-- Registration Deadline -->
-                        <div class="form-group"> <label for="registrationDeadline">Registration Deadline</label>
-                            <input type="datetime-local" id="registrationDeadline" name="registrationDeadline"
-                                class="form-control">
-                        </div>
 
-                        <div class="btn-group"><button type="submit" class="btn btn-primary">📅 Schedule
-                                Session</button> </div>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Announcements Section -->
-        <div id="announcements-section" class="b hidden">
-            <div class="content-section">
-                <div class="section-header">
-                    <h3>Post Announcements</h3>
-                    <button class="btn btn-primary" onclick="showModal('announcement')">Create Announcement</button>
-                </div>
-                <div style="padding: 24px;">
-                    <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px; margin-bottom: 16px;">
-                        <h4>Alumni Meetup 2025</h4>
-                        <p style="color: #718096; margin: 8px 0;">Posted on Sep 10, 2025 • Visible to: All Users</p>
-                        <p>Join us for the annual CSE Alumni Meetup on October 15th...</p>
-                        <div style="margin-top: 12px;">
-                            <button class="btn btn-primary btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
-                        </div>
-                    </div>
-                    <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                        <h4>New Mentorship Program</h4>
-                        <p style="color: #718096; margin: 8px 0;">Posted on Sep 8, 2025 • Visible to: Students Only
-                        </p>
-                        <p>We're launching a new AI/ML mentorship program...</p>
-                        <div style="margin-top: 12px;">
-                            <button class="btn btn-primary btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modals -->
+        <div id="announcement-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create Announcement</h3>
+                    <button class="close" onclick="closeModal('announcement-modal')">&times;</button>
+                </div>
+                <form id="announcement-form" action="/announcement" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="Title" class="form-control" placeholder="Announcement title"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Content</label>
+                        <textarea id="description" name="Description" class="form-control"
+                            placeholder="Write your announcement..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="important_links">Important Links</label>
+                        <input type="text" id="important_links" name="Important_Links" class="form-control"
+                            placeholder="Add URLs separated by commas">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="posted_on">Posted On</label>
+                        <input type="date" id="posted_on" name="Posted_On" class="form-control"
+                            value="<?= date('Y-m-d') ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attachment">Attach PDF or Image</label>
+                        <input type="file" id="attachment" name="Attachment_Url" class="form-control"
+                            accept=".pdf,image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="visibility">Visibility</label>
+                        <select id="visibility" name="Visibility" class="form-control">
+                            <option value="All Users" selected>All Users</option>
+                            <option value="Alumni">Alumni Only</option>
+                            <option value="Student">Students Only</option>
+                            <option value="Faculty">Faculty Only</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                        <button type="button" class="btn" onclick="closeModal('announcement-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary" onclick="createAnnouncement()">Post
+                            Announcement</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Sessions Section -->
+
         <div id="sessions-section" class="hidden">
-            <div class="content-section">
-                <div class="section-header">
-                    <h3>Mentorship Sessions</h3>
-                    <button class="btn btn-primary" onclick="showModal('create-session')">Schedule Session</button>
-                </div>
-                <div style="padding: 24px;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
-                        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                            <h4>Machine Learning Basics</h4>
-                            <p><strong>Mentor:</strong> Dr. Sarah Connor</p>
-                            <p><strong>Students:</strong> 5 enrolled</p>
-                            <p><strong>Date:</strong> Sep 20, 2025 at 2:00 PM</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-approved">Scheduled</span>
-                            </p>
-                            <div style="margin-top: 12px;">
-                                <button class="btn btn-primary btn-sm">View Details</button>
-                                <button class="btn btn-danger btn-sm" style="margin-left: 8px;">Cancel</button>
-                            </div>
-                        </div>
-                        <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
-                            <h4>Career Guidance Workshop</h4>
-                            <p><strong>Mentor:</strong> John Matrix</p>
-                            <p><strong>Students:</strong> 8 enrolled</p>
-                            <p><strong>Date:</strong> Sep 22, 2025 at 3:00 PM</p>
-                            <p><strong>Status:</strong> <span class="status-badge status-pending">Pending</span></p>
-                            <div style="margin-top: 12px;">
-                                <button class="btn btn-primary btn-sm">View Details</button>
-                                <button class="btn btn-success btn-sm" style="margin-left: 8px;">Approve</button>
-                            </div>
+            <div class="liner">
+                <div class="content-section" id="liner">
+                    <div style="padding: 24px;">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+
+                            <!-- Session Cards -->
+                            <% mentorshipSessions.forEach( (req)=>{ %>
+                                <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 id="topic-<% req.Session_ID %>">
+                                            <%=req.Topic%>
+                                        </h4>
+                                        <span id="Audience-<% req.Session_ID %>"
+                                            style="font-size: 0.85rem; background-color: #edf2f7; padding: 4px 8px; border-radius: 4px;">Target:
+                                            <%=req.Target_Audience %>
+                                        </span>
+                                    </div>
+                                    <table style="width: 100%; margin-top: 8px;">
+                                        <tr>
+                                            <td id="mentor-<% req.Session_ID %>"><strong>Mentor:</strong>
+                                                <%=req.Alumni%>
+                                            </td>
+                                            <!-- <td><strong>Students:</strong> 8 enrolled</td> -->
+                                        </tr>
+                                        <tr>
+                                            <td id="date-<% req.Session_ID %>"><strong>Date:</strong>
+                                                <%=req.Session_Date%>
+                                            </td>
+                                            <td id="duration-<% req.Session_ID %>"><strong>Duration:</strong>
+                                                <%=req.Duration%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td id="mode-<% req.Session_ID %>"><strong>Mode:</strong>
+                                                <%=req.Mode%>
+                                            </td>
+                                            <td id="venue-<% req.Session_ID %>"><strong>Venue:</strong>
+                                                <%=req.Venue%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <!-- <td><strong>Topic:</strong> Career Planning & Strategy</td> -->
+                                            <td id="deadline-<% req.Session_ID %>"><strong>Registration
+                                                    Deadline:</strong>
+                                                <%=req.Registration_Deadline%>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td id="description-<% req.Session_ID %>" colspan="2">
+                                                <strong>Description:</strong>
+                                                <%=req.Description%>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                <td colspan="2"><strong>Status:</strong> <span class="status-badge status-pending">Pending</span></td>
+                            </tr> -->
+                                    </table>
+                                    <div style="margin-top: 12px;" id="actions-<%=req.Session_ID%>">
+                                        <button class="btn btn-danger btn-sm delete-btn"
+                                            id="delete-<%= req.Session_ID %>"
+                                            style="margin-left: 8px;" onclick="deleteSession(`<%= req.Session_ID %>`)">Delete</button>
+                                    </div>
+
+                                </div>
+                                <% })%>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
     </div>
 
 
     <script>
+        const announcement = document.getElementById("announcement-modal");
         const form = document.getElementById("sessionForm");
         const Schedule_Form = document.getElementById("Schedule_Form");
         const table = document.getElementById("table");
@@ -809,6 +1079,7 @@
 
         form.style.display = "none";
         Cancel_Form.style.display = "none";
+        announcement.style.display = "none";
 
         Schedule_Form.addEventListener('click', () => {
             Schedule_Form.style.display = "none";
@@ -948,6 +1219,154 @@
         });
 
 
+        function editAnnounceCard(index, title, description, postedOn, visibility, links) {
+            // Title
+            document.getElementById(`title-${index}`).innerHTML = `
+    <input type="text" id="edit-title-${index}" class="form-control" value="${title}" />
+  `;
+
+            // Description
+            document.getElementById(`desc-${index}`).innerHTML = `
+    <textarea id="edit-desc-${index}" class="form-control">${description}</textarea>
+  `;
+
+            // Meta (Posted On + Visibility)
+            document.getElementById(`meta-${index}`).innerHTML = `
+    📅 Posted on <input type="date" id="edit-date-${index}" class="form-control" style="display:inline-block; width:auto;" value="${formatDate(postedOn)}" /> • 
+    👁️ Visible to: 
+    <select id="edit-visibility-${index}" class="form-control" style="display:inline-block; width:auto;">
+      <option ${visibility === 'All Users' ? 'selected' : ''}>All Users</option>
+      <option ${visibility === 'Alumni' ? 'selected' : ''}>Alumni</option>
+      <option ${visibility === 'Student' ? 'selected' : ''}>Student</option>
+      <option ${visibility === 'Faculty' ? 'selected' : ''}>Faculty</option>
+    </select>
+  `;
+
+            // Important Links
+            document.getElementById(`links-${index}`).innerHTML = `
+    🔗 Important Links:
+    <input type="text" id="edit-links-${index}" class="form-control" value="${links}" placeholder="Comma-separated URLs" />
+  `;
+
+            // Replace buttons with Save
+            document.getElementById(`actions-${index}`).innerHTML = `
+    <button class="btn btn-success btn-sm" onclick="saveAnnouncement(${index})">Save</button>
+    <button class="btn btn-secondary btn-sm" style="margin-left: 8px;" onclick="cancelEdit(${index})">Cancel</button>
+  `;
+        }
+
+        // Helper to format date to yyyy-mm-dd
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        // Placeholder save function
+        function saveAnnouncement(index) {
+            const updatedTitle = document.getElementById(`edit-title-${index}`).value;
+            const updatedDesc = document.getElementById(`edit-desc-${index}`).value;
+            const updatedDate = document.getElementById(`edit-date-${index}`).value;
+            const updatedVisibility = document.getElementById(`edit-visibility-${index}`).value;
+            const updatedLinks = document.getElementById(`edit-links-${index}`).value;
+
+            console.log("Saving announcement:", {
+                updatedTitle,
+                updatedDesc,
+                updatedDate,
+                updatedVisibility,
+                updatedLinks
+            });
+
+            // You can send this data to your backend via AJAX or form submission
+        }
+
+        // Optional cancel function
+        function cancelEdit(index) {
+            location.reload(); // Simple way to revert changes
+        }
+
+        // CREATING A FORM THROUGH JS TO UDATE IN TABLE
+        function saveAnnouncement(index) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/announcement/update/${index}`;
+            form.enctype = "multipart/form-data";
+
+            const fields = {
+                Title: document.getElementById(`edit-title-${index}`).value,
+                Description: document.getElementById(`edit-desc-${index}`).value,
+                Posted_On: document.getElementById(`edit-date-${index}`).value,
+                Visibility: document.getElementById(`edit-visibility-${index}`).value,
+                Important_Links: document.getElementById(`edit-links-${index}`).value
+            };
+
+            for (const key in fields) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = fields[key];
+                form.appendChild(input);
+            }
+
+            // File input
+            const fileInput = document.getElementById(`edit-attachment-${index}`);
+            if (fileInput && fileInput.files.length > 0) {
+                form.appendChild(fileInput.cloneNode(true)); // clone and append
+            }
+            document.body.appendChild(form);
+            form.submit(); // ✅ Redirect happens automatically after server response
+        }
+
+        // DELETE ANNOUNCEMENTS
+        function deleteAnnounceCard(id) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/announcement/delete/${id}`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const sessionCards = document.querySelectorAll("#sessions-section .content-section > div > div > div");
+
+            sessionCards.forEach(card => {
+                const rows = card.querySelectorAll("table tr");
+                let modeText = "";
+                let venueCell = null;
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll("td");
+                    if (cells.length === 2) {
+                        if (cells[0].textContent.trim().startsWith("Mode:")) {
+                            modeText = cells[0].textContent.trim().replace("Mode:", "").trim();
+                        }
+                        if (cells[1].textContent.trim().startsWith("Venue:")) {
+                            venueCell = cells[1];
+                        }
+                    }
+                });
+
+                if (modeText === "Online" && venueCell) {
+                    const link = card.getAttribute("data-join-link") || "<%=mentorshipSessions.Meeting_Link%>";
+                    venueCell.innerHTML = `<strong>Joining Link:</strong> <a href="${link}" target="_blank">Join Session</a>`;
+                }
+            });
+        });
+
+
+
+
+        // FOR MENTORSHIP SESSIONS  
+        function deleteSession(id) {
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/schedule-session/delete/${id}`;
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 </body>
 
