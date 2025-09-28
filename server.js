@@ -72,14 +72,16 @@ app.get("/", async (req, res) => {
     try {
         const [rows] = await db.execute(`SELECT * FROM alumni LIMIT 4;`);// alumni data to show at home
         const [rows1] = await db.execute("SELECT * FROM `job and internship` LIMIT 3");//job intern data
+        const [announcement] = await db.execute("SELECT * FROM `announcement`");
+        const [mentorshipSession] = await db.execute("SELECT * FROM `mentorship_session`");
         const authUser = req.session.authUser || null;
         if (req.session.authUser) {
             req.session.userType = authUser.Role || null;
             req.session.Enrollment = authUser.Enrollment || null;
             // req.session.ID = autherUser.ID || null  alumni ID is not showing in query and return in req.body 
-        };
-
-        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser });
+        }
+        console.log("announcemnets ar : " , announcement)
+        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser, announcement, mentorshipSession});
 
     } catch (err) {
         console.error(err);
@@ -378,9 +380,10 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
 app.get('/support_desk', (req, res) => {
     res.sendFile(path.join(__dirname, "./views/support_desk.html")); // it is ejs file
 })
-// MENTORSHIP REQUEST 
+// MENTORSHIP REQUEST   DO OPTIMIZATION HERE 
 app.post('/mentorship_request', async (req, res) => {
 
+    const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session`");
     console.log("Mentorship Request Data : ", req.body)
     const {
         Enrollment_No,
@@ -401,12 +404,24 @@ app.post('/mentorship_request', async (req, res) => {
                 consent === 'on' ? 1 : 0
             ]
         );
-        res.redirect("/mentorship_page.html");
+        res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions});
     } catch (err) {
         console.error(err);
         res.status(500).send("Something went wrong");
     }
 });
+
+
+
+app.post("/mentorshipSessionPage" , async(req,res) =>{
+    const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session`");
+    console.log(mentorshipSessions);
+    res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions});
+
+})
+
+
+
 // Logout (destroy session and clear cookie)
 app.post('/logout', (req, res, next) => {
 
@@ -473,32 +488,32 @@ app.post("/HandleUserRequest", async (req, res) => {
 
         if (action === "approve") {
 
-           await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
-            if(user.Role === "Student"){
+            await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
+            if (user.Role === "Student") {
                 await db.execute(
-                `INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    user.Enrollment_No,
-                    user.Full_Name,
-                    user.Course,
-                    user.Contact_No,
-                    user.Email_ID,
-                    user.Batch,
-                    user.Password
-                ]
-            );
-            }else if(user.Role === "Alumni"){
+                    `INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        user.Enrollment_No,
+                        user.Full_Name,
+                        user.Course,
+                        user.Contact_No,
+                        user.Email_ID,
+                        user.Batch,
+                        user.Password
+                    ]
+                );
+            } else if (user.Role === "Alumni") {
                 await db.execute(
-                `INSERT INTO alumni (Full_Name, Contact_No, Course,  Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?)`,
-                [
-                    user.Full_Name,
-                    user.Contact_No,
-                    user.Course,
-                    user.Email_ID,
-                    user.Batch,
-                    user.Password
-                ]
-            );
+                    `INSERT INTO alumni (Full_Name, Contact_No, Course,  Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?)`,
+                    [
+                        user.Full_Name,
+                        user.Contact_No,
+                        user.Course,
+                        user.Email_ID,
+                        user.Batch,
+                        user.Password
+                    ]
+                );
             }
             // Send approval email
             await transporter.sendMail({
@@ -548,10 +563,10 @@ app.post("/HandleUserRequest", async (req, res) => {
     `
             });
 
-           
+
         } else if (action === "reject") {
             await db.execute("UPDATE user SET Status = 'Rejected' WHERE ID = ?", [ID]);
-            
+
         }
         await renderAdminPage(req, res);
     } catch (err) {
@@ -572,7 +587,7 @@ app.post("/schedule-session", async (req, res) => {
         venue,
         targetAudience,
         registrationDeadline,
-        
+
     } = req.body;
 
     console.log(req.body);
@@ -593,12 +608,86 @@ app.post("/schedule-session", async (req, res) => {
                 venue
             ]
         );
-        await renderAdminPage(req, res)
+        res.redirect("/admin");
     } catch (err) {
         console.error(err);
         res.status(500).send("Error scheduling session");
     }
 });
+
+app.post("/schedule-session/delete/:id" , async(req,res) =>{
+    const id = req.params.id;
+    console.log("mentorship dele id is : ", id);
+    try{
+        await db.execute("DELETE FROM `mentorship_session` WHERE Session_ID = ?" ,[id]);
+       await renderAdminPage(req,res);
+    }catch(err){
+        console.error(err);
+    }
+})
+app.post("/announcement", upload.single('Attachment_Url'), async (req, res) => {
+    const {
+        Title,
+        Description,
+        Important_Links,
+        Posted_On,
+        Visibility
+    } = req.body;
+    const { path } = req.file;
+
+    console.log(path);
+
+    try {
+        await db.execute("INSERT INTO announcement (Title,Description,Important_Links,Posted_On, Attachment_Url, Visibility) VALUES (?,?,?,?,?,?)", [
+            Title,
+            Description,
+            Important_Links,
+            Posted_On,
+            path,
+            Visibility
+        ])
+        res.redirect("/admin")   
+    } catch (err) {
+        console.error(err)
+    }
+});
+
+app.post("/announcement/update/:idx", upload.single('Attachment_Url'), async (req, res) => {
+  const id = req.params.idx;
+  const {Title,Description,Posted_On,Visibility,Important_Links} = req.body;
+  try{
+    console.log("updated values are : " , req.body)
+    console.log("ID is : " , id)
+
+    await db.execute(`
+    UPDATE announcement 
+    SET Title = ?, Description = ?, Posted_On = ?, Visibility = ?, Important_Links = ?
+    WHERE ID = ?
+  `, [
+    Title, Description, Posted_On, Visibility, Important_Links, id
+  ])
+
+  await renderAdminPage(req,res);
+  }catch(err){
+    console.error(err)
+  }
+});
+
+app.post("/announcement/delete/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        await db.execute("DELETE FROM announcement WHERE ID = ?", [id]);
+        await renderAdminPage(req,res);
+    } catch (error) {
+        res.status(500).send("Error deleting announcement.");
+    }
+});
+
+// FOR FORM RESUBMISSION ON REFRESH
+app.get("/admin" , async (req,res) =>{
+    await renderAdminPage(req, res);
+})
+
 app.post("/delete/:id", async (req, res) => {
     const id = req.params.id;
     await db.execute('DELETE FROM `job and internship` WHERE ID = ?', [id]);
@@ -616,6 +705,8 @@ app.listen(port, () => {
 // HELPER FUNCTION FOR SUPPORT REQUEST ::::
 async function renderAdminPage(req, res) {
     try {
+        const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session");
+        const [announcement] = await db.execute("SELECT * FROM announcement");
         const [countUserVerification] = await db.execute("SELECT COUNT(*) AS `Pending_User_Count` FROM `user` WHERE Status = 'Pending';");
         const [countSupport] = await db.execute("SELECT COUNT(*) AS `pending_count` FROM `support_requests` WHERE Status = 'Pending';");
         const [countMentorshipReq] = await db.execute("SELECT COUNT(*) AS `pendingMentorship_count` FROM `mentorship_requests` WHERE status = 'Pending';");
@@ -629,15 +720,17 @@ async function renderAdminPage(req, res) {
             countUserVerification: countUserVerification[0].Pending_User_Count
         };
 
-        console.log("User table data ", row1);
-
+        // console.log("User table data ", row1);
+        console.log("mentorshipSessions : ", mentorshipSessions )
         res.render(path.join(__dirname, "./views/admin_page"), {
             supportCount: req.session.Count.countSupport || 0,
             mentorshipCount: req.session.Count.countMentorshipReq || 0,
             countUserVerification: req.session.Count.countUserVerification || 0,
             rows,
             row1,
-            mentorshipRequests
+            mentorshipRequests,
+            announcement,
+            mentorshipSessions
         });
     } catch (err) {
         console.error(err);

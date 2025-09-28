@@ -55,6 +55,587 @@
         .mobile-menu {
             animation: slideIn 0.3s ease-out;
         }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            height: 600px;
+            position: relative;
+        }
+
+        .announcements-container {
+            height: 100%;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .announcements-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .announcements-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .announcements-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+
+        .announcements-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .announcement-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: height 0.3s ease;
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .announcement-card:hover::before {
+            height: 6px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-date {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .card-description {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .read-more {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .read-more:hover {
+            transform: translateX(3px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(30px);
+            transition: all 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-right: 20px;
+        }
+
+        .modal-date {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-description {
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .action-btn.secondary:hover {
+            background: #e5e7eb;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: 70vh;
+            }
+
+            .announcements-container {
+                padding: 20px;
+            }
+
+            .announcements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2em;
+            }
+
+            .modal {
+                margin: 10px;
+                max-height: 95vh;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        .alumni-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .alumni-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: height 0.3s ease;
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .alumni-card:hover::before {
+            height: 6px;
+        }
+
+        .alumni-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            border: 3px solid #e0e7ff;
+        }
+
+        .alumni-card h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .alumni-card p {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        /* Mentorship Card Styles */
+        .mentorship-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .mentorship-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: height 0.3s ease;
+        }
+
+        .mentorship-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #10b981;
+        }
+
+        .mentorship-card:hover::before {
+            height: 6px;
+        }
+
+        .mentorship-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            border: 3px solid #d1fae5;
+        }
+
+        .mentorship-card h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .mentorship-card p {
+            color: #6b7280;
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+
+        /* Job Card Styles */
+        .job-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            transition: height 0.3s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #f59e0b;
+        }
+
+        .job-card:hover::before {
+            height: 6px;
+        }
+
+        .job-card h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .job-card p {
+            color: #4b5563;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .job-card p strong {
+            color: #1f2937;
+        }
+
+        .job-card .deadline {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        /* Button Styles */
+        .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 5px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .action-btn.green:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .action-btn.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .action-btn.orange:hover {
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .no-content {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1.1em;
+            padding: 40px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border: 2px dashed #d1d5db;
+        }
+
+        @media (max-width: 768px) {
+            .ancontainer {
+                margin-bottom: 20px;
+            }
+
+            .announcements-container {
+                padding: 20px;
+            }
+
+            .announcements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .anpage-header h1 {
+                font-size: 2em;
+            }
+
+            .button-container {
+                justify-content: center;
+            }
+        }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -65,6 +646,7 @@
 <body class="flex min-h-screen flex-col">
 
     <header class="sticky top-0 bg-white z-50   shadow-md w-full">
+
         <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex flex-wrap items-center justify-between h-20">
                 <!-- Logo -->
@@ -83,7 +665,8 @@
                     <a href="#alumni"
                         class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Alumni</a>
                     <a href="#mentorship"
-                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Mentorship Request</a>
+                        class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Mentorship
+                        Request</a>
                     <a href="#jobs" class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Jobs</a>
                     <a href="#endowment"
                         class="nav-link text-gray-700 font-medium hover:text-blue-600 transition">Endowment</a>
@@ -107,11 +690,12 @@
                 </div>
             </nav>
         </div>
+
     </header>
 
 
     <!-- Hero Section -->
-    <section class="w-full py-20 bg-gradient-to-b from-white to-gray-100">
+    <section id="home" class="w-full py-20 bg-gradient-to-b from-white to-gray-100">
         <div class="container grid lg:grid-cols-2 gap-12 px-6 mx-auto">
             <!-- Left: Heading + Typing Intro -->
             <div class="flex flex-col justify-center space-y-6">
@@ -130,150 +714,185 @@
 
 
     <!-- Alumni Directory (static example only) -->
+    <section id="alumni">
+        <div class="container">
+            <div class="announcements-container">
+                <div class="page-header">
+                    <h1>📢 CSE Alumni </h1>
+                    <p>Celebrate achievements, reconnect with pears, and explore alumni opportunities worldwide</p>
+                </div>
+                <div class="button-container">
+                    <button id="alumni_list" class="action-btn">
+                        🔍 Search Alumni
+                    </button>
+                </div>
+                <div class="announcements-grid">
 
-    <section id="alumni" class="w-full py-20 bg-gray-100">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Popular Alumni</h2>
-                <button id="alumni_list"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
-                    Search Alumni
-                </button>
-            </div>
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
-                <% rows.forEach(r=> { %>
-                    <!-- <div class="border rounded-lg p-6 bg-white shadow hover:shadow-lg transition text-center">
-                        <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/non_2x/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
-                            class="mx-auto rounded-full mb-4 ring-2 ring-blue-100"
-                            alt="Priya Sharma - Senior Software Engineer at Google">
-                        <h3 class="font-semibold text-lg">
-                            <%= r.Full_Name %>
-                        </h3>
-                        <p class="text-sm text-gray-500">Batch: <%= r.Batch %>
-                        </p>
-                    </div> -->
-
-                    <div
-                        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="flex justify-center mb-4">
-                            <img src="http://static.photos/people/200x200/1" alt="Alumni"
-                                class="rounded-full w-24 h-24 object-cover">
+                    <% rows.forEach(r=> { %>
+                        <div class="alumni-card">
+                            <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/non_2x/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+                                alt="Alumni">
+                            <h3>
+                                <%= r.Full_Name %>
+                            </h3>
+                            <p>Batch: <%= r.Batch %>
+                            </p>
                         </div>
-                        <h3 class="text-xl font-bold text-center text-gray-800">
-                            <%=r.Full_Name%>
-                        </h3>
-                        <p class="text-gray-600 text-center">
-                            <%=r.Batch%>
-                        </p>
-                    </div>
-                    <% }) %>
+                        <% }); %>
+
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Mentorship Section -->
+
     <section id="mentorship" class="py-20 px-4 bg-white">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Upcoming Mentorship Sessions</h2>
-            <button id="mentorship_request"
+        <div class="container">
+            <div class="page-header">
+                <h1>📢 Mentorship</h1>
+                <p>Empower growth through guidance-connect and mentees for meaningfull learning journeys</p>
+            </div>
+            <!-- <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Upcoming Mentorship Sessions</h2> -->
+             <form action="/mentorshipSessionPage" method="post">
+                <button id="mentorship_request" type="submit"
                 class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
                 View All
             </button>
+             </form>
+            
             <!-- <p class="text-xl text-gray-600 mb-12 text-center">Learn directly from experienced alumni</p> -->
-
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+             
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 <!-- Mentorship Card 1 -->
+                 <%mentorshipSession.slice(0,2).forEach((req)=>{%>
                 <div
                     class="bg-white  rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                     <div class="flex justify-center mb-4">
                         <img src="http://static.photos/people/200x200/9" alt="Mentor"
                             class="rounded-full w-24 h-24 object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-center text-gray-800 mb-2">Dr. Anjali Verma</h3>
-                    <p class="text-gray-600 text-center mb-2">Sept 20 – Sept 22, 2025</p>
-                    <p class="text-gray-500 text-center text-sm mb-4">Online Session</p>
+                    <h3 class="text-xl font-bold text-center text-gray-800 mb-2"><%=req.Alumni%></h3>
+                    <h2 class="text-xl font-bold text-center text-gray-800 mb-2"> <%=req.Topic%></h2>
+                    <p class="text-gray-600 text-center mb-2"><%=req.Session_Date%>></p>
+                    <p class="text-gray-500 text-center text-sm mb-4"><%=req.Mode%></p>
 
                 </div>
-
+                <%})%>
             </div>
+             
+            
         </div>
     </section>
 
     <!-- Jobs -->
-    <section id="jobs" class="w-full py-20 bg-gray-100">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-6">Jobs & Internships</h2>
-
-            <!-- ✅ New Buttons  to POST JOB-->
-            <div class="mb-8 flex justify-center sm:justify-between gap-4">
-
-                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700" id="job_button">
-                    Post Job or Intern
-                </button>
-
-                <!-- Right Button TO VIEW ALL JOB -->
-                <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700" id="job_list">
-                    view All
-                </button>
-            </div>
-
-            <div class="job-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <% rows1.forEach(r=> { %>
-                    <div class="job-card p-4 border rounded-lg bg-white shadow">
-                        <h3 class="font-bold text-lg mb-2">
-                            <%= r.Title %>
-                        </h3>
-                        <p class="text-sm text-gray-600"><strong>Duration:</strong>
-                            <%= r.Duration %>
-                        </p>
-                        <p class="text-sm text-gray-700">
-                            <%= r.Description %>
-                        </p>
-                        <p class="text-sm text-gray-600"><strong>Requirements:</strong>
-                            <%= r.Requirement %>
-                        </p>
-                        <p class="text-sm text-red-500"><strong>Deadline:</strong>
-                            <%= new Date(r.Deadline).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long' ,
-                                year: 'numeric' }) %>
-                        </p>
-                    </div>
-                    <% }) %>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Endowment -->
-    <section id="endowment" class="w-full py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-6">Endowment & Giving</h2>
-            <h3>Currently not Present </h3>
-            <!-- <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="border rounded-lg p-4 bg-gray-50 shadow">
-                    <h3 class="font-bold">Dr. Sharma Memorial Scholarship</h3>
-                    <p class="text-sm text-gray-600">Supporting underprivileged students with tuition aid.</p>
+    <section id="jobs">
+        <div class="container">
+            <div class="announcements-container">
+                <div class="page-header">
+                    <h1>📢 Job & Internships</h1>
+                    <p>Discover career opportunities, internships and placements tailored to your skill and aspirations</p>
                 </div>
-            </div> -->
+                <div class="button-container">
+                    <button class="action-btn orange" id="job_button">
+                        💼 Post Job or Intern
+                    </button>
+                    <button class="action-btn green" id="job_list">
+                        👀 View All
+                    </button>
+                </div>
+                <div class="announcements-grid">
+
+                    <% rows1.forEach(req=> { %>
+                        <div class="job-card">
+                            <h3>
+                                <%= req.Title %>
+                            </h3>
+                            <p><strong>Duration:</strong>
+                                <%= req.Duration %>
+                            </p>
+                            <p>
+                                <%= req.Description %>
+                            </p>
+                            <p><strong>Requirements:</strong>
+                                <%= req.Requirement %>
+                            </p>
+                            <p class="deadline"><strong>Deadline:</strong>
+                                <%= new Date(req.Deadline).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long' ,
+                                    year: 'numeric' }) %>
+                            </p>
+                        </div>
+                        <% }); %>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Endowment -->
+    <section id="endowment">
+        <div class="container">
+            <div class="announcements-container">
+                <div class="page-header">
+                    <h1>📢 Endowment</h1>
+                    <p>Support future excellence-learn how contributions shape scholarships, research and innovations</p>
+                </div>
+                <div class="no-content">
+                    <h3>🏗️ Currently Under Development</h3>
+                    <p>Endowment and giving programs will be available soon.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- About Us -->
-    <section id="Announcements" class="w-full py-20 bg-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold">Building Bridges Since 1985</h2>
-            <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
-                The CSE Alumni Connect platform was established to foster meaningful connections between graduates,
-                current students, and faculty members.
-            </p>
+
+    <!-- ANNOUNCEMENTS -->
+    <section id="announcements">
+        <div class="container">
+            <div class="announcements-container">
+                <div class="page-header">
+                    <h1>📢 Announcements</h1>
+                    <p>Stay updated with the latest news and important updates</p>
+                </div>
+                <div class="no-content"  id="no-content">
+                    <h3>🏗️ First Login to View Announcements</h3>
+                    <!-- <p>Endowment and giving programs will be available soon.</p> -->
+                </div>
+                <div class="announcements-grid" id="announcementsGrid">
+                    <!-- Announcements will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title" id="modalTitle"></h2>
+                        <div class="modal-date" id="modalDate"></div>
+                    </div>
+                    <button class="modal-close" id="modalClose">×</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description" id="modalDescription"></p>
+                    <div class="modal-actions">
+                        <button class="action-btn" onclick="handleImportantLink()">
+                            📎 Important Link
+                        </button>
+                        <button class="action-btn secondary" onclick="handleViewFile()">
+                            📄 View File
+                        </button>
+                    </div>
+                    <div class="tags" id="modalTags"></div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="w-full border-t bg-gray-50 mt-10">
-        <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
+        <!-- <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
             © 2025 CSE Alumni Connect. All rights reserved.
-        </div>
+        </div> -->
 
         <% if (authUser) { %>
             <div id="profileModal"
@@ -383,7 +1002,7 @@
             </div>
             <% } %>
     </footer>
-
+    <br><br><br><br><br><br><br><br>
 </body>
 <script>
 
@@ -394,7 +1013,7 @@
     }
 
 
-    
+
     const editBtn = document.getElementById("edit_profile");
     const staticProfile = document.getElementById("staticProfile");
     const profileForm = document.getElementById("profileForm");
@@ -436,6 +1055,7 @@
         const alumniListBtn = document.getElementById("alumni_list");// 
         const editProfileBtn = document.getElementById("edit_profile");
         const mentorshipRequestBtn = document.getElementById("mentorship_request");
+        const announcementNoContent = document.getElementById("no-content");
 
         // Profile Panel Elements
         const btnToggleProfile = document.getElementById('profileToggle');
@@ -449,6 +1069,7 @@
         profileBtn.style.display = "none";
         alumniListBtn.style.display = "none";
         mentorshipRequestBtn.style.display = "none";
+        
 
         // Navigation actions
 
@@ -494,13 +1115,14 @@
             btnJoin.addEventListener('click', () => {
                 window.location.href = "/support_desk"
             })
-            mentorshipRequestBtn.addEventListener('click', () => {
-                window.location.href = "/mentorship_page.html";
-            })
+            // mentorshipRequestBtn.addEventListener('click', () => {
+            //     window.location.href = "/mentorship_page.html";
+            // })
         }
         if (userType == "student") {
             btnViewJobs.style.display = "block";
             profileBtn.style.display = "block";
+            announcementNoContent.style.display = "none";
         }
         if (userType == "alumni") {
             btnViewJobs.style.display = "block";
@@ -542,7 +1164,7 @@
             }
         });
     });
-    
+
     editBtn.addEventListener("click", () => {
         staticProfile.classList.add("hidden");
         profileForm.classList.remove("hidden");
@@ -555,6 +1177,151 @@
         profileForm.classList.add("hidden");
         logoutWrapper.classList.remove("hidden");
     });
+
+// ANNOUNCEMENTS 
+   const announcements = <%- JSON.stringify(announcement) %>;
+
+function createAnnouncementCard(announcement) {
+    // Format date if it exists
+    const formattedDate = announcement.Posted_On ? 
+        new Date(announcement.Posted_On).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        }) : 'No Date';
+
+    return `
+        <div class="announcement-card" onclick="openModal(${announcement.ID})">
+            <div class="card-header">
+                <span class="card-date">${formattedDate}</span>
+            </div>
+            <h3 class="card-title">${announcement.Title || 'No Title'}</h3>
+            <p class="card-description">${(announcement.Description || 'No description available').substring(0, 120)}${announcement.Description && announcement.Description.length > 120 ? '...' : ''}</p>
+            <div class="card-footer">
+                <button class="read-more">
+                    Read More
+                    <span>→</span>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function renderAnnouncements() {
+    const grid = document.getElementById('announcementsGrid');
+    if (announcements && announcements.length > 0) {
+        grid.innerHTML = announcements.map(announcement => createAnnouncementCard(announcement)).join('');
+    } else {
+        grid.innerHTML = `
+            <div class="no-announcements">
+                <h3>📭 No Announcements</h3>
+                <p>There are currently no announcements to display.</p>
+            </div>
+        `;
+    }
+}
+
+function openModal(announcementId) {
+    // Find announcement by ID (note: comparing with ID field from database)
+    const announcement = announcements.find(a => a.ID === announcementId);
+    
+    if (!announcement) {
+        console.log('Announcement not found with ID:', announcementId);
+        return;
+    }
+
+    // Update modal content with database field names
+    document.getElementById('modalTitle').textContent = announcement.Title || 'No Title';
+    
+    // Format date for modal
+    const formattedDate = announcement.Posted_On ? 
+        new Date(announcement.Posted_On).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) : 'No Date';
+    document.getElementById('modalDate').textContent = formattedDate;
+    
+    // Use Description for modal content (you might want to add a separate full_description field in DB)
+    document.getElementById('modalDescription').textContent = announcement.Description || 'No description available.';
+
+    // Handle tags (if you have a tags field) or create from category
+    const tagsContainer = document.getElementById('modalTags');
+    if (announcement.Tags) {
+        // If tags is a JSON string, parse it
+        let tags = [];
+        try {
+            tags = typeof announcement.Tags === 'string' ? JSON.parse(announcement.Tags) : announcement.Tags;
+        } catch (e) {
+            tags = [announcement.Tags];
+        }
+        tagsContainer.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    } else if (announcement.Category) {
+        tagsContainer.innerHTML = `<span class="tag">${announcement.Category}</span>`;
+    } else {
+        tagsContainer.innerHTML = '<span class="tag">General</span>';
+    }
+
+    // Store current announcement for action buttons
+    window.currentAnnouncement = announcement;
+
+    // Show modal
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function handleImportantLink() {
+    if (window.currentAnnouncement && window.currentAnnouncement.Important_Links) {
+        window.open(window.currentAnnouncement.Important_Links, '_blank');
+    } else if (window.currentAnnouncement && window.currentAnnouncement.Link) {
+        window.open(window.currentAnnouncement.Link, '_blank');
+    } else {
+        alert('Important link not available for this announcement.');
+    }
+}
+
+
+function handleViewFile() {
+    if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
+        window.open(window.currentAnnouncement.Attachment_Url, '_blank');
+    } else if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
+        window.open(window.currentAnnouncement.Attachment_Url, '_blank');
+    } else {
+        alert('File not available for this announcement.');
+    }
+}
+
+// Event listeners - Wrap in DOMContentLoaded to ensure elements exist
+document.addEventListener('DOMContentLoaded', function() {
+    const modalClose = document.getElementById('modalClose');
+    const modalOverlay = document.getElementById('modalOverlay');
+    
+    if (modalClose) {
+        modalClose.addEventListener('click', closeModal);
+    }
+    
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+    
+    // Initialize announcements
+    renderAnnouncements();
+});
 </script>
 
 </html>
