@@ -88,6 +88,7 @@ app.get("/", async (req, res) => {
         res.status(500).send('Failed to load home');
     }
 });
+// SENDING USER APPROVAL EMAIL NOTIFICATION
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -158,11 +159,9 @@ app.post("/verify-otp", (req, res) => {
     delete otpStore[email];
     res.json({ message: "Email verified successfully!" });
 });
-
 app.get("/email_varification", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/verifi.html"));
 })
-
 app.get("/job_read", async (req, res) => {
     try {
         const [rows] = await db.execute("SELECT * FROM `job and internship`");
@@ -334,6 +333,8 @@ app.post("/login_check", async (req, res) => {
         console.log("rows data contains : ", rows);
         req.session.authUser = {
             Enrollment: rows[0].Enrollment_No || '',
+            Employee_ID: rows[0].Employee_ID || '',
+            Alumni_ID: rows[0].ID || '',
             Full_Name: rows[0].Full_Name,
             Email_ID: rows[0].Email_ID,
             Contact_no: rows[0].Contact_no,
@@ -377,8 +378,20 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
 });
 
 // SUPPORT DESK
-app.get('/support_desk', (req, res) => {
-    res.sendFile(path.join(__dirname, "./views/support_desk.html")); // it is ejs file
+app.get('/support_desk', async (req, res) => {
+    const [pendingSupport] = await db.execute("SELECT * FROM `support_requests` WHERE `Status` = 'Pending' " );
+    const [verifiedSupport] = await db.execute("SELECT * FROM `support_requests` WHERE `Status` = 'Verified' ");
+    console.log("pending is : ",pendingSupport)
+    console.log("verified is : ",verifiedSupport)
+
+    const authUser = req.session.authUser;
+    const message = req.query.message || '';
+
+    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userIs = authUser?.Role;
+
+    console.log("user is : " , userIs);
+    res.render(path.join(__dirname, "./views/support_desk.ejs"), {verifiedSupport ,pendingSupport, userID, userIs, message }); // it is ejs file
 })
 // MENTORSHIP REQUEST   DO OPTIMIZATION HERE 
 app.post('/mentorship_request', async (req, res) => {
@@ -393,6 +406,12 @@ app.post('/mentorship_request', async (req, res) => {
         consent
     } = req.body;
 
+    // const enroll = authUser.Enrollment;
+    const authUser = req.session.authUser;
+
+    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userIs = authUser?.Role;
+
     try {
         await db.execute(
             "INSERT INTO mentorship_requests (Enrollment_No, Mentorship_Categories, Reason, Mode, consent) VALUES (?, ?, ?, ?, ?)",
@@ -404,7 +423,7 @@ app.post('/mentorship_request', async (req, res) => {
                 consent === 'on' ? 1 : 0
             ]
         );
-        res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions});
+        res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions,userID,userIs});
     } catch (err) {
         console.error(err);
         res.status(500).send("Something went wrong");
@@ -413,15 +432,16 @@ app.post('/mentorship_request', async (req, res) => {
 
 
 
-app.post("/mentorshipSessionPage" , async(req,res) =>{
+app.get("/mentorshipSessionPage" , async(req,res) =>{
     const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session`");
     console.log(mentorshipSessions);
-    res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions});
+    const authUser = req.session.authUser;
 
+    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userIs = authUser?.Role;
+    console.log("console.log uerid is iser user is" , userID , userIs)
+    res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions, userID, userIs});
 })
-
-
-
 // Logout (destroy session and clear cookie)
 app.post('/logout', (req, res, next) => {
 
@@ -441,9 +461,9 @@ app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
         if (rows.length === 0) {
             await db.execute("INSERT INTO `support_requests` (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
                 [Enrollment_No, Request_Title, Request_Description, FilePath, 1]);
-            res.redirect("/support_desk.html?message=Support request submitted successfully"); // THIS NEEDS TO BE .EJS
+            res.redirect("/support_desk?message=Support request submitted successfully"); // THIS NEEDS TO BE .EJS
         } else {
-            res.redirect("/support_desk.html?message=You can only submit one support request at a time");
+            res.redirect("/support_desk?message=You can only submit one support request at a time");
         }
     } catch (err) {
         console.error(err);

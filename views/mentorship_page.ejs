@@ -404,7 +404,7 @@
         <form id="mentorshipForm" action="/mentorship_request" method="post">
           <div class="form-control">
             <label>Enrollment No.</label>
-            <input type="text" name="Enrollment_No" required />
+            <input type="text" name="Enrollment_No" value="<%= userID %>" readonly/>
           </div>
 
           <div class="dropdown">

@@ -754,12 +754,12 @@
                 <p>Empower growth through guidance-connect and mentees for meaningfull learning journeys</p>
             </div>
             <!-- <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Upcoming Mentorship Sessions</h2> -->
-             <form action="/mentorshipSessionPage" method="post">
+             
                 <button id="mentorship_request" type="submit"
                 class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
                 View All
             </button>
-             </form>
+
             
             <!-- <p class="text-xl text-gray-600 mb-12 text-center">Learn directly from experienced alumni</p> -->
              
@@ -1115,9 +1115,10 @@
             btnJoin.addEventListener('click', () => {
                 window.location.href = "/support_desk"
             })
-            // mentorshipRequestBtn.addEventListener('click', () => {
-            //     window.location.href = "/mentorship_page.html";
-            // })
+            mentorshipRequestBtn.addEventListener("click" , ()=>{
+                window.location.href = "/mentorshipSessionPage";
+            })
+            
         }
         if (userType == "student") {
             btnViewJobs.style.display = "block";
@@ -1128,6 +1129,7 @@
             btnViewJobs.style.display = "block";
             profileBtn.style.display = "block";
             btnPostJob.style.display = "block";
+            announcementNoContent.style.display = "none";
         }
         // Profile Modal Logic
         const profileModal = document.getElementById('profileModal');
