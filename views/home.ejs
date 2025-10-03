@@ -1126,10 +1126,15 @@
             announcementNoContent.style.display = "none";
         }
         if (userType == "alumni") {
+            mentorshipRequestBtn.innerText = "My sessions";
             btnViewJobs.style.display = "block";
             profileBtn.style.display = "block";
             btnPostJob.style.display = "block";
             announcementNoContent.style.display = "none";
+
+            mentorshipRequestBtn.addEventListener("click" , ()=>{
+                window.location.href = "/alumniSessionRequest";
+            })
         }
         // Profile Modal Logic
         const profileModal = document.getElementById('profileModal');
