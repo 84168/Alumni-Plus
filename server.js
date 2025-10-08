@@ -81,8 +81,8 @@ app.get("/", async (req, res) => {
             req.session.Enrollment = authUser.Enrollment || null;
             // req.session.ID = autherUser.ID || null  alumni ID is not showing in query and return in req.body 
         }
-        console.log("announcemnets ar : " , mentorshipSession)
-        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser, announcement, mentorshipSession});
+        console.log("announcemnets ar : ", req.session.userType);
+        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser, announcement, mentorshipSession });
 
     } catch (err) {
         console.error(err);
@@ -358,7 +358,191 @@ app.post("/login_check", async (req, res) => {
         res.status(500).send("Server error and in login error");
     }
 });
+app.get("/exitForm/:enrollment", async (req, res) => {
+    const Enrollment = req.params.enrollment;
 
+    const [rows] = await db.execute("SELECT `exit_form` FROM student WHERE Enrollment_No = ?", [Enrollment]);
+    console.log("exit form rows contain : ", rows);
+    const exitFormStatus = rows[0].exit_form;
+
+    res.render(path.join(__dirname, "./views/exit_form.ejs"), { exitFormStatus });
+})
+app.post("/exit_form_submission", async (req, res) => {
+    try {
+        // Helper function to convert undefined to null
+        const nullIfUndefined = (value) => value === undefined || value === '' ? null : value;
+
+        const {
+            fullName,  // Changed from full_name to match form
+            university_rollno,
+            email,
+            phone,
+            date_of_birth,
+            gender,
+            permanent_address,
+            current_address,
+            branch,
+            year_of_education,
+            cgpa,
+            backlog,
+            honors_minor_specialization,
+            project_thesis_title,
+            internship_completed,
+            placed,  // Add this field
+            company_name,
+            job_role,
+            ctc_offered,
+            joining_date,
+            location_of_posting,
+            offer_letter_upload,
+            higherStudies,  // Changed from higherStudies to match form
+            future_course_name,
+            future_university_name,
+            future_country,
+            admission_status,
+            entrepreneurship_plans,
+            govt_exam_prep,
+            other_plans,
+            rate_institution,
+            experience,
+            suggestions,
+            alumni_network,
+            alumni_consent,
+            data_consent,
+            digital_signature,
+            date_of_submission
+        } = req.body;
+
+        const query = `
+      INSERT INTO exit_form (
+        full_name, university_rollno, email, phone, date_of_birth, gender,
+        permanent_address, current_address, branch, year_of_education, cgpa, backlog,
+        honors_minor_specialization, project_thesis_title, internship_completed,
+        company_name, job_role, ctc_offered, joining_date, location_of_posting,
+        offer_letter_upload, future_course_name, future_university_name, future_country,
+        admission_status, entrepreneurship_plans, govt_exam_prep, other_plans,
+        rate_institution, experience, suggestions, alumni_network, alumni_consent,
+        data_consent, digital_signature, date_of_submission
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+        const values = [
+            fullName,  // Changed
+            university_rollno,
+            email,
+            phone,
+            date_of_birth,
+            gender,
+            permanent_address,
+            nullIfUndefined(current_address),
+            branch,
+            year_of_education,
+            cgpa,
+            nullIfUndefined(backlog) || 0,
+            nullIfUndefined(honors_minor_specialization),
+            nullIfUndefined(project_thesis_title),
+            nullIfUndefined(internship_completed),
+            // Only include placement details if placed === 'yes'
+            nullIfUndefined(company_name),
+            nullIfUndefined(job_role),
+            nullIfUndefined(ctc_offered),
+            nullIfUndefined(joining_date),
+            nullIfUndefined(location_of_posting),
+            nullIfUndefined(offer_letter_upload),
+            // Only include higher studies details if higherStudies === 'yes'
+            nullIfUndefined(future_course_name),
+            nullIfUndefined(future_university_name),
+            nullIfUndefined(future_country),
+            nullIfUndefined(admission_status),
+            nullIfUndefined(entrepreneurship_plans),
+            nullIfUndefined(govt_exam_prep),
+            nullIfUndefined(other_plans),
+            rate_institution,
+            nullIfUndefined(experience),
+            nullIfUndefined(suggestions),
+            alumni_network || 0,
+            alumni_consent ? 1 : 0,
+            data_consent ? 1 : 0,
+            digital_signature,
+            date_of_submission
+        ];
+
+        await db.execute(query, values);
+        await db.execute("UPDATE student SET `exit_form` = 1 WHERE `Enrollment_No` = ?", [university_rollno]);
+
+        res.status(200).json({ success: true, message: 'Exit form submitted successfully' });
+    } catch (error) {
+        console.error('Error submitting exit form:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+});
+
+// SUPPORT DESK SHOWING CARD TO STUDENTS
+app.get('/support_desk', async (req, res) => {
+    const [pendingSupport] = await db.execute("SELECT * FROM `support` WHERE `Status` = 'pending' ");
+    const [verifiedSupport] = await db.execute(`SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified' `);
+    console.log("pending is : ", pendingSupport)
+    console.log("verified is : ", verifiedSupport)
+
+    const authUser = req.session.authUser;
+    const message = req.query.message || '';
+
+    const userID = authUser?.Enrollment || authUser?.Alumni_ID || authUser?.Employee_ID || '';
+    const userIs = authUser?.Role;
+    let isSupported = '';
+
+    console.log("user is : ", userIs);
+
+    if (userIs == "alumni") {
+        if (userID != '') {
+            const [rows] = await db.execute("SELECT `needs_supported` FROM alumni WHERE ID = ?", [userID]);
+            isSupported = rows[0]?.needs_supported;
+        }
+    } else if (userIs == "faculty") {
+        if (userID != '') {
+            const [rows] = await db.execute("SELECT `Assigned` FROM faculty WHERE Employee_ID = ?", [userID]);
+            isSupported = rows[0]?.Assigned;
+        }
+    }
+
+    console.log("is supported is :", isSupported)
+    res.render(path.join(__dirname, "./views/support_desk.ejs"), { verifiedSupport, pendingSupport, userID, userIs, message, isSupported }); // it is ejs file
+})
+app.get("/myAssignedSupport/:userID/:supportID", async (req, res) => {
+
+    const userId = req.params.userID;
+    const supportID = req.params.supportID;
+    const authUser = req.session.authUser;
+    const userID = authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userIs = authUser?.Role;
+    // req.session.msg = "";
+    const [pendingSupport] = await db.execute("SELECT * FROM `support` WHERE `Status` = 'pending' ");
+    const [verifiedSupport] = await db.execute(`SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified' `);
+
+
+    const [row] = await db.execute("SELECT needs_supported FROM alumni WHERE ID = ?", [userId]);
+    console.log("suppored row is ", row[0].needs_supported);
+
+    if (row[0].needs_supported == 0) {
+        db.execute("UPDATE support SET status = 'in_progress', alumni_id = ? WHERE id = ?; ", [userID, supportID]);
+        db.execute("UPDATE alumni SET `needs_supported`= 1 WHERE ID = ?", [userId]);
+
+        console.log("userID", userId)
+        // console.log("userID", supportID)
+        // res.render(path.join(__dirname, "./views/support_desk.ejs"), { msg: "Support assigned successfully!" , userID, userIs, pendingSupport, verifiedSupport});
+        res.redirect("/support_desk?message=Support assigned successfully!");
+    } else {
+        //     res.render(path.join(__dirname, "./views/support_desk.ejs"), { msg: "Alumni You are already being supporting a request you are not allowed to support multiple requests at a time" , userID, userIs,pendingSupport,verifiedSupport});
+        res.redirect("/support_desk?message=Alumni You are already being supporting a request you are not allowed to support multiple requests at a time");
+    }
+
+})
+
+app.get("/mysupportings/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log("my supporting id is : ", id);
+    res.redirect("/alumni_supporting.html");
+})
 app.post("/edit_profile", upload.single('Image'), async (req, res) => {
     const ID = req.session.ID;
 
@@ -378,22 +562,7 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
     }
 });
 
-// SUPPORT DESK
-app.get('/support_desk', async (req, res) => {
-    const [pendingSupport] = await db.execute("SELECT * FROM `support_requests` WHERE `Status` = 'Pending' " );
-    const [verifiedSupport] = await db.execute("SELECT * FROM `support_requests` WHERE `Status` = 'Verified' ");
-    console.log("pending is : ",pendingSupport)
-    console.log("verified is : ",verifiedSupport)
 
-    const authUser = req.session.authUser;
-    const message = req.query.message || '';
-
-    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
-    const userIs = authUser?.Role;
-
-    console.log("user is : " , userIs);
-    res.render(path.join(__dirname, "./views/support_desk.ejs"), {verifiedSupport ,pendingSupport, userID, userIs, message }); // it is ejs file
-})
 // MENTORSHIP REQUEST   DO OPTIMIZATION HERE  SHOWING AT MENTORSHIP_PAGE.EJS
 app.post('/mentorship_request', async (req, res) => {
 
@@ -410,7 +579,7 @@ app.post('/mentorship_request', async (req, res) => {
     // const enroll = authUser.Enrollment;
     const authUser = req.session.authUser;
 
-    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userID = authUser?.Enrollment || authUser?.Alumni_ID || '';
     const userIs = authUser?.Role;
 
     try {
@@ -424,7 +593,7 @@ app.post('/mentorship_request', async (req, res) => {
                 consent === 'on' ? 1 : 0
             ]
         );
-        res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions,userID,userIs});
+        res.render(path.join(__dirname, './views/mentorship_page.ejs'), { mentorshipSessions, userID, userIs });
     } catch (err) {
         console.error(err);
         res.status(500).send("Something went wrong");
@@ -433,47 +602,47 @@ app.post('/mentorship_request', async (req, res) => {
 
 
 
-app.get("/mentorshipSessionPage" , async(req,res) =>{
+app.get("/mentorshipSessionPage", async (req, res) => {
     const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
     console.log(mentorshipSessions);
     const authUser = req.session.authUser;
 
-    const userID =  authUser?.Enrollment || authUser?.Alumni_ID || '';
+    const userID = authUser?.Enrollment || authUser?.Alumni_ID || '';
     const userIs = authUser?.Role;
-    console.log("console.log uerid is iser user is" , userID , userIs)
-    res.render(path.join(__dirname, './views/mentorship_page.ejs'),{mentorshipSessions, userID, userIs});
+    console.log("console.log uerid is iser user is", userID, userIs)
+    res.render(path.join(__dirname, './views/mentorship_page.ejs'), { mentorshipSessions, userID, userIs });
 })
 
-app.get("/alumniSessionRequest" , async (req,res)=>{
+app.get("/alumniSessionRequest", async (req, res) => {
     const authUser = req.session.authUser;
     const message = req.session.alertMessage || "";
     req.session.alertMessage = "";
     const userID = authUser?.Alumni_ID;
-    const [sessionReq] = await db.execute("SELECT * FROM `mentorship_session` WHERE Alumni_ID = ?  AND Status = 'Pending'" , [userID]);
+    const [sessionReq] = await db.execute("SELECT * FROM `mentorship_session` WHERE Alumni_ID = ?  AND Status = 'Pending'", [userID]);
 
-    res.render(path.join(__dirname, './views/mentorshipReqtoalumni.ejs'), {sessionReq, alertMessage: message});
+    res.render(path.join(__dirname, './views/mentorshipReqtoalumni.ejs'), { sessionReq, alertMessage: message });
 });
-app.get("/acceptMentorshipRequest/:sessionID" , async(req,res) =>{
+app.get("/acceptMentorshipRequest/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Accepted' WHERE Session_ID = ?" , [sessionID]);
+    await db.execute("UPDATE `mentorship_session` SET Status = 'Accepted' WHERE Session_ID = ?", [sessionID]);
     req.session.alertMessage = "✅ Mentorship request accepted successfully!";
     res.redirect("/alumniSessionRequest",);
 })
-app.get("/rejectMentorshipRequest/:sessionID", async(req,res)=>{
+app.get("/rejectMentorshipRequest/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Rejected' WHERE Session_ID = ?" , [sessionID]);
+    await db.execute("UPDATE `mentorship_session` SET Status = 'Rejected' WHERE Session_ID = ?", [sessionID]);
     req.session.alertMessage = "❌ Mentorship request rejected";
     res.redirect("/alumniSessionRequest");
 })
-app.get("/scheduleAlumniMentorReq/:sessionID" ,async(req,res)=>{
+app.get("/scheduleAlumniMentorReq/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Scheduled' WHERE Session_ID = ?" , [sessionID]);
-    await renderAdminPage(req,res);
+    await db.execute("UPDATE `mentorship_session` SET Status = 'Scheduled' WHERE Session_ID = ?", [sessionID]);
+    await renderAdminPage(req, res);
 
-} )
+})
 // Logout (destroy session and clear cookie)
 app.post('/logout', (req, res, next) => {
 
@@ -489,10 +658,12 @@ app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
     const { Enrollment_No, Request_Title, Request_Description } = req.body;
     const FilePath = req.file?.path;
     try {
-        const [rows] = await db.execute("SELECT `No_of_Request` FROM `support_requests` WHERE Enrollment_No = ?", [Enrollment_No]);
+        const [rows] = await db.execute("SELECT `No of Needs` FROM `support` WHERE student_id = ?", [Enrollment_No]);
         if (rows.length === 0) {
-            await db.execute("INSERT INTO `support_requests` (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
-                [Enrollment_No, Request_Title, Request_Description, FilePath, 1]);
+            // await db.execute("INSERT INTO `support_requests` (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
+            //     [Enrollment_No, Request_Title, Request_Description, FilePath, 1]);
+            await db.execute("INSERT INTO `support` (title,description, student_id,  `No of Needs`) VALUES (? , ? ,?, ?)", // ADD STUDENT EMAIL
+                [Request_Title, Request_Description, Enrollment_No, 1]);
             res.redirect("/support_desk?message=Support request submitted successfully"); // THIS NEEDS TO BE .EJS
         } else {
             res.redirect("/support_desk?message=You can only submit one support request at a time");
@@ -503,15 +674,24 @@ app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
 });
 
 app.post("/HandleSupportRequest", async (req, res) => {
-    const { Enrollment_No, action } = req.body;
+    console.log(req.body)
+    const { Employee_ID, Enrollment_No, action } = req.body;
 
     console.log("Handling support request for:", Enrollment_No, "Action:", action);
 
     try {
         if (action === "approve") {
-            await db.execute("UPDATE support_requests SET Status = 'Verified' WHERE Enrollment_No = ?", [Enrollment_No]);
+            const verifiedAt = new Date();
+            await db.execute(
+                "UPDATE support SET Status = 'verified', faculty_id = ?, verified_at = ? WHERE student_id = ?",
+                [Employee_ID, verifiedAt, Enrollment_No]
+            );
+            await db.execute(
+                "UPDATE faculty SET Assigned = 1 WHERE Employee_ID = ?", [Employee_ID]
+            )
+
         } else if (action === "reject") {
-            await db.execute("UPDATE support_requests SET Status = 'Rejected' WHERE Enrollment_No = ?", [Enrollment_No]);
+            await db.execute("UPDATE support SET Status = 'rejected' WHERE student_id = ?", [Enrollment_No]);
         }
 
         await renderAdminPage(req, res);
@@ -669,13 +849,13 @@ app.post("/schedule-session", async (req, res) => {
     }
 });
 
-app.post("/schedule-session/delete/:id" , async(req,res) =>{
+app.post("/schedule-session/delete/:id", async (req, res) => {
     const id = req.params.id;
     console.log("mentorship dele id is : ", id);
-    try{
-        await db.execute("DELETE FROM `mentorship_session` WHERE Session_ID = ?" ,[id]);
-       await renderAdminPage(req,res);
-    }catch(err){
+    try {
+        await db.execute("DELETE FROM `mentorship_session` WHERE Session_ID = ?", [id]);
+        await renderAdminPage(req, res);
+    } catch (err) {
         console.error(err);
     }
 })
@@ -700,45 +880,45 @@ app.post("/announcement", upload.single('Attachment_Url'), async (req, res) => {
             path,
             Visibility
         ])
-        res.redirect("/admin")   
+        res.redirect("/admin")
     } catch (err) {
         console.error(err)
     }
 });
 
 app.post("/announcement/update/:idx", upload.single('Attachment_Url'), async (req, res) => {
-  const id = req.params.idx;
-  const {Title,Description,Posted_On,Visibility,Important_Links} = req.body;
-  try{
-    console.log("updated values are : " , req.body)
-    console.log("ID is : " , id)
+    const id = req.params.idx;
+    const { Title, Description, Posted_On, Visibility, Important_Links } = req.body;
+    try {
+        console.log("updated values are : ", req.body)
+        console.log("ID is : ", id)
 
-    await db.execute(`
+        await db.execute(`
     UPDATE announcement 
     SET Title = ?, Description = ?, Posted_On = ?, Visibility = ?, Important_Links = ?
     WHERE ID = ?
   `, [
-    Title, Description, Posted_On, Visibility, Important_Links, id
-  ])
+            Title, Description, Posted_On, Visibility, Important_Links, id
+        ])
 
-  await renderAdminPage(req,res);
-  }catch(err){
-    console.error(err)
-  }
+        await renderAdminPage(req, res);
+    } catch (err) {
+        console.error(err)
+    }
 });
 
 app.post("/announcement/delete/:id", async (req, res) => {
     const id = req.params.id;
     try {
         await db.execute("DELETE FROM announcement WHERE ID = ?", [id]);
-        await renderAdminPage(req,res);
+        await renderAdminPage(req, res);
     } catch (error) {
         res.status(500).send("Error deleting announcement.");
     }
 });
 
 // FOR FORM RESUBMISSION ON REFRESH
-app.get("/admin" , async (req,res) =>{
+app.get("/admin", async (req, res) => {
     await renderAdminPage(req, res);
 })
 
@@ -762,15 +942,16 @@ async function renderAdminPage(req, res) {
         const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session");
         const [announcement] = await db.execute("SELECT * FROM announcement");
         const [countUserVerification] = await db.execute("SELECT COUNT(*) AS `Pending_User_Count` FROM `user` WHERE Status = 'Pending';");
-        const [countSupport] = await db.execute("SELECT COUNT(*) AS `pending_count` FROM `support_requests` WHERE Status = 'Pending';");
+        const [countSupport] = await db.execute("SELECT COUNT(*) AS `pending_count` FROM `support` WHERE Status = 'pending';");
         const [countMentorshipReq] = await db.execute("SELECT COUNT(*) AS `pendingMentorship_count` FROM `mentorship_requests` WHERE status = 'Pending';");
         const [row1] = await db.execute("SELECT * FROM user WHERE Status = 'Pending';");
-        const [rows] = await db.execute("SELECT s.*, sr.* FROM student s JOIN support_requests sr ON s.Enrollment_No = sr.Enrollment_No WHERE sr.Status = 'Pending';");
+        const [rows] = await db.execute("SELECT s.*, sr.* FROM student s JOIN support sr ON s.Enrollment_No = sr.student_id WHERE sr.Status = 'Pending';");
         const [mentorshipRequests] = await db.execute(`SELECT s.Full_Name, s.Email_ID, s.Contact_no, s.Enrollment_No,mr.Mentorship_Categories, mr.Reason, mr.Mode, mr.status FROM student s JOIN mentorship_requests mr ON s.Enrollment_No = mr.Enrollment_No`);
         const [interestedAlumni] = await db.execute(`SELECT ID, Full_Name FROM alumni WHERE Mentorship = 1`);
         const [pendingMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Pending'");
         const [acceptedMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Accepted'");
         const [scheduledMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+        const [mentors] = await db.execute("SELECT Employee_ID, Full_Name FROM faculty WHERE Assigned = 0")
 
         req.session.Count = {
             countSupport: countSupport[0].pending_count,
@@ -778,8 +959,8 @@ async function renderAdminPage(req, res) {
             countUserVerification: countUserVerification[0].Pending_User_Count
         };
         console.log("intereste alumni", interestedAlumni);
-        // console.log("User table data ", row1);
-        console.log("mentorshipSessions : ", mentorshipSessions )
+        // // console.log("User table data ", row1);
+        // console.log("mentorshipSessions : ", mentorshipSessions )
 
         res.render(path.join(__dirname, "./views/admin_page"), {
             supportCount: req.session.Count.countSupport || 0,
@@ -793,7 +974,8 @@ async function renderAdminPage(req, res) {
             interestedAlumni,
             pendingMentorship,
             scheduledMentorship,
-            acceptedMentorship
+            acceptedMentorship,
+            mentors
         });
     } catch (err) {
         console.error(err);

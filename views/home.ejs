@@ -676,6 +676,10 @@
 
                 <!-- Action Buttons -->
                 <div class="flex items-center space-x-3">
+                    <button id="exit_form"
+                        class="bg-blue-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition">
+                        Exit Form
+                    </button>
                     <button id="join_network"
                         class="bg-blue-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition">
                         Join Network
@@ -1056,6 +1060,7 @@
         const editProfileBtn = document.getElementById("edit_profile");
         const mentorshipRequestBtn = document.getElementById("mentorship_request");
         const announcementNoContent = document.getElementById("no-content");
+        const exitform = document.getElementById("exit_form");
 
         // Profile Panel Elements
         const btnToggleProfile = document.getElementById('profileToggle');
@@ -1069,7 +1074,7 @@
         profileBtn.style.display = "none";
         alumniListBtn.style.display = "none";
         mentorshipRequestBtn.style.display = "none";
-        
+        exitform.style.display = "none";
 
         // Navigation actions
 
@@ -1092,7 +1097,10 @@
     <% if (authUser) { %> 
         const userName = "<%= authUser.Full_Name %>";
             const userType = "<%= authUser.Role %>";
-            console.log("Logged in as:", userName, "Role:", userType); 
+            const userBatch = "<%=authUser.Batch%>";
+            const userEnrollment = "<%=authUser.Enrollment%>"
+            const employeeID = "<%=authUser.Employee_ID%>"
+            console.log("Logged in as:", userName, "Role:", userType, "batch: ", userBatch); 
     <% } else { %> 
         const userName = null;
             const userType = null;
@@ -1120,10 +1128,27 @@
             })
             
         }
+        if(userType == "faculty"){
+            profileBtn.style.display = "block";
+            // btnJoin.innerText = "Assigned Support's"
+            btnJoin.addEventListener('click' ,()=>{
+                window.location.href = `/support_desk`;
+            })
+
+        }
+
+        // HERE BATCH SHOULD BE AUTOMATICALLY BE UPDATED AFTER EVERY YEAR
         if (userType == "student") {
             btnViewJobs.style.display = "block";
             profileBtn.style.display = "block";
             announcementNoContent.style.display = "none";
+            if( userBatch === "2026"){
+                console.log("i am inside hte studen batch");
+                exitform.style.display = "block";
+                exitform.addEventListener('click' , ()=>{
+                    window.location.href = `/exitForm/${userEnrollment}`;
+                })
+            }
         }
         if (userType == "alumni") {
             mentorshipRequestBtn.innerText = "My sessions";
@@ -1186,7 +1211,7 @@
     });
 
 // ANNOUNCEMENTS 
-   const announcements = <%- JSON.stringify(announcement) %>;
+   const announcements = `<%- JSON.stringify(announcement) %>`;
 
 function createAnnouncementCard(announcement) {
     // Format date if it exists
