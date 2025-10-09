@@ -539,10 +539,26 @@ app.get("/myAssignedSupport/:userID/:supportID", async (req, res) => {
 })
 
 app.get("/mysupportings/:id", async (req, res) => {
-    const id = req.params.id;
-    console.log("my supporting id is : ", id);
-    res.redirect("/alumni_supporting.html");
+    const userId = req.params.id;
+    const authUser = req.session.authUser;
+    const userIs = authUser?.Role;
+    console.log("user role in mysupportings : " , userIs)
+    let mysupportReq = [];
+    if(userIs === "alumni"){
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `alumni_id` = ? AND status = 'in_progress' " , [userId]);
+    }else{
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress' " , [userId]);
+    }
+    const enrollment = mysupportReq[0].student_id;
+    const Employee_ID = mysupportReq[0].faculty_id;
+
+    const [studentData] = await db.execute("SELECT * FROM student WHERE `Enrollment_No` = ?", [enrollment]);
+    const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
+    console.log("my supporting is : ", mysupportReq);
+    res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {mysupportReq ,studentData, facultyData,  userId, userIs});
+   
 })
+
 app.post("/edit_profile", upload.single('Image'), async (req, res) => {
     const ID = req.session.ID;
 
