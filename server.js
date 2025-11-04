@@ -8,13 +8,20 @@ import bodyParser from 'body-parser';
 import multer from 'multer';
 import { dir } from 'console';
 import { ppid } from 'process';
-import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+// import {createServer} from 'http';
+// import {Server} from 'socket.io';
+// import { fileURLToPath } from 'url';
+// import ensureAuthenticated from 'authMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
 const port = 8080;
+// const http = createServer(app);
+// const io = new Server(http);
+// app.use(express.static('public'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
@@ -26,7 +33,8 @@ app.set("view engine", 'ejs');
 app.use('/uploads', express.static('uploads'));
 dotenv.config()
 app.use('/uploads', express.static('uploads'));
-
+app.use(express.static('public'));
+// app.use('/support_desk', ensureAuthenticated);
 // const router = express.Router()
 const otpStore = {}
 
@@ -74,6 +82,7 @@ app.get("/", async (req, res) => {
         const [rows1] = await db.execute("SELECT * FROM `job and internship` LIMIT 3");//job intern data
         const [announcement] = await db.execute("SELECT * FROM `announcement`");
         const [mentorshipSession] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+        console.log("annoucements afre : " , announcement); // correct
 
         const authUser = req.session.authUser || null;
         if (req.session.authUser) {
@@ -549,13 +558,23 @@ app.get("/mysupportings/:id", async (req, res) => {
     }else{
         [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress' " , [userId]);
     }
+
+    if (mysupportReq.length === 0) {
+        return res.send("No active support requests found.");
+    }
+    const supportId = mysupportReq[0].id;
+
     const enrollment = mysupportReq[0].student_id;
     const Employee_ID = mysupportReq[0].faculty_id;
 
     const [studentData] = await db.execute("SELECT * FROM student WHERE `Enrollment_No` = ?", [enrollment]);
     const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
+    const [previousMessages] = await db.execute(
+        "SELECT * FROM conversation WHERE support_id = ? ORDER BY created_at ASC",
+        [supportId]
+    );
     console.log("my supporting is : ", mysupportReq);
-    res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {mysupportReq ,studentData, facultyData,  userId, userIs});
+    res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {mysupportReq ,studentData, facultyData,  userId, userIs, previousMessages, supportId});
    
 })
 

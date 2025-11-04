@@ -742,10 +742,21 @@
                 <div class="chat-section">
                     <div class="chat-container" id="chatContainer">
                         <div class="chat-header">
-                            <div class="chat-avatar">👨‍🏫</div>
+                            <div class="chat-avatar">
+                                <%= userIs==='faculty' ? '👨‍🎓' : '👨‍🏫' %>
+                            </div>
                             <div class="chat-header-text">
-                                <h3>Dr. Sarah Johnson</h3>
-                                <p>Faculty Coordinator • Online</p>
+                                <% if (userIs==='faculty' ) { %>
+                                    <h3>
+                                        <%= studentData[0].Full_Name || 'Student' %>
+                                    </h3>
+                                    <p>Student • Online</p>
+                                    <% } else { %>
+                                        <h3>
+                                            <%= facultyData[0].Full_Name || 'Faculty Coordinator' %>
+                                        </h3>
+                                        <p>Faculty Coordinator • Online</p>
+                                        <% } %>
                             </div>
                         </div>
 
@@ -797,51 +808,117 @@
         </section>
     </div>
 
+    <script src="http://localhost:9000/socket.io/socket.io.js"></script>
     <script>
-        
-
-  // Poll every 5 seconds
-  setInterval(refreshChatMessages, 5000);
-
+        const socket = io("http://localhost:9000");
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
-        const chatMessages = document.getElementById('chatMessages');
+        const chatMessagesContainer = document.getElementById('chatMessages');  // Renamed to avoid conflict
         const emojiBtn = document.getElementById('emojiBtn');
         const emojiPicker = document.getElementById('emojiPicker');
         const attachBtn = document.getElementById('attachBtn');
         const fileInput = document.getElementById('fileInput');
+        const markCompleteBtn = document.getElementById('markComplete');
 
-
+        // Get user data from EJS
+        const userRole = "<%= userIs %>" ;
+        const userId = "<%= userId %>";
+        const supportId = "<%= mysupportReq[0].id %>";
+        const userName = "<%= userIs === 'faculty' ? facultyData[0].Full_Name : 'Alumni' %>";
+        console.log(userRole);
+        // Show/Hide Mark Complete button based on role
         document.addEventListener("DOMContentLoaded", function () {
-            const markComplete = document.getElementById('markComplete');
-            const userIs = "<%= userIs %>";
-
-            if (userIs === 'faculty') {
-                markComplete.style.display = "block";
+            if (userRole === 'faculty') {
+                markCompleteBtn.style.display = "block";
             } else {
-                markComplete.style.display = "none";
+                markCompleteBtn.style.display = "none";
             }
+
+            // Join the support room
+            socket.emit("join-support", supportId);
+
+            // Load previous messages
+            loadPreviousMessages();
         });
+
+        // Load previous chat messages from database
+        function loadPreviousMessages() {
+            const previousMessagesData = <%- JSON.stringify(previousMessages) %>;  // Changed variable name
+
+            // Clear existing messages
+            chatMessagesContainer.innerHTML = '';
+
+            previousMessagesData.forEach(msg => {
+                const messageType = msg.sender_id === userId ? 'sent' : 'received';
+                const time = new Date(msg.created_at).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                addMessageToUI(msg.message, messageType, time);
+            });
+
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+        }
+
         function getCurrentTime() {
             const now = new Date();
             return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         }
 
-        function addMessage(text, type = 'sent') {
+        function addMessageToUI(text, type = 'sent', time = getCurrentTime()) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
             messageDiv.innerHTML = `
-                <div class="message-bubble">
-                    <div class="message-text">${text}</div>
-                    <div class="message-time">
-                        ${getCurrentTime()}
-                        ${type === 'sent' ? '<span class="check-mark">✓✓</span>' : ''}
-                    </div>
+            <div class="message-bubble">
+                <div class="message-text">${escapeHtml(text)}</div>
+                <div class="message-time">
+                    ${time}
+                    ${type === 'sent' ? '<span class="check-mark">✓✓</span>' : ''}
                 </div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            </div>
+        `;
+            chatMessagesContainer.appendChild(messageDiv);
+            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (text) {
+                const messageData = {
+                    supportId: supportId,
+                    senderId: userId,
+                    senderRole: userRole,
+                    senderName: userName,
+                    message: text
+                };
+
+                socket.emit("user-message", messageData);
+                chatInput.value = '';
+            }
+        }
+
+        // Listen for incoming messages
+        socket.on("message", (data) => {
+            const messageType = data.senderId === userId ? 'sent' : 'received';
+            const time = new Date(data.created_at).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            addMessageToUI(data.message, messageType, time);
+        });
+
+        // Error handling
+        socket.on("error", (error) => {
+            alert(error.message);
+        });
 
         sendBtn.addEventListener('click', sendMessage);
         chatInput.addEventListener('keypress', (e) => {
@@ -849,14 +926,6 @@
                 sendMessage();
             }
         });
-
-        function sendMessage() {
-            const text = chatInput.value.trim();
-            if (text) {
-                addMessage(text, 'sent');
-                chatInput.value = '';
-            }
-        }
 
         // Emoji picker
         emojiBtn.addEventListener('click', () => {
@@ -879,7 +948,7 @@
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
-                addMessage(`📎 ${file.name}`, 'sent');
+                addMessageToUI(`📎 ${file.name}`, 'sent');
                 fileInput.value = '';
             }
         });
@@ -892,12 +961,30 @@
         });
 
         // Mark complete function
-        function markComplete(reqId) {
+        markCompleteBtn.addEventListener('click', async function () {
             if (confirm('Are you sure you want to mark this request as complete?')) {
-                alert(`Request ${reqId} has been marked as complete! You can now support another request.`);
-                // Here you would typically make an API call to update the status
+                try {
+                    const response = await fetch(`/mark-complete/${supportId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('Request has been marked as complete! You can now support another request.');
+                        window.location.href = '/';
+                    } else {
+                        alert('Failed to mark request as complete: ' + result.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while marking the request as complete.');
+                }
             }
-        }
+        });
     </script>
 </body>
 
