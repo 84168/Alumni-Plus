@@ -507,10 +507,10 @@ app.get('/support_desk', async (req, res) => {
             const [rows] = await db.execute("SELECT `needs_supported` FROM alumni WHERE ID = ?", [userID]);
             isSupported = rows[0]?.needs_supported;
         }
-    } else if (userIs == "faculty") {
+    } else if (userIs == "student") {
         if (userID != '') {
-            const [rows] = await db.execute("SELECT `Assigned` FROM faculty WHERE Employee_ID = ?", [userID]);
-            isSupported = rows[0]?.Assigned;
+            const [rows] = await db.execute("SELECT `No of Needs` FROM support WHERE student_id = ?", [userID]);
+            isSupported = rows[0]?.["No of Needs"];
         }
     }
 
@@ -556,7 +556,8 @@ app.get("/mysupportings/:id", async (req, res) => {
     if(userIs === "alumni"){
         [mysupportReq] = await db.execute("SELECT * FROM support WHERE `alumni_id` = ? AND status = 'in_progress' " , [userId]);
     }else{
-        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress' " , [userId]);
+        // [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress' " , [userId]);
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `student_id` = ? AND status = 'in_progress' " , [userId]);
     }
 
     if (mysupportReq.length === 0) {
@@ -566,15 +567,17 @@ app.get("/mysupportings/:id", async (req, res) => {
 
     const enrollment = mysupportReq[0].student_id;
     const Employee_ID = mysupportReq[0].faculty_id;
+    const alumniId = mysupportReq[0].alumni_id;
 
     const [studentData] = await db.execute("SELECT * FROM student WHERE `Enrollment_No` = ?", [enrollment]);
-    const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
+    const [alumniData] = await db.execute("SELECT * FROM alumni WHERE `ID` = ?", [alumniId]);
+    // const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
     const [previousMessages] = await db.execute(
         "SELECT * FROM conversation WHERE support_id = ? ORDER BY created_at ASC",
         [supportId]
     );
     console.log("my supporting is : ", mysupportReq);
-    res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {mysupportReq ,studentData, facultyData,  userId, userIs, previousMessages, supportId});
+    res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {mysupportReq ,studentData, alumniData, userId, userIs, previousMessages, supportId});
    
 })
 

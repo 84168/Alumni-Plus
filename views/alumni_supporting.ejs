@@ -592,7 +592,7 @@
         <section id="supportedNeedsSection">
             <div class="section-header">
                 <h2>Your Active Support Request</h2>
-                <p>You can support one request at a time. Complete this request to unlock more opportunities.</p>
+                <!-- <p>You can support one request at a time. Complete this request to unlock more opportunities.</p> -->
             </div>
 
             <div class="main-layout">
@@ -696,29 +696,29 @@
                                     </div>
 
                                     <!-- Assigned Faculty Section -->
-                                    <div class="info-section faculty-section">
+                                    <!-- <div class="info-section faculty-section">
                                         <h4 class="section-title">
                                             <span class="icon">👨‍🏫</span>
                                             Assigned Faculty Coordinator
                                         </h4>
-                                        <%facultyData.forEach((req)=>{%>
+                                        <% //facultyData.forEach((req)=>{%>
                                             <div class="section-content">
                                                 <div class="info-row">
                                                     <span class="label">Faculty Name:</span>
                                                     <span class="value">
-                                                        <%= req.Full_Name || 'N/A' %>
+                                                        <%= //req.Full_Name || 'N/A' %>
                                                     </span>
                                                 </div>
                                                 <div class="info-row">
                                                     <span class="label">Email Address:</span>
                                                     <span class="value">
-                                                        <%= req.Email_ID || 'N/A' %>
+                                                        <%=// req.Email_ID || 'N/A' %>
                                                     </span>
                                                 </div>
                                                 <div class="info-row">
                                                     <span class="label">Contact Number:</span>
                                                     <span class="value">
-                                                        <%= req.contact || 'N/A' %>
+                                                        <%=// req.contact || 'N/A' %>
                                                     </span>
                                                 </div>
                                                 <div class="info-row">
@@ -730,9 +730,9 @@
                                                     <span class="value">SGSITS Indore</span>
                                                 </div>
                                             </div>
-                                            <%})%>
+                                            <%//})%>
 
-                                    </div>
+                                    </div> -->
 
                                     <button id="markComplete">Mark as Complete</button>
                         </div>
@@ -743,19 +743,19 @@
                     <div class="chat-container" id="chatContainer">
                         <div class="chat-header">
                             <div class="chat-avatar">
-                                <%= userIs==='faculty' ? '👨‍🎓' : '👨‍🏫' %>
+                                <%= userIs==='student' ? '👨‍🎓' : '👨‍🏫' %>
                             </div>
                             <div class="chat-header-text">
-                                <% if (userIs==='faculty' ) { %>
+                                <% if (userIs==='student' ) { %>
                                     <h3>
-                                        <%= studentData[0].Full_Name || 'Student' %>
+                                        <%= alumniData[0].Full_Name || 'Alumni' %>
                                     </h3>
-                                    <p>Student • Online</p>
+                                    <p>ALUMNI </p>
                                     <% } else { %>
                                         <h3>
-                                            <%= facultyData[0].Full_Name || 'Faculty Coordinator' %>
+                                            <%= studentData[0].Full_Name || 'Student' %>
                                         </h3>
-                                        <p>Faculty Coordinator • Online</p>
+                                        <p>STUDENT</p>
                                         <% } %>
                             </div>
                         </div>
@@ -824,11 +824,11 @@
         const userRole = "<%= userIs %>" ;
         const userId = "<%= userId %>";
         const supportId = "<%= mysupportReq[0].id %>";
-        const userName = "<%= userIs === 'faculty' ? facultyData[0].Full_Name : 'Alumni' %>";
+        const userName = "<%= userIs === 'student' ? studentData[0].Full_Name : 'Alumni' %>";
         console.log(userRole);
         // Show/Hide Mark Complete button based on role
         document.addEventListener("DOMContentLoaded", function () {
-            if (userRole === 'faculty') {
+            if (userRole === 'alumni') {
                 markCompleteBtn.style.display = "block";
             } else {
                 markCompleteBtn.style.display = "none";

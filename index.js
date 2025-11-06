@@ -61,7 +61,7 @@ app.get("/mysupportings/:id", async (req, res) => {
     if (userIs === "alumni") {
         [mysupportReq] = await db.execute("SELECT * FROM support WHERE `alumni_id` = ? AND status = 'in_progress'", [userId]);
     } else {
-        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress'", [userId]);
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `student_id` = ? AND status = 'in_progress'", [userId]);
     }
     
     if (mysupportReq.length === 0) {
@@ -73,7 +73,7 @@ app.get("/mysupportings/:id", async (req, res) => {
     const Employee_ID = mysupportReq[0].faculty_id;
 
     const [studentData] = await db.execute("SELECT * FROM student WHERE `Enrollment_No` = ?", [enrollment]);
-    const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
+    // const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
     
     // Get previous chat messages
     const [chatMessages] = await db.execute(
@@ -85,7 +85,7 @@ app.get("/mysupportings/:id", async (req, res) => {
     res.render(path.join(__dirname, './views/alumni_supporting.ejs'), {
         mysupportReq,
         studentData,
-        facultyData,
+        // facultyData,
         userId,
         userIs,
         chatMessages,

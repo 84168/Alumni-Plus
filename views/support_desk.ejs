@@ -973,11 +973,11 @@
                     <span><strong>Submitted On:</strong>
                       <%= req.created_at %>
                     </span>
-                    <span><strong>Assigned Faculty:</strong><br />
-                      <%= req.Full_Name %><br />
-                        <%= req.Email_ID %><br />
-                          <%= req.contact %>
-                    </span>
+                    <!-- <span><strong>Assigned Faculty:</strong><br />
+                      <%= // req.Full_Name %><br />
+                        <%= // req.Email_ID %><br />
+                          <%= // req.contact %>
+                    </span> -->
                   </div>
                   <button onclick="wantToSupport(`<%=userID%>` , `<%=req.id%>`, '')">I want to
                     support</button>
@@ -1008,10 +1008,10 @@
                             <%= new Date(req.created_at).toLocaleDateString('en-GB') %>
 
                           </span>
-                          <span><strong>Assigned Faculty: </strong>
-                            <%= req.Full_Name %>
+                          <!-- <span><strong>Assigned Faculty: </strong>
+                            <%= // req.Full_Name %>
 
-                          </span>
+                          </span> -->
                         </div>
 
                     </article>
@@ -1051,7 +1051,7 @@
                   <span><strong>Submitted On:</strong>
                     <%=req.created_at%>
                   </span>
-                  <!-- <span><strong>Extra Info:</strong> <%=req.Extra_Info || 'No additional information'%></span> -->
+                  <!-- <span><strong>Extra Info:</strong> <%= // req.Extra_Info || 'No additional information'%></span> -->
                 </div>
               </div>
             </article>
@@ -1093,10 +1093,15 @@
     }
 
     if (isSupported == 1) {
-      mysupportBtn.style.display = "block";
-      mysupportBtn.addEventListener("click" , ()=>{
+      addBtn.style.display = "block";
+      addBtn.innerText = "My Supporting";
+      addBtn.addEventListener("click" , ()=>{
         window.location.href = `/mysupportings/${userID}`;
       })
+      // mysupportBtn.style.display = "block";
+      // mysupportBtn.addEventListener("click" , ()=>{
+      //   window.location.href = `/mysupportings/${userID}`;
+      // })
     }
 
     if(userIs === "faculty"){
