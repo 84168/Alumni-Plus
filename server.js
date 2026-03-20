@@ -10,6 +10,8 @@ import { dir } from 'console';
 import { ppid } from 'process';
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import paymentRoutes from './routes/payment.js';
+
 // import {createServer} from 'http';
 // import {Server} from 'socket.io';
 // import { fileURLToPath } from 'url';
@@ -36,6 +38,11 @@ app.use('/uploads', express.static('uploads'));
 app.use(express.static('public'));
 // app.use('/support_desk', ensureAuthenticated);
 // const router = express.Router()
+
+// Payment routes
+app.use('/api', paymentRoutes);
+
+
 const otpStore = {}
 
 const storage = multer.diskStorage({
@@ -78,10 +85,10 @@ app.get("/", async (req, res) => {
 
     // res.send("hello world");
     try {
-        const [rows] = await db.execute(`SELECT * FROM alumni LIMIT 4;`);// alumni data to show at home
+        const [rows] = await db.execute("SELECT * FROM alumni LIMIT 4");// alumni data to show at home
         const [rows1] = await db.execute("SELECT * FROM `job and internship` LIMIT 3");//job intern data
-        const [announcement] = await db.execute("SELECT * FROM `announcement`");
-        const [mentorshipSession] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+        const [announcement] = await db.execute("SELECT * FROM announcement");
+        const [mentorshipSession] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
         console.log("annoucements afre : " , announcement); // correct
 
         const authUser = req.session.authUser || null;
@@ -125,12 +132,12 @@ app.post("/send-otp", async (req, res) => {
         console.log(process.env.EMAIL_USER);
         console.log(process.env.EMAIL_PASS)
         // Email content
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Your Alumni Portal OTP Code",
-            text: `Your OTP is ${otp}. It will expire in 5 minutes.`
-        };
+        // const mailOptions = {
+        //     from: process.env.EMAIL_USER,
+        //     to: email,
+        //     subject: "Your Alumni Portal OTP Code",
+        //     text: Your OTP is ${otp}. It will expire in 5 minutes.
+        // };
 
         // Send email
         await transporter.sendMail(mailOptions);
@@ -186,7 +193,7 @@ app.get("/job_read", async (req, res) => {
 
 app.get("/alumni_read", async (req, res) => {
     try {
-        const [rows] = await db.execute("SELECT * FROM `alumni` LIMIT 10");
+        const [rows] = await db.execute("SELECT * FROM alumni LIMIT 10");
         res.render(path.join(__dirname, './views/alumni_read.ejs'), { rows });
     } catch (err) {
         console.error(err);
@@ -250,7 +257,7 @@ app.post("/job_post", async (req, res) => {
     try {
         console.log("hell");
         await db.execute(`
-            INSERT INTO \`job and internship\` 
+            INSERT INTO \job and internship\ 
             (Title, Type, Location, Duration, Description, Requirement, Benefits, Deadline, Form_Link) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
@@ -289,7 +296,7 @@ app.post("/user_data", upload.single('User_ID'), async (req, res) => {
     const User_ID = req.file.path || null;
 
     try {
-        await db.execute(`INSERT INTO user (Full_Name,Enrollment_No, Contact_No, Email_ID, Course, Role, Batch, Password, User_ID) VALUES (?,?,?,?,?,?,?,?,?)`, [
+        await db.execute("INSERT INTO user (`Full_Name,Enrollment_No, Contact_No, Email_ID, Course, Role, Batch, Password, User_ID`) VALUES (?,?,?,?,?,?,?,?,?)", [
 
             Full_Name,
             Enrollment_No,
@@ -370,7 +377,7 @@ app.post("/login_check", async (req, res) => {
 app.get("/exitForm/:enrollment", async (req, res) => {
     const Enrollment = req.params.enrollment;
 
-    const [rows] = await db.execute("SELECT `exit_form` FROM student WHERE Enrollment_No = ?", [Enrollment]);
+    const [rows] = await db.execute("SELECT exit_form FROM student WHERE Enrollment_No = ?", [Enrollment]);
     console.log("exit form rows contain : ", rows);
     const exitFormStatus = rows[0].exit_form;
 
@@ -477,7 +484,7 @@ app.post("/exit_form_submission", async (req, res) => {
         ];
 
         await db.execute(query, values);
-        await db.execute("UPDATE student SET `exit_form` = 1 WHERE `Enrollment_No` = ?", [university_rollno]);
+        await db.execute("UPDATE student SET exit_form = 1 WHERE Enrollment_No = ?", [university_rollno]);
 
         res.status(200).json({ success: true, message: 'Exit form submitted successfully' });
     } catch (error) {
@@ -488,7 +495,7 @@ app.post("/exit_form_submission", async (req, res) => {
 
 // SUPPORT DESK SHOWING CARD TO STUDENTS
 app.get('/support_desk', async (req, res) => {
-    const [pendingSupport] = await db.execute("SELECT * FROM `support` WHERE `Status` = 'pending' ");
+    const [pendingSupport] = await db.execute("SELECT * FROM support WHERE Status = 'pending' ");
     const [verifiedSupport] = await db.execute(`SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified' `);
     console.log("pending is : ", pendingSupport)
     console.log("verified is : ", verifiedSupport)
@@ -504,7 +511,7 @@ app.get('/support_desk', async (req, res) => {
 
     if (userIs == "alumni") {
         if (userID != '') {
-            const [rows] = await db.execute("SELECT `needs_supported` FROM alumni WHERE ID = ?", [userID]);
+            const [rows] = await db.execute("SELECT needs_supported FROM alumni WHERE ID = ?", [userID]);
             isSupported = rows[0]?.needs_supported;
         }
     } else if (userIs == "student") {
@@ -525,8 +532,8 @@ app.get("/myAssignedSupport/:userID/:supportID", async (req, res) => {
     const userID = authUser?.Enrollment || authUser?.Alumni_ID || '';
     const userIs = authUser?.Role;
     // req.session.msg = "";
-    const [pendingSupport] = await db.execute("SELECT * FROM `support` WHERE `Status` = 'pending' ");
-    const [verifiedSupport] = await db.execute(`SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified' `);
+    const [pendingSupport] = await db.execute("SELECT * FROM support WHERE Status = 'pending' ");
+    const [verifiedSupport] = await db.execute(`SELECT support., faculty. FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified' `);
 
 
     const [row] = await db.execute("SELECT needs_supported FROM alumni WHERE ID = ?", [userId]);
@@ -534,7 +541,7 @@ app.get("/myAssignedSupport/:userID/:supportID", async (req, res) => {
 
     if (row[0].needs_supported == 0) {
         db.execute("UPDATE support SET status = 'in_progress', alumni_id = ? WHERE id = ?; ", [userID, supportID]);
-        db.execute("UPDATE alumni SET `needs_supported`= 1 WHERE ID = ?", [userId]);
+        db.execute("UPDATE alumni SET needs_supported= 1 WHERE ID = ?", [userId]);
 
         console.log("userID", userId)
         // console.log("userID", supportID)
@@ -554,14 +561,14 @@ app.get("/mysupportings/:id", async (req, res) => {
     console.log("user role in mysupportings : " , userIs)
     let mysupportReq = [];
     if(userIs === "alumni"){
-        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `alumni_id` = ? AND status = 'in_progress' " , [userId]);
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE alumni_id = ? AND status = 'in_progress' " , [userId]);
     }else{
-        // [mysupportReq] = await db.execute("SELECT * FROM support WHERE `faculty_id` = ? AND status = 'in_progress' " , [userId]);
-        [mysupportReq] = await db.execute("SELECT * FROM support WHERE `student_id` = ? AND status = 'in_progress' " , [userId]);
+        // [mysupportReq] = await db.execute("SELECT * FROM support WHERE faculty_id = ? AND status = 'in_progress' " , [userId]);
+        [mysupportReq] = await db.execute("SELECT * FROM support WHERE student_id = ? AND status = 'in_progress' " , [userId]);
     }
 
     if (mysupportReq.length === 0) {
-        return res.send("No active support requests found.");
+        return res.sendFile(path.join(__dirname, './public/no_support.html'))
     }
     const supportId = mysupportReq[0].id;
 
@@ -569,9 +576,9 @@ app.get("/mysupportings/:id", async (req, res) => {
     const Employee_ID = mysupportReq[0].faculty_id;
     const alumniId = mysupportReq[0].alumni_id;
 
-    const [studentData] = await db.execute("SELECT * FROM student WHERE `Enrollment_No` = ?", [enrollment]);
-    const [alumniData] = await db.execute("SELECT * FROM alumni WHERE `ID` = ?", [alumniId]);
-    // const [facultyData] = await db.execute("SELECT * FROM faculty WHERE `Employee_ID` = ? ", [Employee_ID]);
+    const [studentData] = await db.execute("SELECT * FROM student WHERE Enrollment_No = ?", [enrollment]);
+    const [alumniData] = await db.execute("SELECT * FROM alumni WHERE ID = ?", [alumniId]);
+    // const [facultyData] = await db.execute("SELECT * FROM faculty WHERE Employee_ID = ? ", [Employee_ID]);
     const [previousMessages] = await db.execute(
         "SELECT * FROM conversation WHERE support_id = ? ORDER BY created_at ASC",
         [supportId]
@@ -590,7 +597,7 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
     try {
 
         let [rows] = await db.execute(
-            `UPDATE alumni SET Full_Name = ?, Contact_no = ?, Email_ID = ?, Bio = ?, Image = ? WHERE ID = ?`,
+            "UPDATE alumni SET Full_Name = ?, Contact_no = ?, Email_ID = ?, Bio = ?, Image = ? WHERE ID = ?",
             [Full_Name, Contact_no, Email_ID, Bio, Image, ID]
         );
         res.send("Profile updated successfully");
@@ -604,7 +611,7 @@ app.post("/edit_profile", upload.single('Image'), async (req, res) => {
 // MENTORSHIP REQUEST   DO OPTIMIZATION HERE  SHOWING AT MENTORSHIP_PAGE.EJS
 app.post('/mentorship_request', async (req, res) => {
 
-    const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+    const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
     console.log("Mentorship Request Data : ", req.body)
     const {
         Enrollment_No,
@@ -641,7 +648,7 @@ app.post('/mentorship_request', async (req, res) => {
 
 
 app.get("/mentorshipSessionPage", async (req, res) => {
-    const [mentorshipSessions] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+    const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
     console.log(mentorshipSessions);
     const authUser = req.session.authUser;
 
@@ -656,28 +663,28 @@ app.get("/alumniSessionRequest", async (req, res) => {
     const message = req.session.alertMessage || "";
     req.session.alertMessage = "";
     const userID = authUser?.Alumni_ID;
-    const [sessionReq] = await db.execute("SELECT * FROM `mentorship_session` WHERE Alumni_ID = ?  AND Status = 'Pending'", [userID]);
+    const [sessionReq] = await db.execute("SELECT * FROM mentorship_session WHERE Alumni_ID = ?  AND Status = 'Pending'", [userID]);
 
     res.render(path.join(__dirname, './views/mentorshipReqtoalumni.ejs'), { sessionReq, alertMessage: message });
 });
 app.get("/acceptMentorshipRequest/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Accepted' WHERE Session_ID = ?", [sessionID]);
+    await db.execute("UPDATE mentorship_session SET Status = 'Accepted' WHERE Session_ID = ?", [sessionID]);
     req.session.alertMessage = "✅ Mentorship request accepted successfully!";
     res.redirect("/alumniSessionRequest",);
 })
 app.get("/rejectMentorshipRequest/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Rejected' WHERE Session_ID = ?", [sessionID]);
+    await db.execute("UPDATE mentorship_session SET Status = 'Rejected' WHERE Session_ID = ?", [sessionID]);
     req.session.alertMessage = "❌ Mentorship request rejected";
     res.redirect("/alumniSessionRequest");
 })
 app.get("/scheduleAlumniMentorReq/:sessionID", async (req, res) => {
     const sessionID = req.params.sessionID;
 
-    await db.execute("UPDATE `mentorship_session` SET Status = 'Scheduled' WHERE Session_ID = ?", [sessionID]);
+    await db.execute("UPDATE mentorship_session SET Status = 'Scheduled' WHERE Session_ID = ?", [sessionID]);
     await renderAdminPage(req, res);
 
 })
@@ -696,11 +703,11 @@ app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
     const { Enrollment_No, Request_Title, Request_Description } = req.body;
     const FilePath = req.file?.path;
     try {
-        const [rows] = await db.execute("SELECT `No of Needs` FROM `support` WHERE student_id = ?", [Enrollment_No]);
+        const [rows] = await db.execute("SELECT `No of Needs` FROM support WHERE student_id = ?", [Enrollment_No]);
         if (rows.length === 0) {
-            // await db.execute("INSERT INTO `support_requests` (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
+            // await db.execute("INSERT INTO support_requests (Enrollment_No , Request_Title, Request_Description, ID_Proof, No_of_Request ) VALUES (? , ? ,? ,?, ?)",
             //     [Enrollment_No, Request_Title, Request_Description, FilePath, 1]);
-            await db.execute("INSERT INTO `support` (title,description, student_id,  `No of Needs`) VALUES (? , ? ,?, ?)", // ADD STUDENT EMAIL
+            await db.execute("INSERT INTO support (title,description, student_id,  No of Needs) VALUES (? , ? ,?, ?)", // ADD STUDENT EMAIL
                 [Request_Title, Request_Description, Enrollment_No, 1]);
             res.redirect("/support_desk?message=Support request submitted successfully"); // THIS NEEDS TO BE .EJS
         } else {
@@ -761,7 +768,7 @@ app.post("/HandleUserRequest", async (req, res) => {
             await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
             if (user.Role === "Student") {
                 await db.execute(
-                    `INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    "INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     [
                         user.Enrollment_No,
                         user.Full_Name,
@@ -774,7 +781,7 @@ app.post("/HandleUserRequest", async (req, res) => {
                 );
             } else if (user.Role === "Alumni") {
                 await db.execute(
-                    `INSERT INTO alumni (Full_Name, Contact_No, Course,  Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?)`,
+                    "INSERT INTO alumni (Full_Name, Contact_No, Course,  Email_ID,  Batch, Password) VALUES (?, ?, ?, ?, ?, ?)",
                     [
                         user.Full_Name,
                         user.Contact_No,
@@ -891,7 +898,7 @@ app.post("/schedule-session/delete/:id", async (req, res) => {
     const id = req.params.id;
     console.log("mentorship dele id is : ", id);
     try {
-        await db.execute("DELETE FROM `mentorship_session` WHERE Session_ID = ?", [id]);
+        await db.execute("DELETE FROM mentorship_session WHERE Session_ID = ?", [id]);
         await renderAdminPage(req, res);
     } catch (err) {
         console.error(err);
@@ -962,7 +969,7 @@ app.get("/admin", async (req, res) => {
 
 app.post("/delete/:id", async (req, res) => {
     const id = req.params.id;
-    await db.execute('DELETE FROM `job and internship` WHERE ID = ?', [id]);
+    await db.execute('DELETE FROM job and internship WHERE ID = ?', [id]);
     res.redirect("/job_read");
 })
 
@@ -979,16 +986,16 @@ async function renderAdminPage(req, res) {
     try {
         const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session");
         const [announcement] = await db.execute("SELECT * FROM announcement");
-        const [countUserVerification] = await db.execute("SELECT COUNT(*) AS `Pending_User_Count` FROM `user` WHERE Status = 'Pending';");
-        const [countSupport] = await db.execute("SELECT COUNT(*) AS `pending_count` FROM `support` WHERE Status = 'pending';");
-        const [countMentorshipReq] = await db.execute("SELECT COUNT(*) AS `pendingMentorship_count` FROM `mentorship_requests` WHERE status = 'Pending';");
+        const [countUserVerification] = await db.execute("SELECT COUNT(*) AS Pending_User_Count FROM user WHERE Status = 'Pending';");
+        const [countSupport] = await db.execute("SELECT COUNT(*) AS pending_count FROM support WHERE Status = 'pending';");
+        const [countMentorshipReq] = await db.execute("SELECT COUNT(*) AS pendingMentorship_count FROM mentorship_requests WHERE status = 'Pending';");
         const [row1] = await db.execute("SELECT * FROM user WHERE Status = 'Pending';");
         const [rows] = await db.execute("SELECT s.*, sr.* FROM student s JOIN support sr ON s.Enrollment_No = sr.student_id WHERE sr.Status = 'Pending';");
-        const [mentorshipRequests] = await db.execute(`SELECT s.Full_Name, s.Email_ID, s.Contact_no, s.Enrollment_No,mr.Mentorship_Categories, mr.Reason, mr.Mode, mr.status FROM student s JOIN mentorship_requests mr ON s.Enrollment_No = mr.Enrollment_No`);
-        const [interestedAlumni] = await db.execute(`SELECT ID, Full_Name FROM alumni WHERE Mentorship = 1`);
-        const [pendingMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Pending'");
-        const [acceptedMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Accepted'");
-        const [scheduledMentorship] = await db.execute("SELECT * FROM `mentorship_session` WHERE Status = 'Scheduled'");
+        const [mentorshipRequests] = await db.execute("SELECT s.Full_Name, s.Email_ID, s.Contact_no, s.Enrollment_No,mr.Mentorship_Categories, mr.Reason, mr.Mode, mr.status FROM student s JOIN mentorship_requests mr ON s.Enrollment_No = mr.Enrollment_No");
+        const [interestedAlumni] = await db.execute("SELECT ID, Full_Name FROM alumni WHERE Mentorship = 1");
+        const [pendingMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Pending'");
+        const [acceptedMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Accepted'");
+        const [scheduledMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
         const [mentors] = await db.execute("SELECT Employee_ID, Full_Name FROM faculty WHERE Assigned = 0")
 
         req.session.Count = {

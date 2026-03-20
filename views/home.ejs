@@ -9,212 +9,606 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Custom styles for hover effects */
-        #profile-btn:hover,
-        #mobile-profile-btn:hover {
-            color: #3b82f6;
-            transform: scale(1.1);
+        /* ROOT VARIABLES FOR CONSISTENT THEME */
+        :root {
+            --primary-color: #1e40af;
+            --primary-hover: #1e3a8a;
+            --secondary-color: #7c3aed;
+            --accent-color: #0891b2;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* GLOBAL STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            color: var(--text-primary);
+            background: linear-gradient(to bottom, #f0f4f8 0%, #ffffff 100%);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* HEADER ENHANCEMENT */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* LOGO ENHANCEMENT */
+        header .fa-graduation-cap {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(30, 64, 175, 0.2));
+        }
+
+        header .text-2xl {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* NAVIGATION LINKS */
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #1e40af, #7c3aed);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
         }
 
         .nav-link:hover {
-            color: #3b82f6;
+            color: #1e40af;
             transform: translateY(-2px);
         }
 
-        .join-btn:hover {
-            background-color: #1d4ed8;
+        /* BUTTON ENHANCEMENTS */
+        button, .action-btn {
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before, .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before, .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .join-btn, .signup-btn, #exit_form, #join_network, #log-in {
+            box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.25);
+        }
+
+        .join-btn:hover, #exit_form:hover, #join_network:hover, #log-in:hover {
+            background-color: #1e3a8a;
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 24px 0 rgba(30, 64, 175, 0.35);
         }
 
         .signup-btn:hover {
-            background-color: #16a34a;
+            background-color: #047857;
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 24px 0 rgba(5, 150, 105, 0.35);
         }
 
-        /* Smooth transitions */
-        .nav-link,
-        .join-btn,
-        .signup-btn {
-            transition: all 0.3s ease;
+        /* PROFILE ICON */
+        #profile-btn, #mobile-profile-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        /* Mobile menu animation */
-        @keyframes slideIn {
+        #profile-btn:hover, #mobile-profile-btn:hover {
+            color: #1e40af;
+            transform: scale(1.15);
+            filter: drop-shadow(0 4px 8px rgba(30, 64, 175, 0.3));
+        }
+
+        /* HERO SECTION */
+        #home {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 50%, #fef3c7 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        #home::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(30, 64, 175, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -20px) rotate(5deg); }
+            50% { transform: translate(-20px, 20px) rotate(-5deg); }
+            75% { transform: translate(20px, 20px) rotate(3deg); }
+        }
+
+        #home .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        #home h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #0891b2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        #home img {
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: fadeInRight 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
             from {
-                transform: translateX(100%);
+                opacity: 0;
+                transform: translateY(30px);
             }
-
             to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
                 transform: translateX(0);
             }
         }
 
-        .mobile-menu {
-            animation: slideIn 0.3s ease-out;
+        /* TYPING TEXT */
+        #typing-text {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            white-space: pre-line;
+            min-height: 100px;
         }
 
+        /* SECTION STYLING */
+        section {
+            padding: 5rem 1rem;
+            position: relative;
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
+        }
+
+        /* PAGE HEADER */
         .page-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .page-header h1 {
-            font-size: 2.5em;
-            font-weight: 600;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .page-header p {
-            color: #6b7280;
-            font-size: 1.1em;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
+        /* CONTAINER ENHANCEMENT */
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             height: 600px;
             position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .announcements-container {
             height: 100%;
             overflow-y: auto;
-            padding: 40px;
+            padding: 3rem;
         }
 
+        /* CUSTOM SCROLLBAR */
         .announcements-container::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         .announcements-container::-webkit-scrollbar-track {
             background: #f1f5f9;
-            border-radius: 4px;
+            border-radius: 10px;
+            margin: 10px 0;
         }
 
         .announcements-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 4px;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
         }
 
         .announcements-container::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #6d28d9 100%);
         }
 
+        /* GRID ENHANCEMENT */
         .announcements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
+            gap: 2rem;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        .announcement-card {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* CARD ENHANCEMENTS */
+        .announcement-card, .alumni-card, .mentorship-card, .job-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            border: 2px solid transparent;
+            border: 1px solid var(--border-color);
         }
 
-        .announcement-card::before {
+        .announcement-card::before, .alumni-card::before, .mentorship-card::before, .job-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #1e40af, #7c3aed);
             transition: height 0.3s ease;
         }
 
-        .announcement-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-color: #667eea;
+        .mentorship-card::before {
+            background: linear-gradient(90deg, #059669, #10b981);
         }
 
-        .announcement-card:hover::before {
+        .job-card::before {
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+        }
+
+        .announcement-card:hover, .alumni-card:hover, .mentorship-card:hover, .job-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-color: #1e40af;
+        }
+
+        .mentorship-card:hover {
+            border-color: #059669;
+        }
+
+        .job-card:hover {
+            border-color: #d97706;
+        }
+
+        .announcement-card:hover::before, .alumni-card:hover::before, 
+        .mentorship-card:hover::before, .job-card:hover::before {
             height: 6px;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
+        /* CARD DATE */
         .card-date {
-            background: #e0e7ff;
-            color: #3730a3;
-            padding: 6px 12px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            color: #4338ca;
+            padding: 0.5rem 1rem;
             border-radius: 12px;
-            font-size: 0.85em;
+            font-size: 0.875rem;
             font-weight: 600;
+            box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
         }
 
+        /* CARD TITLE */
         .card-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
         }
 
+        /* CARD DESCRIPTION */
         .card-description {
-            color: #4b5563;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
         }
 
-        .card-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-top: 15px;
-            border-top: 1px solid #f3f4f6;
-        }
-
+        /* READ MORE BUTTON */
         .read-more {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9em;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
         }
 
         .read-more:hover {
-            transform: translateX(3px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
         }
 
-        /* Modal Styles */
+        /* ALUMNI CARD IMAGES */
+        .alumni-card img, .mentorship-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.25rem auto;
+            border: 4px solid #e0e7ff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .mentorship-card img {
+            border-color: #d1fae5;
+        }
+
+        .alumni-card:hover img, .mentorship-card:hover img {
+            transform: scale(1.1);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ALUMNI CARD TEXT */
+        .alumni-card h3, .mentorship-card h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .alumni-card p, .mentorship-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* JOB CARD SPECIFIC */
+        .job-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .job-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .job-card p strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .job-card .deadline {
+            color: var(--danger-color);
+            font-weight: 700;
+            background: rgba(220, 38, 38, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        /* ACTION BUTTONS */
+        .action-btn {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem;
+            box-shadow: 0 4px 14px rgba(30, 64, 175, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.4);
+        }
+
+        .action-btn.green {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+        }
+
+        .action-btn.green:hover {
+            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.4);
+        }
+
+        .action-btn.orange {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+        }
+
+        .action-btn.orange:hover {
+            box-shadow: 0 8px 24px rgba(217, 119, 6, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: var(--text-primary);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn.secondary:hover {
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        /* BUTTON CONTAINER */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* NO CONTENT MESSAGE */
+        .no-content {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border-radius: 16px;
+            border: 2px dashed #d1d5db;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .no-content h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* MODAL ENHANCEMENTS */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -232,14 +626,15 @@
 
         .modal {
             background: white;
-            border-radius: 20px;
-            max-width: 600px;
+            border-radius: 24px;
+            max-width: 650px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             transform: scale(0.9) translateY(30px);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .modal-overlay.active .modal {
@@ -247,9 +642,9 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
             color: white;
-            padding: 30px;
+            padding: 2.5rem;
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -260,9 +655,9 @@
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            font-size: 1.5em;
-            width: 40px;
-            height: 40px;
+            font-size: 1.75rem;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -270,6 +665,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            backdrop-filter: blur(10px);
         }
 
         .modal-close:hover {
@@ -278,364 +674,560 @@
         }
 
         .modal-title {
-            font-size: 1.8em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-right: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-right: 1.5rem;
+            line-height: 1.3;
         }
 
         .modal-date {
             background: rgba(255, 255, 255, 0.2);
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.9em;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .modal-body {
-            padding: 30px;
+            padding: 2.5rem;
         }
 
         .modal-description {
-            color: #4b5563;
-            line-height: 1.8;
-            font-size: 1.1em;
-            margin-bottom: 25px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
         }
 
         .modal-actions {
             display: flex;
-            gap: 15px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
         }
 
-        .action-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .action-btn.secondary {
-            background: #f3f4f6;
-            color: #374151;
-        }
-
-        .action-btn.secondary:hover {
-            background: #e5e7eb;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        }
-
+        /* TAGS */
         .tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 20px;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
         .tag {
-            background: #e0e7ff;
-            color: #3730a3;
-            padding: 4px 12px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            color: #4338ca;
+            padding: 0.5rem 1rem;
             border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+        }
+
+        /* PROFILE MODAL */
+        #profileModal .bg-white {
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        #profileModal h2 {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #profileModal{
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        #profileModal input, #profileModal textarea {
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        #profileModal input:focus, #profileModal textarea:focus {
+            outline: none;
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* MOBILE MENU ANIMATION */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .mobile-menu {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            #home h1 {
+                font-size: 2.5rem;
+            }
         }
 
         @media (max-width: 768px) {
             .container {
                 height: 70vh;
+                border-radius: 16px;
             }
 
             .announcements-container {
-                padding: 20px;
+                padding: 1.5rem;
             }
 
             .announcements-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
             .page-header h1 {
-                font-size: 2em;
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            #home h1 {
+                font-size: 2rem;
             }
 
             .modal {
                 margin: 10px;
                 max-height: 95vh;
+                border-radius: 20px;
             }
 
-            .modal-header,
-            .modal-body {
-                padding: 20px;
+            .modal-header, .modal-body {
+                padding: 1.5rem;
+            }
+
+            .modal-title {
+                font-size: 1.5rem;
             }
 
             .modal-actions {
                 flex-direction: column;
             }
-        }
-
-        .alumni-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .alumni-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: height 0.3s ease;
-        }
-
-        .alumni-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-color: #667eea;
-        }
-
-        .alumni-card:hover::before {
-            height: 6px;
-        }
-
-        .alumni-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 15px auto;
-            border: 3px solid #e0e7ff;
-        }
-
-        .alumni-card h3 {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .alumni-card p {
-            color: #6b7280;
-            font-size: 0.9em;
-        }
-
-        /* Mentorship Card Styles */
-        .mentorship-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-            text-align: center;
-        }
-
-        .mentorship-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #10b981, #059669);
-            transition: height 0.3s ease;
-        }
-
-        .mentorship-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-color: #10b981;
-        }
-
-        .mentorship-card:hover::before {
-            height: 6px;
-        }
-
-        .mentorship-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 15px auto;
-            border: 3px solid #d1fae5;
-        }
-
-        .mentorship-card h3 {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .mentorship-card p {
-            color: #6b7280;
-            font-size: 0.9em;
-            margin-bottom: 4px;
-        }
-
-        /* Job Card Styles */
-        .job-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            transition: height 0.3s ease;
-        }
-
-        .job-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-color: #f59e0b;
-        }
-
-        .job-card:hover::before {
-            height: 6px;
-        }
-
-        .job-card h3 {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 15px;
-        }
-
-        .job-card p {
-            color: #4b5563;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .job-card p strong {
-            color: #1f2937;
-        }
-
-        .job-card .deadline {
-            color: #dc2626;
-            font-weight: 600;
-        }
-
-        /* Button Styles */
-        .action-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 10px 5px;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .action-btn.green {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .action-btn.green:hover {
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .action-btn.orange {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-
-        .action-btn.orange:hover {
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .no-content {
-            text-align: center;
-            color: #6b7280;
-            font-size: 1.1em;
-            padding: 40px;
-            background: #f9fafb;
-            border-radius: 10px;
-            border: 2px dashed #d1d5db;
-        }
-
-        @media (max-width: 768px) {
-            .ancontainer {
-                margin-bottom: 20px;
-            }
-
-            .announcements-container {
-                padding: 20px;
-            }
-
-            .announcements-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .anpage-header h1 {
-                font-size: 2em;
-            }
 
             .button-container {
                 justify-content: center;
             }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            .alumni-card img, .mentorship-card img {
+                width: 80px;
+                height: 80px;
+            }
         }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            #home h1 {
+                font-size: 1.75rem;
+            }
+
+            .action-btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .modal-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* SMOOTH TRANSITIONS */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* PAYMENT FORM ENHANCEMENTS */
+        .no-content input[type="number"] {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .amount-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+        }
+
+        .amount-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* MENTORSHIP SECTION ENHANCEMENTS */
+        #mentorship .bg-white {
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #mentorship .bg-white:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            border-color: #10b981;
+        }
+
+        /* CARD HEADER IMPROVEMENTS */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        /* LOADING ANIMATION */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* SCROLL TO TOP BUTTON */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(30, 64, 175, 0.4);
+        }
+
+        /* ENHANCED FOCUS STATES FOR ACCESSIBILITY */
+        button:focus, a:focus, input:focus, textarea:focus {
+            outline: 2px solid #1e40af;
+            outline-offset: 2px;
+        }
+
+        /* ENHANCED CARD GRID ANIMATIONS */
+        .announcement-card, .alumni-card, .mentorship-card, .job-card {
+            animation: cardFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .announcement-card:nth-child(1), .alumni-card:nth-child(1), 
+        .mentorship-card:nth-child(1), .job-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .announcement-card:nth-child(2), .alumni-card:nth-child(2), 
+        .mentorship-card:nth-child(2), .job-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .announcement-card:nth-child(3), .alumni-card:nth-child(3), 
+        .mentorship-card:nth-child(3), .job-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .announcement-card:nth-child(4), .alumni-card:nth-child(4), 
+        .mentorship-card:nth-child(4), .job-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* IMPROVED SECTION DIVIDERS */
+        section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #1e40af, #7c3aed, transparent);
+            border-radius: 2px;
+        }
+
+        section:last-of-type::after {
+            display: none;
+        }
+
+        /* ENHANCED HOVER EFFECTS FOR IMAGES */
+        img {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* PROFESSIONAL BADGE STYLES */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            color: #4338ca;
+            box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+        }
+
+        /* ENHANCED TEXT SELECTION */
+        ::selection {
+            background: rgba(30, 64, 175, 0.2);
+            color: #1e40af;
+        }
+
+        /* SMOOTH BACKDROP BLUR */
+        .backdrop-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* GRADIENT TEXT UTILITY */
+        .gradient-text {
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* PROFESSIONAL SPACING */
+        .section-spacing {
+            padding: 6rem 0;
+        }
+
+        /* ENHANCED BUTTON GROUP */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* IMPROVED CARD CONTENT LAYOUT */
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* ENHANCED UNIVERSITY BRANDING */
+        .university-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-radius: 16px;
+            font-weight: 600;
+            color: #1e40af;
+            border: 2px solid rgba(30, 64, 175, 0.2);
+        }
+
+        /* PROFESSIONAL STATS DISPLAY */
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(30, 64, 175, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* ENHANCED FORM STYLES */
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:hover,
+        textarea:hover {
+            border-color: #cbd5e1;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+        }
+
+        /* PROFESSIONAL LABEL STYLES */
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* ENHANCED PAYMENT SECTION */
+        #payment-status {
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* IMPROVED ACCESSIBILITY */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* PROFESSIONAL DIVIDER */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 2rem 0;
+        }
+
+        /* ENHANCED NOTIFICATION BADGE */
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            header, footer, .action-btn, .button-container {
+                display: none;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+        }
+        /* Toggle Switch Styles */
+    #anonymous-toggle:checked + .toggle-bg {
+        background: #48bb78 !important;
+    }
+
+    #anonymous-toggle:checked + .toggle-bg .toggle-dot {
+        transform: translateX(24px);
+    }
+
+    .amount-btn:hover {
+        background: #e6f2ff !important;
+        border-color: #3182ce !important;
+        color: #3182ce !important;
+    }
+
+    .amount-btn[data-amount].active {
+        background: #3182ce !important;
+        color: white !important;
+        border-color: #3182ce !important;
+    }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -654,7 +1246,7 @@
                     <a href="#" class="flex items-center">
                         <i class="fas fa-graduation-cap text-blue-600 text-3xl"></i>
                         <span class="text-2xl font-bold text-gray-800">
-                            Alumni<span class="text-black font-black">Plus</span>
+                            Alumni<span class="text-black font-black"> Plus</span>
                         </span>
                     </a>
                 </div>
@@ -711,7 +1303,7 @@
 
             <!-- Right: Image -->
             <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80"
-                alt="CSE Alumni networking" class="rounded-xl shadow-lg hover:scale-[1.02] transform transition" />
+                alt="CSE Alumni networking" class="rounded-xl shadow-lg hover:scale-[1.02] m-auto transform transition" />
         </div>
     </section>
 
@@ -758,34 +1350,42 @@
                 <p>Empower growth through guidance-connect and mentees for meaningfull learning journeys</p>
             </div>
             <!-- <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center">Upcoming Mentorship Sessions</h2> -->
-             
-                <button id="mentorship_request" type="submit"
+
+            <button id="mentorship_request" type="submit"
                 class="ml-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium transition-all duration-300 flex items-center">
                 View All
             </button>
 
-            
-            <!-- <p class="text-xl text-gray-600 mb-12 text-center">Learn directly from experienced alumni</p> -->
-             
-                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <!-- Mentorship Card 1 -->
-                 <%mentorshipSession.slice(0,2).forEach((req)=>{%>
-                <div
-                    class="bg-white  rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                    <div class="flex justify-center mb-4">
-                        <img src="http://static.photos/people/200x200/9" alt="Mentor"
-                            class="rounded-full w-24 h-24 object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-center text-gray-800 mb-2"><%=req.Alumni%></h3>
-                    <h2 class="text-xl font-bold text-center text-gray-800 mb-2"> <%=req.Topic%></h2>
-                    <p class="text-gray-600 text-center mb-2"><%=req.Session_Date%>></p>
-                    <p class="text-gray-500 text-center text-sm mb-4"><%=req.Mode%></p>
 
-                </div>
-                <%})%>
+            <!-- <p class="text-xl text-gray-600 mb-12 text-center">Learn directly from experienced alumni</p> -->
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Mentorship Card 1 -->
+                <%mentorshipSession.slice(0,2).forEach((req)=>{%>
+                    <div
+                        class="bg-white  rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="flex justify-center mb-4">
+                            <img src="http://static.photos/people/200x200/9" alt="Mentor"
+                                class="rounded-full w-24 h-24 object-cover">
+                        </div>
+                        <h3 class="text-xl font-bold text-center text-gray-800 mb-2">
+                            <%=req.Alumni%>
+                        </h3>
+                        <h2 class="text-xl font-bold text-center text-gray-800 mb-2">
+                            <%=req.Topic%>
+                        </h2>
+                        <p class="text-gray-600 text-center mb-2">
+                            <%=req.Session_Date%>>
+                        </p>
+                        <p class="text-gray-500 text-center text-sm mb-4">
+                            <%=req.Mode%>
+                        </p>
+
+                    </div>
+                    <%})%>
             </div>
-             
-            
+
+
         </div>
     </section>
 
@@ -795,14 +1395,15 @@
             <div class="announcements-container">
                 <div class="page-header">
                     <h1>📢 Job & Internships</h1>
-                    <p>Discover career opportunities, internships and placements tailored to your skill and aspirations</p>
+                    <p>Discover career opportunities, internships and placements tailored to your skill and aspirations
+                    </p>
                 </div>
                 <div class="button-container">
                     <button class="action-btn orange" id="job_button">
-                        💼 Post Job or Intern
+                        Post Job or Intern
                     </button>
                     <button class="action-btn green" id="job_list">
-                        👀 View All
+                        View All
                     </button>
                 </div>
                 <div class="announcements-grid">
@@ -822,8 +1423,8 @@
                                 <%= req.Requirement %>
                             </p>
                             <p class="deadline"><strong>Deadline:</strong>
-                                <%= new Date(req.Deadline).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long' ,
-                                    year: 'numeric' }) %>
+                                <%= new Date(req.Deadline).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long'
+                                    , year: 'numeric' }) %>
                             </p>
                         </div>
                         <% }); %>
@@ -838,12 +1439,229 @@
             <div class="announcements-container">
                 <div class="page-header">
                     <h1>📢 Endowment</h1>
-                    <p>Support future excellence-learn how contributions shape scholarships, research and innovations</p>
+                    
                 </div>
-                <div class="no-content">
-                    <h3>🏗️ Currently Under Development</h3>
-                    <p>Endowment and giving programs will be available soon.</p>
-                </div>
+                <% if(authUser) {%>
+
+                    <%if(authUser.Role=='alumni' ){%>
+                        <p>Support future excellence-learn how contributions shape scholarships, research and innovations
+                    </p>
+                        <div class="no-content">
+                            <div
+                                style="max-width: 600px; margin: 0 auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <h2 style="text-align: center; color: #2d3748; margin-bottom: 20px; font-size: 28px;">
+                                    Make a Contribution</h2>
+                                <p style="text-align: center; color: #718096; margin-bottom: 30px; line-height: 1.6;">
+                                    Your generous contribution helps support scholarships, research initiatives, and
+                                    innovation programs for future generations.
+                                </p>
+
+                                <div style="margin-bottom: 30px;">
+                                    <label for="amount-input"
+                                        style="display: block; margin-bottom: 10px; font-weight: 600; color: #2d3748;">Contribution
+                                        Amount (₹)</label>
+                                    <input type="number" id="amount-input" value="500" min="100" step="100"
+                                        style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
+                                        onfocus="this.style.borderColor='#3182ce';"
+                                        onblur="this.style.borderColor='#e2e8f0';">
+                                    <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                        <button onclick="setAmount(500)" class="amount-btn" data-amount="500"
+                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: #3182ce; color: white; border-color: #3182ce; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹500</button>
+                                        <button onclick="setAmount(1000)" class="amount-btn" data-amount="1000"
+                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹1,000</button>
+                                        <button onclick="setAmount(5000)" class="amount-btn" data-amount="5000"
+                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹5,000</button>
+                                        <button onclick="setAmount(10000)" class="amount-btn" data-amount="10000"
+                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹10,000</button>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 30px; padding: 16px; background: #f7fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <label style="display: flex; align-items: center; cursor: pointer; user-select: none;">
+                                    <div style="position: relative;">
+                                        <input type="checkbox" id="anonymous-toggle" 
+                                            style="position: absolute; opacity: 0; width: 0; height: 0;">
+                                        <div class="toggle-bg" 
+                                            style="width: 48px; height: 24px; background: #cbd5e0; border-radius: 12px; transition: background 0.3s; position: relative;">
+                                            <div class="toggle-dot" 
+                                                style="position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span style="margin-left: 12px; font-weight: 600; color: #2d3748;">
+                                        🕶️ Want to be Anonymous
+                                    </span>
+                                </label>
+                                <p style="margin: 8px 0 0 60px; font-size: 14px; color: #718096;">
+                                    Your contribution will be shown as "Anonymous Donor"
+                                </p>
+                            </div>
+                            
+                                <button id="pay-button"
+                                    style="width: 100%; background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%); color: white; border: none; padding: 16px 32px; font-size: 18px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(49,130,206,0.3);"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(49,130,206,0.4)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(49,130,206,0.3)';">
+                                    Contribute Now
+                                </button>
+
+                                <div id="payment-status" style="margin-top: 20px; text-align: center; display: none;">
+                                </div>
+                            </div>
+                        </div>
+                        <% }else{%>
+                            <!-- Alumni Contributions Display for Students -->
+                        <div style="max-width: 1200px; margin: 40px auto;">
+                            <h2 style="text-align: center; color: #2d3748; margin-bottom: 30px; font-size: 28px;">
+                                🌟 Our Generous Alumni Contributors
+                            </h2>
+                            <p style="text-align: center; color: #718096; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                                These remarkable alumni have contributed to our department's growth through financial support and valuable services.
+                            </p>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; padding: 20px;">
+                                
+                                <!-- Sample Contribution Card 1 -->
+                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
+                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                                    
+                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white;">
+                                        <div style="display: flex; align-items: center; gap: 15px;">
+                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                                                👤
+                                            </div>
+                                            <div>
+                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Dhruve Patidar</h3>
+                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2025 • CS Department</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="padding: 20px;">
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                <span style="font-size: 20px;">💰</span>
+                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
+                                            </div>
+                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
+                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹50,000</p>
+                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Scholarship Fund</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                <span style="font-size: 20px;">🎯</span>
+                                                <span style="font-weight: 600; color: #2d3748;">Additional Services</span>
+                                            </div>
+                                            <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
+                                                <li style="margin-bottom: 6px;">Guest lecture on AI/ML</li>
+                                                <li style="margin-bottom: 6px;">Mentorship program for final year students</li>
+                                            </ul>
+                                        </div>
+
+                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
+                                            <span>📅</span>
+                                            <span>Contributed: October 2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sample Contribution Card 2 - Anonymous -->
+                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
+                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                                    
+                                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; color: white;">
+                                        <div style="display: flex; align-items: center; gap: 15px;">
+                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                                                🕶️
+                                            </div>
+                                            <div>
+                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Anonymous Donor</h3>
+                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2015 • CS Department</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="padding: 20px;">
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                <span style="font-size: 20px;">💰</span>
+                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
+                                            </div>
+                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
+                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹1,00,000</p>
+                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Lab Equipment</p>
+                                            </div>
+                                        </div>
+
+                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
+                                            <span>📅</span>
+                                            <span>Contributed: September 2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sample Contribution Card 3 -->
+                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
+                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
+                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                                    
+                                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; color: white;">
+                                        <div style="display: flex; align-items: center; gap: 15px;">
+                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                                                👤
+                                            </div>
+                                            <div>
+                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Ms. Priya Sharma</h3>
+                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2012 • CS Department</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="padding: 20px;">
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                <span style="font-size: 20px;">💰</span>
+                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
+                                            </div>
+                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
+                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹25,000</p>
+                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Research Projects</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                <span style="font-size: 20px;">🎯</span>
+                                                <span style="font-weight: 600; color: #2d3748;">Additional Services</span>
+                                            </div>
+                                            <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
+                                                <li style="margin-bottom: 6px;">Industry collaboration for internships</li>
+                                                <li style="margin-bottom: 6px;">Career counseling sessions</li>
+                                                <li style="margin-bottom: 6px;">Donated programming books to library</li>
+                                            </ul>
+                                        </div>
+
+                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
+                                            <span>📅</span>
+                                            <span>Contributed: November 2024</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                            <% } %>
+
+                                <% }else if( !authUser){%>
+                                    <div class="no-content">
+                                        <h3>🏗️ Currently Under Development</h3>
+                                        <p>Endowment and giving programs will be available soon.</p>
+                                    </div>
+                                    <% } %>
+            </div>
+        </div>
             </div>
         </div>
     </section>
@@ -857,7 +1675,7 @@
                     <h1>📢 Announcements</h1>
                     <p>Stay updated with the latest news and important updates</p>
                 </div>
-                <div class="no-content"  id="no-content">
+                <div class="no-content" id="no-content">
                     <h3>🏗️ First Login to View Announcements</h3>
                     <!-- <p>Endowment and giving programs will be available soon.</p> -->
                 </div>
@@ -1008,8 +1826,10 @@
     </footer>
     <br><br><br><br><br><br><br><br>
 </body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 
+    
     const urlParams = new URLSearchParams(window.location.search);
     const message = urlParams.get('message');
     if (message) {
@@ -1123,15 +1943,15 @@
             btnJoin.addEventListener('click', () => {
                 window.location.href = "/support_desk"
             })
-            mentorshipRequestBtn.addEventListener("click" , ()=>{
+            mentorshipRequestBtn.addEventListener("click", () => {
                 window.location.href = "/mentorshipSessionPage";
             })
-            
+
         }
-        if(userType == "faculty"){
+        if (userType == "faculty") {
             profileBtn.style.display = "block";
             // btnJoin.innerText = "Assigned Support's"
-            btnJoin.addEventListener('click' ,()=>{
+            btnJoin.addEventListener('click', () => {
                 window.location.href = `/support_desk`;
             })
 
@@ -1142,10 +1962,10 @@
             btnViewJobs.style.display = "block";
             profileBtn.style.display = "block";
             announcementNoContent.style.display = "none";
-            if( userBatch === "2026"){
+            if (userBatch === "2026") {
                 console.log("i am inside hte studen batch");
                 exitform.style.display = "block";
-                exitform.addEventListener('click' , ()=>{
+                exitform.addEventListener('click', () => {
                     window.location.href = `/exitForm/${userEnrollment}`;
                 })
             }
@@ -1157,7 +1977,7 @@
             btnPostJob.style.display = "block";
             announcementNoContent.style.display = "none";
 
-            mentorshipRequestBtn.addEventListener("click" , ()=>{
+            mentorshipRequestBtn.addEventListener("click", () => {
                 window.location.href = "/alumniSessionRequest";
             })
         }
@@ -1210,19 +2030,18 @@
         logoutWrapper.classList.remove("hidden");
     });
 
-// ANNOUNCEMENTS 
-   const announcements = <%- JSON.stringify(announcement) %>;
+    // ANNOUNCEMENTS
+    const announcements = <%- JSON.stringify(announcement) %>;
 
-function createAnnouncementCard(announcement) {
-    // Format date if it exists
-    const formattedDate = announcement.Posted_On ? 
-        new Date(announcement.Posted_On).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        }) : 'No Date';
+    function createAnnouncementCard(announcement) {
+        const formattedDate = announcement.Posted_On ?
+            new Date(announcement.Posted_On).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }) : 'No Date';
 
-    return `
+        return `
         <div class="announcement-card" onclick="openModal(${announcement.ID})">
             <div class="card-header">
                 <span class="card-date">${formattedDate}</span>
@@ -1230,130 +2049,328 @@ function createAnnouncementCard(announcement) {
             <h3 class="card-title">${announcement.Title || 'No Title'}</h3>
             <p class="card-description">${(announcement.Description || 'No description available').substring(0, 120)}${announcement.Description && announcement.Description.length > 120 ? '...' : ''}</p>
             <div class="card-footer">
-                <button class="read-more">
-                    Read More
-                    <span>→</span>
-                </button>
+                <button class="read-more">Read More <span>→</span></button>
             </div>
-        </div>
-    `;
-}
+        </div>`;
+    }
 
-function renderAnnouncements() {
-    const grid = document.getElementById('announcementsGrid');
-    if (announcements && announcements.length > 0) {
-        grid.innerHTML = announcements.map(announcement => createAnnouncementCard(announcement)).join('');
-    } else {
-        grid.innerHTML = `
+    function renderAnnouncements() {
+        const grid = document.getElementById('announcementsGrid');
+        if (announcements && announcements.length > 0) {
+            grid.innerHTML = announcements.map(a => createAnnouncementCard(a)).join('');
+        } else {
+            grid.innerHTML = `
             <div class="no-announcements">
                 <h3>📭 No Announcements</h3>
                 <p>There are currently no announcements to display.</p>
-            </div>
-        `;
-    }
-}
-
-function openModal(announcementId) {
-    // Find announcement by ID (note: comparing with ID field from database)
-    const announcement = announcements.find(a => a.ID === announcementId);
-    
-    if (!announcement) {
-        console.log('Announcement not found with ID:', announcementId);
-        return;
-    }
-
-    // Update modal content with database field names
-    document.getElementById('modalTitle').textContent = announcement.Title || 'No Title';
-    
-    // Format date for modal
-    const formattedDate = announcement.Posted_On ? 
-        new Date(announcement.Posted_On).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        }) : 'No Date';
-    document.getElementById('modalDate').textContent = formattedDate;
-    
-    // Use Description for modal content (you might want to add a separate full_description field in DB)
-    document.getElementById('modalDescription').textContent = announcement.Description || 'No description available.';
-
-    // Handle tags (if you have a tags field) or create from category
-    const tagsContainer = document.getElementById('modalTags');
-    if (announcement.Tags) {
-        // If tags is a JSON string, parse it
-        let tags = [];
-        try {
-            tags = typeof announcement.Tags === 'string' ? JSON.parse(announcement.Tags) : announcement.Tags;
-        } catch (e) {
-            tags = [announcement.Tags];
+            </div>`;
         }
-        tagsContainer.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-    } else if (announcement.Category) {
-        tagsContainer.innerHTML = `<span class="tag">${announcement.Category}</span>`;
-    } else {
-        tagsContainer.innerHTML = '<span class="tag">General</span>';
     }
 
-    // Store current announcement for action buttons
-    window.currentAnnouncement = announcement;
+    function openModal(announcementId) {
+        // Find announcement by ID (note: comparing with ID field from database)
+        const announcement = announcements.find(a => a.ID === announcementId);
 
-    // Show modal
-    document.getElementById('modalOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+        if (!announcement) {
+            console.log('Announcement not found with ID:', announcementId);
+            return;
+        }
 
-function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
+        // Update modal content with database field names
+        document.getElementById('modalTitle').textContent = announcement.Title || 'No Title';
 
-function handleImportantLink() {
-    if (window.currentAnnouncement && window.currentAnnouncement.Important_Links) {
-        window.open(window.currentAnnouncement.Important_Links, '_blank');
-    } else if (window.currentAnnouncement && window.currentAnnouncement.Link) {
-        window.open(window.currentAnnouncement.Link, '_blank');
-    } else {
-        alert('Important link not available for this announcement.');
+        // Format date for modal
+        const formattedDate = announcement.Posted_On ?
+            new Date(announcement.Posted_On).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : 'No Date';
+        document.getElementById('modalDate').textContent = formattedDate;
+
+        // Use Description for modal content (you might want to add a separate full_description field in DB)
+        document.getElementById('modalDescription').textContent = announcement.Description || 'No description available.';
+
+        // Handle tags (if you have a tags field) or create from category
+        const tagsContainer = document.getElementById('modalTags');
+        if (announcement.Tags) {
+            // If tags is a JSON string, parse it
+            let tags = [];
+            try {
+                tags = typeof announcement.Tags === 'string' ? JSON.parse(announcement.Tags) : announcement.Tags;
+            } catch (e) {
+                tags = [announcement.Tags];
+            }
+            tagsContainer.innerHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        } else if (announcement.Category) {
+            tagsContainer.innerHTML = `<span class="tag">${announcement.Category}</span>`;
+        } else {
+            tagsContainer.innerHTML = '<span class="tag">General</span>';
+        }
+
+        // Store current announcement for action buttons
+        window.currentAnnouncement = announcement;
+
+        // Show modal
+        document.getElementById('modalOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
-}
 
-
-function handleViewFile() {
-    if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
-        window.open(window.currentAnnouncement.Attachment_Url, '_blank');
-    } else if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
-        window.open(window.currentAnnouncement.Attachment_Url, '_blank');
-    } else {
-        alert('File not available for this announcement.');
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+        document.body.style.overflow = 'auto';
     }
-}
 
-// Event listeners - Wrap in DOMContentLoaded to ensure elements exist
-document.addEventListener('DOMContentLoaded', function() {
-    const modalClose = document.getElementById('modalClose');
-    const modalOverlay = document.getElementById('modalOverlay');
-    
-    if (modalClose) {
-        modalClose.addEventListener('click', closeModal);
+    function handleImportantLink() {
+        if (window.currentAnnouncement && window.currentAnnouncement.Important_Links) {
+            window.open(window.currentAnnouncement.Important_Links, '_blank');
+        } else if (window.currentAnnouncement && window.currentAnnouncement.Link) {
+            window.open(window.currentAnnouncement.Link, '_blank');
+        } else {
+            alert('Important link not available for this announcement.');
+        }
     }
-    
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) {
+
+
+    function handleViewFile() {
+        if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
+            window.open(window.currentAnnouncement.Attachment_Url, '_blank');
+        } else if (window.currentAnnouncement && window.currentAnnouncement.Attachment_Url) {
+            window.open(window.currentAnnouncement.Attachment_Url, '_blank');
+        } else {
+            alert('File not available for this announcement.');
+        }
+    }
+
+    // Event listeners - Wrap in DOMContentLoaded to ensure elements exist
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalClose = document.getElementById('modalClose');
+        const modalOverlay = document.getElementById('modalOverlay');
+
+        if (modalClose) {
+            modalClose.addEventListener('click', closeModal);
+        }
+
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    closeModal();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
                 closeModal();
             }
         });
+
+        // Initialize announcements
+        renderAnnouncements();
+    });
+
+
+
+    // Set amount function
+    function setAmount(amount) {
+      document.getElementById("amount-input").value = amount;
+      // Highlight selected button
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        const btnAmount = parseInt(btn.getAttribute('data-amount'));
+        if (btnAmount === amount) {
+          btn.style.background = '#3182ce';
+          btn.style.borderColor = '#3182ce';
+          btn.style.color = 'white';
+        } else {
+          btn.style.background = 'white';
+          btn.style.borderColor = '#e2e8f0';
+          btn.style.color = '#2d3748';
+        }
+      });
     }
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeModal();
+
+    // Payment button handler
+    document.getElementById("pay-button").onclick = async function () {
+      const amountInput = document.getElementById("amount-input");
+      const amount = parseFloat(amountInput.value);
+      const statusDiv = document.getElementById("payment-status");
+      
+      // Validate amount
+      if (!amount || amount < 100) {
+        statusDiv.innerHTML = '<p style="color: #e53e3e;">⚠ Please enter a valid amount (minimum ₹100)</p>';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      // Disable button during processing
+      const payButton = document.getElementById("pay-button");
+      payButton.disabled = true;
+      payButton.innerHTML = '⏳ Processing...';
+      statusDiv.style.display = 'none';
+
+      try {
+        // Create order
+        const response = await fetch("/api/create-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ amount: amount })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create order');
+        }
+
+        const order = await response.json();
+
+        // Get user info if available
+        const userName = "<%= authUser ? authUser.Full_Name : '' %>";
+        const userEmail = "<%= authUser ? authUser.Email_ID : '' %>";
+        const userContact = "<%= authUser ? authUser.Contact_no : '' %>";
+
+        const options = {
+          key: "rzp_test_RPkDRcEzHfOY7w",
+          amount: order.amount,
+          currency: order.currency,
+          name: "CSE Alumni Network",
+          description: `Endowment Contribution of ₹${amount}`,
+          order_id: order.id,
+          handler: async function (response) {
+            // Verify payment on backend
+            try {
+              const verifyResponse = await fetch("/api/verify-payment", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+
+              const verifyData = await verifyResponse.json();
+
+              if (verifyData.success) {
+                statusDiv.innerHTML = `
+                  <div style="background: #c6f6d5; color: #276749; padding: 15px; border-radius: 8px;">
+                    <h3 style="margin: 0 0 10px 0;">✅ Payment Successful!</h3>
+                    <p style="margin: 0; font-size: 14px;">Payment ID: ${response.razorpay_payment_id}</p>
+                    <p style="margin: 5px 0 0 0; font-size: 14px;">Thank you for your contribution!</p>
+                  </div>
+                `;
+                statusDiv.style.display = 'block';
+                amountInput.value = '500';
+                payButton.innerHTML = '💳 Contribute Again';
+              } 
+            } catch (error) {
+              console.error('Verification error:', error);
+              statusDiv.innerHTML = `
+                <div style="background: #fed7d7; color: #c53030; padding: 15px; border-radius: 8px;">
+                  <h3 style="margin: 0 0 10px 0;">⚠ Verification Error</h3>
+                  <p style="margin: 0; font-size: 14px;">${error.message}</p>
+                </div>
+              `;
+              statusDiv.style.display = 'block';
+            }
+            
+            payButton.disabled = false;
+            payButton.innerHTML = '💳 Contribute Now';
+          },
+          prefill: {
+            name:"Shivansh",
+            email:"abc@gmail.com",
+            contact:"9876543210"
+          },
+          theme: {
+            color: "#3182ce"
+          },
+          modal: {
+            ondismiss: function() {
+              payButton.disabled = false;
+              payButton.innerHTML = 'Contribute Now';
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        // rzp.on('payment.failed', function (response) {
+        //   statusDiv.innerHTML = `
+        //     <div style="background: #fed7d7; color: #c53030; padding: 15px; border-radius: 8px;">
+        //       <h3 style="margin: 0 0 10px 0;">❌ Payment Failed</h3>
+        //       <p style="margin: 0; font-size: 14px;">Reason: ${response.error.description || 'Unknown error'}</p>
+        //     </div>
+        //   `;
+        //   statusDiv.style.display = 'block';
+        //   payButton.disabled = false;
+        //   payButton.innerHTML = '💳 Contribute Now';
+        // });
+        
+        rzp.open();
+      } catch (error) {
+        console.error('Payment error:', error);
+        statusDiv.innerHTML = `
+          <div style="background: #fed7d7; color: #c53030; padding: 15px; border-radius: 8px;">
+            <h3 style="margin: 0 0 10px 0;">❌ Error</h3>
+            <p style="margin: 0; font-size: 14px;">${error.message}</p>
+          </div>
+        `;
+        statusDiv.style.display = 'block';
+        payButton.disabled = false;
+        payButton.innerHTML = '💳 Contribute Now';
+      }
+    };
+  
+
+
+
+
+
+
+
+
+// Amount button functionality
+    function setAmount(amount) {
+        document.getElementById('amount-input').value = amount;
+        
+        // Update button styles
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.style.background = 'white';
+            btn.style.color = '#2d3748';
+            btn.style.borderColor = '#e2e8f0';
+        });
+        
+        event.target.style.background = '#3182ce';
+        event.target.style.color = 'white';
+        event.target.style.borderColor = '#3182ce';
+    }
+
+    // Payment button functionality (you'll need to integrate your payment gateway)
+    document.addEventListener('DOMContentLoaded', function() {
+        const payButton = document.getElementById('pay-button');
+        if (payButton) {
+            payButton.addEventListener('click', function() {
+                const amount = document.getElementById('amount-input').value;
+                const isAnonymous = document.getElementById('anonymous-toggle').checked;
+                
+                console.log('Processing payment:', {
+                    amount: amount,
+                    anonymous: isAnonymous
+                });
+                
+                // Add your payment gateway integration here
+                alert(`Processing contribution of ₹${amount}${isAnonymous ? ' (Anonymous)' : ''}`);
+            });
         }
     });
-    
-    // Initialize announcements
-    renderAnnouncements();
-});
+
+
+
+
+
 </script>
 
 </html>

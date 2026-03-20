@@ -860,6 +860,413 @@
       transform: scale(0.98);
       /* Slight shrink on click */
     }
+    /* Enhanced Card Hover Effects */
+.card {
+  position: relative;
+  overflow: visible;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  border-radius: 14px;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+/* Smooth Card Image Overlay */
+.card img {
+  position: relative;
+}
+
+.card::before {
+  z-index: 2;
+}
+
+/* Enhanced Button Ripple Effect */
+.btn-add, button[type="submit"], .register-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-add::after, button[type="submit"]::after, .register-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-add:active::after, button[type="submit"]:active::after, .register-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Floating Animation for Section Headers */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.section-header h2 {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Enhanced Scrollbar for Cards */
+.cards::-webkit-scrollbar-thumb {
+  transition: background 0.3s ease;
+}
+
+.cards.supported::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #66bb6a, #4caf50);
+}
+
+.cards.pending::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #ffb74d, #ff9800);
+}
+
+/* Card Content Fade-in on Scroll */
+.card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: cardFadeIn 0.6s ease forwards;
+}
+
+@keyframes cardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Pulse Animation for Verified Checkmark */
+.verified {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Enhanced Modal Animation */
+.modal-overlay {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Form Input Focus Glow */
+.input-group input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.1);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Enhanced Back Button */
+.back-button button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.back-button button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.back-button button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Card Details Hover Effect */
+.details span {
+  transition: all 0.3s ease;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.details span:hover {
+  background: rgba(30, 58, 138, 0.05);
+  transform: translateX(5px);
+}
+
+/* Side Arrow Enhanced Animation */
+.side-arrow {
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+}
+
+.side-arrow:hover {
+  animation: none;
+}
+
+/* Support Icon Rotation */
+.support-icon {
+  transition: transform 0.6s ease;
+}
+
+.support-title:hover .support-icon {
+  transform: rotate(360deg);
+}
+
+/* Enhanced Tag Animation */
+.tag {
+  animation: tagSlideIn 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+@keyframes tagSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Title Hover Effect */
+.card-title {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.card:hover .card-title {
+  color: #4e54c8;
+}
+
+/* Section Background Pulse */
+#supportedNeedsSection, #pendingVerificationSection {
+  position: relative;
+  overflow: hidden;
+}
+
+#supportedNeedsSection::before, #pendingVerificationSection::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: sectionPulse 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sectionPulse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(10%, 10%) scale(1.1);
+    opacity: 0.3;
+  }
+}
+
+/* Enhanced Scrollbar Track */
+.cards::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  margin: 0 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Button Group for Cards */
+button[onclick*="wantToSupport"] {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button[onclick*="wantToSupport"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+button[onclick*="wantToSupport"]:hover::before {
+  left: 100%;
+}
+
+button[onclick*="wantToSupport"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Loading Shimmer Effect for Cards */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.card.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced Close Button */
+.close-btn {
+  transition: all 0.3s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-btn:hover {
+  background: rgba(255, 0, 0, 0.1);
+  transform: rotate(90deg);
+}
+
+/* Status Badge Animation */
+.verified-label {
+  animation: statusBounce 2s ease-in-out infinite;
+}
+
+@keyframes statusBounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+/* Add subtle parallax to sections */
+.page {
+  perspective: 1000px;
+}
+
+#supportedNeedsSection, #pendingVerificationSection {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+}
+
+/* Card Image Brightness on Hover */
+.card:hover img {
+  filter: brightness(1.1);
+}
+
+/* Enhanced Input Animation */
+.input-group input, textarea, select {
+  transition: all 0.3s ease;
+}
+
+.input-group input:hover, textarea:hover, select:hover {
+  border-color: #999;
+  background: rgba(78, 84, 200, 0.02);
+}
+
+/* Submit Button Press Effect */
+button[type="submit"]:active, .register-btn:active {
+  transform: scale(0.97);
+}
+
+/* Progress Indicator for Form */
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4e54c8, #8f94fb);
+  transition: width 0.3s ease;
+}
+
+.modal-content.form-active::before {
+  width: 100%;
+}
   </style>
 </head>
 
@@ -1075,6 +1482,10 @@
     //   alert('Add Yours button clicked! You can implement a modal form here.');
     // });
 
+
+    
+
+
     const addBtn = document.getElementById('addYoursBtn');
     const modal = document.getElementById('supportModal');
     const closeBtn = document.getElementById('closeModal');
@@ -1093,15 +1504,16 @@
     }
 
     if (isSupported == 1) {
-      addBtn.style.display = "block";
-      addBtn.innerText = "My Supporting";
-      addBtn.addEventListener("click" , ()=>{
-        window.location.href = `/mysupportings/${userID}`;
-      })
-      // mysupportBtn.style.display = "block";
-      // mysupportBtn.addEventListener("click" , ()=>{
+      // addBtn.style.display = "block";
+      // addBtn.innerText = "My Supporting";
+
+      // addBtn.addEventListener("click" , ()=>{
       //   window.location.href = `/mysupportings/${userID}`;
       // })
+      mysupportBtn.style.display = "block";
+      mysupportBtn.addEventListener("click" , ()=>{
+        window.location.href = `/mysupportings/${userID}`;
+      })
     }
 
     if(userIs === "faculty"){
