@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AlumniPlus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #eef2ff, #e0e7ff, #f0fdf4, #ede9fe);
+            background-size: 400% 400%;
+            animation: bg 18s ease infinite;
+            padding: 24px
+        }
+
+        @keyframes bg {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(78, 84, 200, .12);
+            border-radius: 50%;
+            animation: float linear infinite
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(1);
+                opacity: 0
+            }
+
+            50% {
+                opacity: 1
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(.5);
+                opacity: 0
+            }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 22px;
+            box-shadow: 0 8px 40px rgba(78, 84, 200, .13);
+            overflow: hidden
+        }
+
+        .card-top {
+            background: linear-gradient(135deg, #4e54c8 0%, #6c77f0 100%);
+            padding: 30px 36px 26px;
+            text-align: center
+        }
+
+        .icon-wrap {
+            width: 58px;
+            height: 58px;
+            background: rgba(255, 255, 255, .18);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px
+        }
+
+        .card-top h1 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -.3px
+        }
+
+        .card-top p {
+            color: rgba(255, 255, 255, .72);
+            font-size: 13.5px;
+            margin-top: 5px
+        }
+
+        .card-body {
+            padding: 28px 36px 26px;
+            max-height: 75vh;
+            overflow-y: auto;
+            scrollbar-width: none
+        }
+
+        .card-body::-webkit-scrollbar {
+            display: none
+        }
+
+        .sec {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .8px;
+            color: #a0a8c8;
+            text-transform: uppercase;
+            margin: 0 0 12px
+        }
+
+        .role-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px
+        }
+
+        .role-opt {
+            flex: 1;
+            position: relative
+        }
+
+        .role-opt input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none
+        }
+
+        .role-card {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 14px;
+            border: 1.5px solid #e2e5f4;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 13.5px;
+            color: #6b7280;
+            background: #fafbff;
+            transition: .18s
+        }
+
+        .role-card:hover {
+            border-color: #4e54c8;
+            background: #f0f1ff
+        }
+
+        .role-opt input:checked+.role-card {
+            border-color: #4e54c8;
+            background: #eef0ff;
+            color: #4e54c8;
+            font-weight: 600
+        }
+
+        .fg {
+            margin-bottom: 15px
+        }
+
+        .fg label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px
+        }
+
+        .ig {
+            position: relative
+        }
+
+        .ig .ico {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0b8d8;
+            font-size: 13px;
+            pointer-events: none
+        }
+
+        .ig input,
+        .ig select {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1.5px solid #e2e5f4;
+            border-radius: 10px;
+            font-size: 13.5px;
+            color: #1f2937;
+            background: #fff;
+            outline: none;
+            transition: border .18s, box-shadow .18s;
+            font-family: inherit
+        }
+
+        .ig input:focus,
+        .ig select:focus {
+            border-color: #4e54c8;
+            box-shadow: 0 0 0 3px rgba(78, 84, 200, .09)
+        }
+
+        .ig input::placeholder {
+            color: #c5cae0
+        }
+
+        .ig select {
+            appearance: none;
+            cursor: pointer
+        }
+
+        .arr {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0b8d8;
+            font-size: 12px;
+            pointer-events: none
+        }
+
+        .eye {
+            position: absolute;
+            right: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #b0b8d8;
+            font-size: 13px;
+            padding: 4px
+        }
+
+        .two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .str-track {
+            height: 4px;
+            background: #eff0f8;
+            border-radius: 4px;
+            margin-top: 7px;
+            overflow: hidden
+        }
+
+        .str-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 4px;
+            transition: width .3s, background .3s
+        }
+
+        .str-hint {
+            font-size: 11px;
+            color: #b0b8d8;
+            margin-top: 4px
+        }
+
+        .file-box {
+            border: 1.5px dashed #cdd1ea;
+            border-radius: 11px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            background: #fafbff;
+            transition: .18s
+        }
+
+        .file-box:hover {
+            border-color: #4e54c8;
+            background: #f0f1ff
+        }
+
+        .file-box input {
+            display: none
+        }
+
+        .file-box p {
+            font-size: 13px;
+            color: #9ba3c8;
+            margin-top: 7px
+        }
+
+        .fname {
+            font-size: 12px;
+            color: #4e54c8;
+            margin-top: 5px;
+            font-weight: 600;
+            min-height: 16px
+        }
+
+        .err {
+            font-size: 11.5px;
+            color: #e53e3e;
+            margin-top: 4px;
+            display: none
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 6px;
+            background: linear-gradient(135deg, #4e54c8, #6c77f0);
+            color: #fff;
+            border: none;
+            border-radius: 11px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            transition: opacity .2s, transform .2s;
+            letter-spacing: .2px
+        }
+
+        .submit-btn:hover {
+            opacity: .9;
+            transform: translateY(-1px)
+        }
+
+        .submit-btn:active {
+            transform: scale(.98)
+        }
+
+        .signin-row {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13.5px;
+            color: #6b7280
+        }
+
+        .signin-row a {
+            color: #4e54c8;
+            text-decoration: none;
+            font-weight: 600
+        }
+
+        .signin-row a:hover {
+            text-decoration: underline
+        }
+
+        @media(max-width:480px) {
+            .two {
+                grid-template-columns: 1fr
+            }
+
+            .card-body,
+            .card-top {
+                padding-left: 20px;
+                padding-right: 20px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="particles">
+        <div class="particle" style="left:5%;width:10px;height:10px;animation-duration:14s;animation-delay:0s"></div>
+        <div class="particle" style="left:18%;width:16px;height:16px;animation-duration:19s;animation-delay:3s"></div>
+        <div class="particle" style="left:35%;width:8px;height:8px;animation-duration:12s;animation-delay:6s"></div>
+        <div class="particle" style="left:52%;width:14px;height:14px;animation-duration:21s;animation-delay:1s"></div>
+        <div class="particle" style="left:68%;width:20px;height:20px;animation-duration:16s;animation-delay:4s"></div>
+        <div class="particle" style="left:82%;width:12px;height:12px;animation-duration:18s;animation-delay:2s"></div>
+        <div class="particle" style="left:93%;width:9px;height:9px;animation-duration:13s;animation-delay:7s"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-top">
+            <div class="icon-wrap">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3L2 9l10 6 10-6-10-6z" fill="#fff" opacity=".95" />
+                    <path d="M2 15l10 6 10-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"
+                        opacity=".65" />
+                </svg>
+            </div>
+            <h1>Create your account</h1>
+            <p>Welcome to Alumni</p>
+        </div>
+
+        <div class="card-body">
+            <form id="rForm" action="/user_data" method="post" enctype="multipart/form-data" novalidate>
+
+                <p class="sec">I am a</p>
+                <div class="role-row">
+                    <label class="role-opt">
+                        <input type="radio" name="role" value="student" checked>
+                        <span class="role-card">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" />
+                                <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                            </svg>
+                            Student
+                        </span>
+                    </label>
+                    <label class="role-opt">
+                        <input type="radio" name="role" value="alumni">
+                        <span class="role-card">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" />
+                                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+                                <line x1="12" y1="12" x2="12" y2="16" />
+                                <line x1="10" y1="14" x2="14" y2="14" />
+                            </svg>
+                            Alumni
+                        </span>
+                    </label>
+                </div>
+
+                <p class="sec">Personal details</p>
+
+                <div class="fg">
+                    <label>Full name</label>
+                    <div class="ig">
+                        <i class="fas fa-user ico"></i>
+                        <input type="text" name="Full_Name" placeholder="Your full name" required autocomplete="name">
+                    </div>
+                    <div class="err" id="e-name">Please enter your full name</div>
+                </div>
+
+                <div class="two">
+                    <div class="fg" id="wrap-enroll">
+                        <label>Enrollment no.</label>
+                        <div class="ig">
+                            <i class="fas fa-id-badge ico"></i>
+                            <input type="text" name="Enrollment_No" placeholder="e.g. 22BTECH001">
+                        </div>
+                    </div>
+                    <div class="fg">
+                        <label>Batch year</label>
+                        <div class="ig">
+                            <i class="fas fa-calendar ico"></i>
+                            <input type="number" name="Batch" placeholder="e.g. 2022" min="2000" max="2030">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="two">
+                    <div class="fg">
+                        <label>Contact</label>
+                        <div class="ig">
+                            <i class="fas fa-phone ico"></i>
+                            <input type="tel" name="Contact_no" placeholder="10-digit number" pattern="[0-9]{10}"
+                                required>
+                        </div>
+                        <div class="err" id="e-contact">Enter a valid 10-digit number</div>
+                    </div>
+                    <div class="fg">
+                        <label>Course</label>
+                        <div class="ig">
+                            <i class="fas fa-book ico"></i>
+                            <select name="Course" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="B.Tech">B.Tech</option>
+                                <option value="M.Tech">M.Tech</option>
+                            </select>
+                            <span class="arr">▾</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fg">
+                    <label>Email address</label>
+                    <div class="ig">
+                        <i class="fas fa-envelope ico"></i>
+                        <input type="email" name="Email_ID" placeholder="you@example.com" required autocomplete="email">
+                    </div>
+                    <div class="err" id="e-email">Enter a valid email address</div>
+                </div>
+
+                <p class="sec" style="margin-top:6px">Security</p>
+
+                <div class="two">
+                    <div class="fg">
+                        <label>Password</label>
+                        <div class="ig">
+                            <i class="fas fa-lock ico"></i>
+                            <input type="password" id="pwd" name="Password" placeholder="Create password" required
+                                autocomplete="new-password">
+                            <button type="button" class="eye" id="t1"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <div class="str-track">
+                            <div class="str-fill" id="sbar"></div>
+                        </div>
+                        <div class="str-hint" id="shint">password strength</div>
+                        <div class="err" id="e-pwd">Min 8 characters required</div>
+                    </div>
+                    <div class="fg">
+                        <label>Confirm password</label>
+                        <div class="ig">
+                            <i class="fas fa-lock ico"></i>
+                            <input type="password" id="cpwd" name="confirmPassword" placeholder="Repeat password"
+                                required autocomplete="new-password">
+                            <button type="button" class="eye" id="t2"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <div class="err" id="e-cpwd">Passwords do not match</div>
+                    </div>
+                </div>
+
+                <div class="fg" id="wrap-upload">
+                    <label id="upload-label">Upload college ID</label>
+                    <label class="file-box" for="fileInput">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#b0b8d8" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        <p>Click to browse or drag &amp; drop</p>
+                        <p style="font-size:11px;color:#c5cae0;margin-top:3px">JPG, PNG or PDF · max 5 MB</p>
+                        <div class="fname" id="fname"></div>
+                        <input type="file" id="fileInput" name="User_ID" accept=".jpg,.jpeg,.png,.pdf" required>
+                    </label>
+                    <div class="err" id="e-file">Please upload your ID document</div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Create account
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+                <div class="signin-row">Already have an account? <a href="login.html">Sign in</a></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('t1').addEventListener('click', function () { const i = document.getElementById('pwd'), s = i.type === 'text'; i.type = s ? 'password' : 'text'; this.querySelector('i').className = s ? 'fas fa-eye' : 'fas fa-eye-slash' });
+        document.getElementById('t2').addEventListener('click', function () { const i = document.getElementById('cpwd'), s = i.type === 'text'; i.type = s ? 'password' : 'text'; this.querySelector('i').className = s ? 'fas fa-eye' : 'fas fa-eye-slash' });
+
+        document.getElementById('pwd').addEventListener('input', function () {
+            const v = this.value; let sc = 0;
+            if (v.length >= 8) sc++; if (/[A-Z]/.test(v)) sc++; if (/[0-9]/.test(v)) sc++; if (/[^A-Za-z0-9]/.test(v)) sc++;
+            const st = [{ w: '0%', c: '#eee', t: 'password strength' }, { w: '25%', c: '#e53e3e', t: 'weak' }, { w: '50%', c: '#dd6b20', t: 'fair' }, { w: '75%', c: '#d69e2e', t: 'good' }, { w: '100%', c: '#38a169', t: 'strong' }];
+            const s = v.length === 0 ? st[0] : (st[sc] || st[1]);
+            const b = document.getElementById('sbar'); b.style.width = s.w; b.style.background = s.c; document.getElementById('shint').textContent = s.t;
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function () { document.getElementById('fname').textContent = this.files[0]?.name || '' });
+
+        document.querySelectorAll('input[name="role"]').forEach(r => r.addEventListener('change', updateRole));
+        function updateRole() {
+            const v = document.querySelector('input[name="role"]:checked').value;
+            document.getElementById('wrap-enroll').style.display = v === 'alumni' ? 'none' : '';
+            document.getElementById('upload-label').textContent = v === 'alumni' ? 'Upload ID proof' : 'Upload college ID';
+        }
+        updateRole();
+
+        document.getElementById('rForm').addEventListener('submit', function (e) {
+            let ok = true;
+            const show = (id, bad) => { document.getElementById(id).style.display = bad ? 'block' : 'none'; if (bad) ok = false };
+            show('e-name', this.Full_Name.value.trim().length < 2);
+            show('e-contact', !/^[0-9]{10}$/.test(this.Contact_no.value.trim()));
+            show('e-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.Email_ID.value.trim()));
+            const pwd = document.getElementById('pwd').value;
+            show('e-pwd', pwd.length < 8);
+            show('e-cpwd', pwd !== document.getElementById('cpwd').value);
+            show('e-file', !document.getElementById('fileInput').files[0]);
+            if (!ok) e.preventDefault();
+        });
+    </script>
+</body>
+
+</html>

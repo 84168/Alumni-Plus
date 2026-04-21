@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       /* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #4e54c8, #8f94fb, #6a82fb, #a1c4fd);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Gradient animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Form container */
+form {
+  max-height: 80vh; /* Limit height to allow scrolling */
+  overflow-y: auto; /* Enable vertical scroll */
+  padding: 25px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  z-index: 1;
+  position: relative;
+}
+
+/* Hide scrollbar for WebKit browsers */
+form::-webkit-scrollbar {
+  display: none;
+}
+
+/* Optional: smooth scrolling */
+form {
+  scroll-behavior: smooth;
+}
+
+
+/* Header */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form labels and inputs */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+/* Submit button */
+input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #4e54c8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #3b40a4;
+}
+
+/* Particle container */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Individual particle */
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: floatUp linear infinite;
+}
+
+/* Float animation */
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) scale(0.5);
+    opacity: 0;
+  }
+}
+ 
+    </style>
+</head>
+
+<body>
+   
+    <form action="/edit_profile" method="post" enctype="multipart/form-data">
+        <label for="full_name">Full Name:</label><br>
+        <input type="text" id="full_name" name="Full_Name" required><br><br>
+
+        <label for="contact_no">Contact Number:</label><br>
+        <input type="tel" id="contact_no" name="Contact_no" required><br><br>
+
+        <label for="email_id">Email ID:</label><br>
+        <input type="email" id="email_id" name="Email_ID" required><br><br>
+
+        <label for="bio">Bio:</label><br>
+        <textarea id="bio" name="Bio" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="image">Upload Image:</label><br>
+        <input type="file" id="image" name="Image" accept="image/*" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <div class="particles">
+        <div class="particle" style="left: 5%; width: 12px; height: 12px; animation-duration: 14s;"></div>
+        <div class="particle" style="left: 15%; width: 20px; height: 20px; animation-duration: 18s;"></div>
+        <div class="particle" style="left: 30%; width: 10px; height: 10px; animation-duration: 12s;"></div>
+        <div class="particle" style="left: 45%; width: 16px; height: 16px; animation-duration: 20s;"></div>
+        <div class="particle" style="left: 60%; width: 24px; height: 24px; animation-duration: 22s;"></div>
+        <div class="particle" style="left: 75%; width: 14px; height: 14px; animation-duration: 16s;"></div>
+        <div class="particle" style="left: 90%; width: 18px; height: 18px; animation-duration: 19s;"></div>
+    </div>
+</body>
+
+</html>
