@@ -33,6 +33,7 @@ app.use(bodyParser.json());
 app.set("view engine", 'ejs');
 app.use('/uploads', express.static('uploads'));
 app.use(express.static('public'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use(session({
     secret: 'Tarun*123',
@@ -109,7 +110,7 @@ io.on("connection", (socket) => {
         }
     });
  
-    // ── Global chat ───────────────────────────────────────────
+    // Global chat 
     socket.on("join-global-chat", async ({ userId, userName, userRole }) => {
         socket.join("global-chat");
  
@@ -415,7 +416,7 @@ app.get('/support_desk', async (req, res) => {
         isSupported = rows[0]?.["No of Needs"];
     }
 
-    res.render(path.join(__dirname, "./views/support_desk.ejs"), { verifiedSupport, pendingSupport, userID, userIs, message, isSupported });
+    res.render(path.join(__dirname, "./views/support_desk.ejs"), { verifiedSupport, pendingSupport, userID, userIs, message, isSupported,query: req.query });
 });
 
 app.get("/myAssignedSupport/:userID/:supportID", async (req, res) => {
@@ -475,7 +476,62 @@ app.get("/mysupportings/:id", async (req, res) => {
         authUser
     });
 });
+// SUPPORT REQUEST
+// app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
+//     const { Enrollment_No, Request_Title, Request_Description } = req.body;
+//     try {
+//         const [rows] = await db.execute("SELECT `No of Needs` FROM support WHERE student_id = ?", [Enrollment_No]);
+//         console.log(rows);
+//         if (rows[0]['No of Needs'] === 0) {
+//             await db.execute("INSERT INTO support (title, description, student_id, `No of Needs`) VALUES (?, ?, ?, ?)",
+//                 [Request_Title, Request_Description, Enrollment_No, 1]);
+//             res.redirect("/support_desk?message=Support request submitted successfully");
+//         } else {
+//             res.redirect("/support_desk?message=You can only submit one support request at a time");
+//         }
+//     } catch (err) {
+//         console.error(err);
+//     }
+// });
+app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
+    const { Enrollment_No, Request_Title, Request_Description } = req.body;
 
+    try {
+        // Check if student already has a pending request
+        const [rows] = await db.execute(
+            "SELECT `No of Needs` FROM support WHERE student_id = ? AND status = 'pending'",
+            [Enrollment_No]
+        );
+
+        // Get student email
+        const [studentRows] = await db.execute(
+            "SELECT Email_ID FROM student WHERE Enrollment_No = ?",
+            [Enrollment_No]
+        );
+
+        if (!studentRows.length) {
+            return res.redirect("/support_desk?error=Student not found");
+        }
+
+        const studentEmail = studentRows[0].Email_ID;
+
+        // If rows is empty → no pending request → allow submission
+        if (rows.length === 0) {
+            await db.execute(
+                "INSERT INTO support (title, description, student_id, student_email, `No of Needs`) VALUES (?, ?, ?, ?, ?)",
+                [Request_Title, Request_Description, Enrollment_No, studentEmail, 1]
+            );
+            return res.redirect("/support_desk?message=Support request submitted successfully");
+        } else {
+            // Already has a pending request
+            return res.redirect("/support_desk?message=You already have a pending request. Wait for it to be resolved first.");
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.redirect(`/support_desk?error=${encodeURIComponent(err.sqlMessage || err.message)}`);
+    }
+});
 // UPDATE PROFILE
 app.post('/update_profile', upload.single('Profile_Image'), async (req, res) => {
     const { Contact_no, Bio, Email_ID, Role } = req.body;
@@ -572,22 +628,7 @@ app.post('/logout', (req, res, next) => {
     });
 });
 
-// SUPPORT REQUEST
-app.post("/support_request", upload.single('ID_Proof'), async (req, res) => {
-    const { Enrollment_No, Request_Title, Request_Description } = req.body;
-    try {
-        const [rows] = await db.execute("SELECT `No of Needs` FROM support WHERE student_id = ?", [Enrollment_No]);
-        if (rows.length === 0) {
-            await db.execute("INSERT INTO support (title, description, student_id, `No of Needs`) VALUES (?, ?, ?, ?)",
-                [Request_Title, Request_Description, Enrollment_No, 1]);
-            res.redirect("/support_desk?message=Support request submitted successfully");
-        } else {
-            res.redirect("/support_desk?message=You can only submit one support request at a time");
-        }
-    } catch (err) {
-        console.error(err);
-    }
-});
+
 
 app.post("/HandleSupportRequest", async (req, res) => {
     const { Employee_ID, Enrollment_No, action } = req.body;

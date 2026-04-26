@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSE Alumni Chat</title>
+  <title>AlumniPlus | SGSITS CSE Department, Indore</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -406,7 +406,15 @@
     document.getElementById('header-subtitle').textContent =
       'Logged in as ' + user.name + ' · ' + user.role;
 
-    const socket = io({ transports: ['websocket', 'polling'] });
+    const socket = io({
+    transports: ['websocket', 'polling'],
+    auth: {
+        userId: user.id,
+        name: user.name,
+        role: user.role,
+        email: user.email || ''
+    }
+});
 
     socket.on('connect', () => {
       socket.emit('join-global-chat', { userId: user.id, userName: user.name, userRole: user.role });
@@ -491,14 +499,22 @@
       scrollToBottom(false);
     });
   }
-
-  fetch('/me')
-    .then(r => r.json())
-    .then(data => {
-      if (!data || !data.id) window.location.href = '/login.html';
-      else initChat(data);
-    })
-    .catch(() => { window.location.href = '/login.html'; });
+const cached = sessionStorage.getItem('chatUser');
+if (cached) {
+    initChat(JSON.parse(cached));
+} else {
+    fetch('/me')
+        .then(r => r.json())
+        .then(data => {
+            if (!data || !data.id) {
+                window.location.href = '/login.html';
+                return;
+            }
+            sessionStorage.setItem('chatUser', JSON.stringify(data));
+            initChat(data);
+        })
+        .catch(() => { window.location.href = '/login.html'; });
+}
 </script>
 </body>
 </html>
