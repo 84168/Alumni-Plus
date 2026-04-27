@@ -16,7 +16,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 // IMPORTANT: Create server from app, attach Socket.IO to it
 const server = http.createServer(app);
@@ -50,7 +50,10 @@ const db = await mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 3306,
+    connectTimeout: 30000,
+    ssl: { rejectUnauthorized: false }
 });
 
 const storage = multer.diskStorage({
@@ -295,19 +298,56 @@ app.post("/job_post", async (req, res) => {
 });
 
 // REGISTRATION
+// app.post("/user_data", upload.single('User_ID'), async (req, res) => {
+//     const { Full_Name, Enrollment_No, Contact_no, Email_ID, Course, role, Batch, Password } = req.body;
+//     const User_ID_Path = req.file ? req.file.path : null;
+//     try {
+//         await db.execute(
+//             "INSERT INTO user (Full_Name, Enrollment_No, Contact_No, Email_ID, Course, Role, Batch, Password, User_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//             [Full_Name, Enrollment_No, Contact_no, Email_ID, Course, role, Batch, Password, User_ID_Path]
+//         );
+//         res.redirect("/?message=After verifying your details, we'll send an invite to your registered email. Thank you!");
+//     } catch (err) {
+//         console.error("Database Error:", err);
+//         res.status(500).send("Registration failed.");
+//     }
+// });
 app.post("/user_data", upload.single('User_ID'), async (req, res) => {
     const { Full_Name, Enrollment_No, Contact_no, Email_ID, Course, role, Batch, Password } = req.body;
     const User_ID_Path = req.file ? req.file.path : null;
+    
     try {
+        // Check if email already exists
+        const [existing] = await db.execute(
+            "SELECT ID FROM user WHERE Email_ID = ?", [Email_ID]
+        );
+        
+        if (existing.length > 0) {
+            return res.redirect("/register?error=Email+already+registered.+Please+use+a+different+email.");
+        }
+
         await db.execute(
             "INSERT INTO user (Full_Name, Enrollment_No, Contact_No, Email_ID, Course, Role, Batch, Password, User_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [Full_Name, Enrollment_No, Contact_no, Email_ID, Course, role, Batch, Password, User_ID_Path]
         );
+        
         res.redirect("/?message=After verifying your details, we'll send an invite to your registered email. Thank you!");
+        
     } catch (err) {
         console.error("Database Error:", err);
-        res.status(500).send("Registration failed.");
+        
+        // Handle duplicate entry error
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.redirect("/register?error=Email+or+contact+number+already+registered.");
+        }
+        
+        return res.redirect("/register?error=Registration+failed.+Please+try+again.");
     }
+});
+
+app.get("/register", (req, res) => {
+    const error = req.query.error || null;
+    res.render("register", { error });
 });
 
 // LOGIN
@@ -650,32 +690,50 @@ app.post("/HandleSupportRequest", async (req, res) => {
 app.post("/HandleUserRequest", async (req, res) => {
     const { ID, action } = req.body;
     if (!ID || !action) return res.status(400).send("Missing required fields.");
+    
     try {
         const [rows] = await db.execute("SELECT * FROM user WHERE ID = ?", [ID]);
-        const user = rows[0];
         if (rows.length === 0) return res.status(404).send("User not found.");
+        const user = rows[0];
 
         if (action === "approve") {
             await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
+            
             if (user.Role === "Student") {
-                await db.execute("INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID, Batch, Password) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                    [user.Enrollment_No, user.Full_Name, user.Course, user.Contact_No, user.Email_ID, user.Batch, user.Password]);
+                await db.execute(
+                    "INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID, Batch, Password, Bio, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    [user.Enrollment_No, user.Full_Name, user.Course, user.Contact_No, user.Email_ID, user.Batch, user.Password, '', '']
+                );
             } else if (user.Role === "Alumni") {
-                await db.execute("INSERT INTO alumni (Full_Name, Contact_No, Course, Email_ID, Batch, Password) VALUES (?, ?, ?, ?, ?, ?)",
-                    [user.Full_Name, user.Contact_No, user.Course, user.Email_ID, user.Batch, user.Password]);
+                await db.execute(
+                    "INSERT INTO alumni (Full_Name, Contact_No, Course, Email_ID, Batch, Password, Bio, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    [user.Full_Name, user.Contact_No, user.Course, user.Email_ID, user.Batch, user.Password, '', '']
+                );
             }
-            await transporter.sendMail({
-                from: process.env.EMAIL_USER,
-                to: user.Email_ID,
-                subject: "Application Approved - Welcome to Our Educational Platform",
-                html: `<p>Dear ${user.Full_Name}, your application as <strong>${user.Role}</strong> has been approved. You can now log in.</p>`
-            });
+
+            // ✅ Email in separate try-catch — won't block page render
+            try {
+                await transporter.sendMail({
+                    from: process.env.EMAIL_USER,
+                    to: user.Email_ID,
+                    subject: "Application Approved - Welcome to Alumni Plus",
+                    html: `<p>Dear ${user.Full_Name}, your application as <strong>${user.Role}</strong> has been approved. You can now log in.</p>`
+                });
+                console.log("✅ Email sent to:", user.Email_ID);
+            } catch (emailErr) {
+                console.error("❌ Email failed:", emailErr.message);
+            }
+
         } else if (action === "reject") {
             await db.execute("UPDATE user SET Status = 'Rejected' WHERE ID = ?", [ID]);
         }
+
+        // ✅ Always runs regardless of email success/failure
         await renderAdminPage(req, res);
+
     } catch (err) {
-        console.error(err);
+        console.error("HandleUserRequest error:", err);
+        res.status(500).send("Error handling user request.");
     }
 });
 
@@ -835,3 +893,10 @@ async function renderAdminPage(req, res) {
         res.status(500).send("Error loading admin page.");
     }
 }
+transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: "tarunparmar457@gmail.com",
+    subject: "Test Email",
+    text: "If you see this, email is working!"
+}).then(() => console.log("✅ Test email sent!"))
+  .catch(err => console.error("❌ Email error:", err.message));
