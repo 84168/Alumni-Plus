@@ -934,10 +934,10 @@ async function renderAdminPage(req, res) {
         res.status(500).send("Error loading admin page.");
     }
 }
-// transporter.sendMail({
-//     from: process.env.EMAIL_USER,
-//     to: "tarunparmar457@gmail.com",
-//     subject: "Test Email",
-//     text: "If you see this, email is working!"
-// }).then(() => console.log("✅ Test email sent!"))
-//   .catch(err => console.error("❌ Email error:", err.message));
+transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: "tarunparmar457@gmail.com",
+    subject: "Test Email",
+    text: "If you see this, email is working!"
+}).then(() => console.log("✅ Test email sent!"))
+  .catch(err => console.error("❌ Email error:", err.message));
