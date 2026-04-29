@@ -741,7 +741,7 @@ app.post("/HandleUserRequest", async (req, res) => {
 
             // STEP 1: Send email first
             await transporter.sendMail({
-                from: `"Alumni Plus" <${process.env.BREVO_USER}>`, 
+                from: '"Alumni Plus" <tarun221148@gmail.com>', 
                 to: user.Email_ID,
                 subject: "Application Approved - Welcome to Alumni Plus",
                 html: `<p>Dear ${user.Full_Name}, your application as 
