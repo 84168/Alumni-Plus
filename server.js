@@ -184,13 +184,13 @@ app.get("/", async (req, res) => {
         const [rows1] = await db.execute("SELECT * FROM `job and internship` LIMIT 3");
         const [announcement] = await db.execute("SELECT * FROM announcement");
         const [mentorshipSession] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
-
+        const [verify_contribution] = await db.execute(`SELECT c.id, c.Alumni_ID, c.Amount, c.Is_Anonymous, c.Created_At, a.Full_Name, a.Batch FROM contributions c LEFT JOIN alumni a ON c.Alumni_ID = a.id WHERE c.Status = 'verified'`);
         const authUser = req.session.authUser || null;
         if (req.session.authUser) {
             req.session.userType = authUser.Role || null;
             req.session.Enrollment = authUser.Enrollment || null;
         }
-        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser, announcement, mentorshipSession });
+        res.render(path.join(__dirname, './views/home.ejs'), { rows, rows1, authUser, announcement, mentorshipSession, verify_contribution });
     } catch (err) {
         console.error(err);
         res.status(500).send('Failed to load home');
@@ -916,7 +916,7 @@ async function renderAdminPage(req, res) {
         const [acceptedMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Accepted'");
         const [scheduledMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
         const [mentors] = await db.execute("SELECT Employee_ID, Full_Name FROM faculty WHERE Assigned = 0");
-        const [contributions] = await db.execute("SELECT id, Alumni_ID, Amount, Is_Anonymous, Created_At FROM contributions WHERE Status = 'pending'")
+        const [contributions] = await db.execute("SELECT id, Alumni_ID, Amount, Is_Anonymous, Created_At FROM contributions WHERE Status = 'pending'");
         // console.log(contributions);
         req.session.Count = {
             countSupport: countSupport[0].pending_count,
