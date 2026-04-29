@@ -605,6 +605,46 @@ app.post('/update_profile', upload.single('Profile_Image'), async (req, res) => 
     }
 });
 
+// CONTRIBUTIONS
+app.post('/contribution', async (req, res) => {
+    try {
+        const { Alumni_ID, Amount, Is_Anonymous } = req.body;
+        console.log('______');
+        console.log(Is_Anonymous);
+        const isAnonymous = Is_Anonymous === '1' ? 1 : 0;
+        console.log(Alumni_ID);
+        console.log(isAnonymous);
+
+
+        await db.execute(
+            `INSERT INTO contributions (Alumni_ID, Amount, Is_Anonymous, Status, Created_At)
+             VALUES (?, ?, ?, 'pending', NOW())`,
+            [Alumni_ID, Number(Amount), isAnonymous]
+        );
+
+        res.redirect('https://razorpay.me/@shivansh6174');
+    } catch (err) {
+        console.error('Contribution error:', err);
+        res.redirect('/');
+    }
+
+});
+
+// VERIFY CONTRUBUTIONS
+app.post('/verify_contribution', async (req,res) =>{
+    try {
+        const { contribution_id } = req.body;
+        await db.execute(
+            `UPDATE contributions SET Status = 'verified' WHERE id = ?`,
+            [contribution_id]
+        );
+        await renderAdminPage(req,res);
+    } catch (err) {
+        console.error('Verify contribution error:', err);
+        await renderAdminPage(req,res);
+    }
+})
+
 // MENTORSHIP
 app.post('/mentorship_request', async (req, res) => {
     const [mentorshipSessions] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
@@ -874,7 +914,8 @@ async function renderAdminPage(req, res) {
         const [acceptedMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Accepted'");
         const [scheduledMentorship] = await db.execute("SELECT * FROM mentorship_session WHERE Status = 'Scheduled'");
         const [mentors] = await db.execute("SELECT Employee_ID, Full_Name FROM faculty WHERE Assigned = 0");
-
+        const [contributions] = await db.execute("SELECT id, Alumni_ID, Amount, Is_Anonymous, Created_At FROM contributions WHERE Status = 'pending'")
+        // console.log(contributions);
         req.session.Count = {
             countSupport: countSupport[0].pending_count,
             countMentorshipReq: countMentorshipReq[0].pendingMentorship_count,
@@ -886,17 +927,17 @@ async function renderAdminPage(req, res) {
             mentorshipCount: req.session.Count.countMentorshipReq || 0,
             countUserVerification: req.session.Count.countUserVerification || 0,
             rows, row1, mentorshipRequests, announcement, mentorshipSessions,
-            interestedAlumni, pendingMentorship, scheduledMentorship, acceptedMentorship, mentors
+            interestedAlumni, pendingMentorship, scheduledMentorship, acceptedMentorship, mentors, contributions
         });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error loading admin page.");
     }
 }
-transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: "tarunparmar457@gmail.com",
-    subject: "Test Email",
-    text: "If you see this, email is working!"
-}).then(() => console.log("✅ Test email sent!"))
-  .catch(err => console.error("❌ Email error:", err.message));
+// transporter.sendMail({
+//     from: process.env.EMAIL_USER,
+//     to: "tarunparmar457@gmail.com",
+//     subject: "Test Email",
+//     text: "If you see this, email is working!"
+// }).then(() => console.log("✅ Test email sent!"))
+//   .catch(err => console.error("❌ Email error:", err.message));

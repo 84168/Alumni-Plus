@@ -860,44 +860,49 @@
             color: #e53e3e;
             font-weight: bold;
         }
+
         /* Logout button styles */
-#logoutWrapper {
-  padding: 1.5rem;
-  border-top: 1px solid #e5e7eb; /* light gray border */
-  display: flex;
-  justify-content: space-between;
-}
+        #logoutWrapper {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            /* light gray border */
+            display: flex;
+            justify-content: space-between;
+        }
 
-#logoutWrapper form {
-  width: 100%;
-}
+        #logoutWrapper form {
+            width: 100%;
+        }
 
-#logoutWrapper button {
-  width: 100%;
-  background-color: #dc2626; /* red-600 */
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+        #logoutWrapper button {
+            width: 100%;
+            background-color: #dc2626;
+            /* red-600 */
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-#logoutWrapper button:hover {
-  background-color: #b91c1c; /* red-700 */
-}
+        #logoutWrapper button:hover {
+            background-color: #b91c1c;
+            /* red-700 */
+        }
 
-#logoutWrapper button:active {
-  background-color: #991b1b; /* red-800 */
-}
+        #logoutWrapper button:active {
+            background-color: #991b1b;
+            /* red-800 */
+        }
 
-#logoutWrapper button:focus {
-  outline: 2px solid #fca5a5; /* red-300 */
-  outline-offset: 2px;
-}
-
+        #logoutWrapper button:focus {
+            outline: 2px solid #fca5a5;
+            /* red-300 */
+            outline-offset: 2px;
+        }
     </style>
 </head>
 
@@ -936,14 +941,17 @@
                 <button class="nav-item" onclick="showSection('batch-convert')">
                     🎓 Batch → Alumni
                 </button>
+                <button class="nav-item" onclick="showSection('pending-contribution')">
+                    ₹ Pending Contributions
+                </button>
                 <div id="logoutWrapper" class="p-6 border-t flex justify-between">
-                        <form action="/logout" method="POST" class="w-full">
-                            <button type="submit"
-                                class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
-                                Logout
-                            </button>
-                        </form>
-                    </div>
+                    <form action="/logout" method="POST" class="w-full">
+                        <button type="submit"
+                            class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                            Logout
+                        </button>
+                    </form>
+                </div>
             </nav>
         </div>
 
@@ -1648,50 +1656,109 @@
                             </div>
                         </div>
                     </div>
-                                                        <!-- Batch Convert Section -->
-<div id="batch-convert-section" class="hidden">
+                    <!-- Batch Convert Section -->
+                    <div id="batch-convert-section" class="hidden">
+                        <div class="content-section">
+                            <div class="section-header">
+                                <h3>Batch to Alumni Converter</h3>
+                            </div>
+                            <div style="padding: 32px;">
+
+                                <div
+                                    style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+                                    <label style="font-size: 14px; color: #718096; white-space: nowrap;">Batch
+                                        Year</label>
+                                    <input type="number" id="batchInput" placeholder="e.g. 2025" min="2000" max="2099"
+                                        style="width: 160px; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; outline: none;" />
+                                    <button onclick="fetchStudents()"
+                                        style="padding: 10px 22px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                                        Search Students
+                                    </button>
+                                </div>
+
+                                <div id="batchStatusMsg"
+                                    style="display:none; margin-bottom: 16px; padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 500;">
+                                </div>
+
+                                <div id="studentPanel" style="display:none;">
+
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                                        <span id="batchLabel"
+                                            style="font-size: 15px; font-weight: 700; color: #2d3748;"></span>
+                                        <label
+                                            style="font-size: 13px; color: #718096; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600;">
+                                            <input type="checkbox" id="batchSelectAll" onchange="toggleSelectAll(this)"
+                                                style="width: 16px; height: 16px; cursor: pointer;" />
+                                            Select All
+                                        </label>
+                                    </div>
+
+                                    <div id="studentList"
+                                        style="max-height: 340px; overflow-y: auto; border: 1.5px solid #e8ebff; border-radius: 14px; background: #fff;">
+                                    </div>
+
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 12px;">
+                                        <span id="batchSelectedCount"
+                                            style="font-size: 13px; color: #718096; font-weight: 600;">0 selected</span>
+                                        <button id="convertBtn" onclick="convertToAlumni()" disabled
+                                            style="padding: 11px 28px; font-size: 14px; font-weight: 700; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; border-radius: 10px; opacity: 0.5; cursor: not-allowed; transition: all 0.2s;">
+                                            🎓 Change to Alumni
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pending Contribution  -->
+                     <!-- Pending Contribution -->
+<div id="pending-contribution-section" class="hidden">
     <div class="content-section">
         <div class="section-header">
-            <h3>Batch to Alumni Converter</h3>
+            <h3>Pending To Verify Contributions</h3>
         </div>
         <div style="padding: 32px;">
+            <% if (contributions && contributions.length > 0) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Alumni ID</th>
+                            <th>Amount (₹)</th>
+                            <th>Anonymous</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% contributions.forEach(function(c) { %>
+                            <tr>
+                                <td><%= c.id %></td>
+                                <td><%= c.Is_Anonymous === 1 ? 'Anonymous' : c.Alumni_ID %></td>
+                                <td>₹<%= parseFloat(c.Amount).toFixed(2) %></td>
+                                <td><%= c.Is_Anonymous === 1 ? 'Yes' : 'No' %></td>
+                                <td><%= new Date(c.Created_At).toLocaleString('en-IN') %></td>
+                                <td>
+                                    <form action="/verify_contribution" method="POST" style="display:inline;">
+                                        <input type="hidden" name="contribution_id" value="<%= c.id %>">
+                                        <button type="submit" class="btn btn-success btn-sm">✓ Approve</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p style="text-align:center; color: #888;">No pending contributions found.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+            
 
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
-                <label style="font-size: 14px; color: #718096; white-space: nowrap;">Batch Year</label>
-                <input type="number" id="batchInput" placeholder="e.g. 2025" min="2000" max="2099"
-                    style="width: 160px; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; outline: none;" />
-                <button onclick="fetchStudents()"
-                    style="padding: 10px 22px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;">
-                    Search Students
-                </button>
-            </div>
-
-            <div id="batchStatusMsg" style="display:none; margin-bottom: 16px; padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 500;"></div>
-
-            <div id="studentPanel" style="display:none;">
-
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                    <span id="batchLabel" style="font-size: 15px; font-weight: 700; color: #2d3748;"></span>
-                    <label style="font-size: 13px; color: #718096; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600;">
-                        <input type="checkbox" id="batchSelectAll" onchange="toggleSelectAll(this)"
-                            style="width: 16px; height: 16px; cursor: pointer;" />
-                        Select All
-                    </label>
-                </div>
-
-                <div id="studentList"
-                    style="max-height: 340px; overflow-y: auto; border: 1.5px solid #e8ebff; border-radius: 14px; background: #fff;">
-                </div>
-
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 12px;">
-                    <span id="batchSelectedCount"
-                        style="font-size: 13px; color: #718096; font-weight: 600;">0 selected</span>
-                    <button id="convertBtn" onclick="convertToAlumni()" disabled
-                        style="padding: 11px 28px; font-size: 14px; font-weight: 700; background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; border: none; border-radius: 10px; opacity: 0.5; cursor: not-allowed; transition: all 0.2s;">
-                        🎓 Change to Alumni
-                    </button>
-                </div>
-            </div>
+            
 
         </div>
     </div>
@@ -1809,25 +1876,26 @@
 
         function showSection(sectionName) {
             // Hide all sections
-            const sections = ['overview', 'user-verification', 'student-needs', 'mentorship', 'announcements', 'sessions', 'batch-convert'];
-    sections.forEach(section => {
-        document.getElementById(section + '-section').classList.add('hidden');
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    document.getElementById(sectionName + '-section').classList.remove('hidden');
-    event.target.classList.add('active');
-    const titles = {
-        'overview': 'Dashboard Overview',
-        'user-verification': 'User Verification',
-        'student-needs': 'Student Needs',
-        'mentorship': 'Mentorship Requests',
-        'announcements': 'Announcements',
-        'sessions': 'Mentorship Sessions',
-        'batch-convert': 'Batch to Alumni Converter'
-    };
-    document.getElementById('page-title').textContent = titles[sectionName];
+            const sections = ['overview', 'user-verification', 'student-needs', 'mentorship', 'announcements', 'sessions', 'batch-convert','pending-contribution'];
+            sections.forEach(section => {
+                document.getElementById(section + '-section').classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            event.target.classList.add('active');
+            const titles = {
+                'overview': 'Dashboard Overview',
+                'user-verification': 'User Verification',
+                'student-needs': 'Student Needs',
+                'mentorship': 'Mentorship Requests',
+                'announcements': 'Announcements',
+                'sessions': 'Mentorship Sessions',
+                'batch-convert': 'Batch to Alumni Converter',
+                'pending-contribution':'Pending To Verify Contribution'
+            };
+            document.getElementById('page-title').textContent = titles[sectionName];
         }
 
         // function showModal(modalType) {
@@ -2008,63 +2076,63 @@
             return true;
         }
         // ===================== BATCH TO ALUMNI CONVERTER =====================
-let batchStudents = [];
-let batchSelected = new Set();
+        let batchStudents = [];
+        let batchSelected = new Set();
 
-function showBatchStatus(msg, type) {
-    const el = document.getElementById('batchStatusMsg');
-    el.style.display = 'block';
-    el.textContent = msg;
-    if (type === 'success') {
-        el.style.background = '#f0fff4';
-        el.style.color = '#276749';
-        el.style.border = '1.5px solid #9ae6b4';
-    } else if (type === 'error') {
-        el.style.background = '#fff5f5';
-        el.style.color = '#c53030';
-        el.style.border = '1.5px solid #feb2b2';
-    } else {
-        el.style.background = '#ebf8ff';
-        el.style.color = '#2b6cb0';
-        el.style.border = '1.5px solid #90cdf4';
-    }
-}
-
-async function fetchStudents() {
-    const batch = document.getElementById('batchInput').value.trim();
-    if (!batch || isNaN(batch) || batch.length !== 4) {
-        showBatchStatus('Please enter a valid 4-digit batch year.', 'error');
-        return;
-    }
-
-    document.getElementById('batchStatusMsg').style.display = 'none';
-    document.getElementById('studentPanel').style.display = 'none';
-    batchStudents = [];
-    batchSelected.clear();
-    document.getElementById('batchSelectAll').checked = false;
-
-    try {
-        const res = await fetch(`/admin/students-by-batch/${batch}`);
-        batchStudents = await res.json();
-
-        if (!Array.isArray(batchStudents) || batchStudents.length === 0) {
-            showBatchStatus(`No unconverted students found for batch ${batch}.`, 'error');
-            return;
+        function showBatchStatus(msg, type) {
+            const el = document.getElementById('batchStatusMsg');
+            el.style.display = 'block';
+            el.textContent = msg;
+            if (type === 'success') {
+                el.style.background = '#f0fff4';
+                el.style.color = '#276749';
+                el.style.border = '1.5px solid #9ae6b4';
+            } else if (type === 'error') {
+                el.style.background = '#fff5f5';
+                el.style.color = '#c53030';
+                el.style.border = '1.5px solid #feb2b2';
+            } else {
+                el.style.background = '#ebf8ff';
+                el.style.color = '#2b6cb0';
+                el.style.border = '1.5px solid #90cdf4';
+            }
         }
 
-        document.getElementById('batchLabel').textContent =
-            `Batch ${batch} — ${batchStudents.length} student${batchStudents.length > 1 ? 's' : ''} found`;
-        renderStudentList();
-        document.getElementById('studentPanel').style.display = 'block';
-        updateConvertBtn();
-    } catch (e) {
-        showBatchStatus('Network error. Could not fetch students.', 'error');
-    }
-}
+        async function fetchStudents() {
+            const batch = document.getElementById('batchInput').value.trim();
+            if (!batch || isNaN(batch) || batch.length !== 4) {
+                showBatchStatus('Please enter a valid 4-digit batch year.', 'error');
+                return;
+            }
 
-function renderStudentList() {
-    const list = document.getElementById('studentList');
-    list.innerHTML = batchStudents.map((s, i) => `
+            document.getElementById('batchStatusMsg').style.display = 'none';
+            document.getElementById('studentPanel').style.display = 'none';
+            batchStudents = [];
+            batchSelected.clear();
+            document.getElementById('batchSelectAll').checked = false;
+
+            try {
+                const res = await fetch(`/admin/students-by-batch/${batch}`);
+                batchStudents = await res.json();
+
+                if (!Array.isArray(batchStudents) || batchStudents.length === 0) {
+                    showBatchStatus(`No unconverted students found for batch ${batch}.`, 'error');
+                    return;
+                }
+
+                document.getElementById('batchLabel').textContent =
+                    `Batch ${batch} — ${batchStudents.length} student${batchStudents.length > 1 ? 's' : ''} found`;
+                renderStudentList();
+                document.getElementById('studentPanel').style.display = 'block';
+                updateConvertBtn();
+            } catch (e) {
+                showBatchStatus('Network error. Could not fetch students.', 'error');
+            }
+        }
+
+        function renderStudentList() {
+            const list = document.getElementById('studentList');
+            list.innerHTML = batchStudents.map((s, i) => `
         <label style="display: flex; align-items: center; gap: 14px; padding: 13px 18px; cursor: pointer;
             border-bottom: 1px solid #f0f0f0; transition: background 0.15s;"
             onmouseover="this.style.background='#f8f9ff'"
@@ -2079,77 +2147,76 @@ function renderStudentList() {
             </div>
         </label>
     `).join('');
-}
-
-function toggleBatchItem(cb) {
-    const i = parseInt(cb.dataset.idx);
-    if (cb.checked) batchSelected.add(i); else batchSelected.delete(i);
-    document.getElementById('batchSelectAll').checked = batchSelected.size === batchStudents.length;
-    updateConvertBtn();
-}
-
-function toggleSelectAll(cb) {
-    batchSelected.clear();
-    document.querySelectorAll('#studentList input[type=checkbox]').forEach((el, i) => {
-        el.checked = cb.checked;
-        if (cb.checked) batchSelected.add(i);
-    });
-    updateConvertBtn();
-}
-
-function updateConvertBtn() {
-    const btn = document.getElementById('convertBtn');
-    const n = batchSelected.size;
-    document.getElementById('batchSelectedCount').textContent = `${n} student${n !== 1 ? 's' : ''} selected`;
-    btn.disabled = n === 0;
-    btn.style.opacity = n === 0 ? '0.5' : '1';
-    btn.style.cursor = n === 0 ? 'not-allowed' : 'pointer';
-}
-
-async function convertToAlumni() {
-    const toConvert = [...batchSelected].map(i => batchStudents[i]);
-    if (toConvert.length === 0) return;
-
-    const btn = document.getElementById('convertBtn');
-    btn.textContent = 'Converting...';
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-
-    try {
-        const res = await fetch('/admin/batch-convert-to-alumni', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ students: toConvert })
-        });
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-            showBatchStatus(
-                `Successfully converted ${toConvert.length} student${toConvert.length > 1 ? 's' : ''} to alumni!`,
-                'success'
-            );
-            // Remove converted students from list
-            batchStudents = batchStudents.filter((_, i) => !batchSelected.has(i));
-            batchSelected.clear();
-            document.getElementById('batchSelectAll').checked = false;
-            renderStudentList();
-
-            const batch = document.getElementById('batchInput').value.trim();
-            document.getElementById('batchLabel').textContent = batchStudents.length === 0
-                ? `All students in batch ${batch} have been converted!`
-                : `Batch ${batch} — ${batchStudents.length} student${batchStudents.length > 1 ? 's' : ''} remaining`;
-        } else {
-            showBatchStatus('Error: ' + (data.message || 'Conversion failed. Please try again.'), 'error');
         }
-    } catch (e) {
-        showBatchStatus('Network error. Could not reach server.', 'error');
-    }
 
-    btn.textContent = '🎓 Change to Alumni';
-    btn.disabled = false;
-    updateConvertBtn();
-}
-// ===================== END BATCH TO ALUMNI CONVERTER =====================
+        function toggleBatchItem(cb) {
+            const i = parseInt(cb.dataset.idx);
+            if (cb.checked) batchSelected.add(i); else batchSelected.delete(i);
+            document.getElementById('batchSelectAll').checked = batchSelected.size === batchStudents.length;
+            updateConvertBtn();
+        }
+
+        function toggleSelectAll(cb) {
+            batchSelected.clear();
+            document.querySelectorAll('#studentList input[type=checkbox]').forEach((el, i) => {
+                el.checked = cb.checked;
+                if (cb.checked) batchSelected.add(i);
+            });
+            updateConvertBtn();
+        }
+
+        function updateConvertBtn() {
+            const btn = document.getElementById('convertBtn');
+            const n = batchSelected.size;
+            document.getElementById('batchSelectedCount').textContent = `${n} student${n !== 1 ? 's' : ''} selected`;
+            btn.disabled = n === 0;
+            btn.style.opacity = n === 0 ? '0.5' : '1';
+            btn.style.cursor = n === 0 ? 'not-allowed' : 'pointer';
+        }
+
+        async function convertToAlumni() {
+            const toConvert = [...batchSelected].map(i => batchStudents[i]);
+            if (toConvert.length === 0) return;
+
+            const btn = document.getElementById('convertBtn');
+            btn.textContent = 'Converting...';
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+
+            try {
+                const res = await fetch('/admin/batch-convert-to-alumni', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ students: toConvert })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    showBatchStatus(
+                        `Successfully converted ${toConvert.length} student${toConvert.length > 1 ? 's' : ''} to alumni!`,
+                        'success'
+                    );
+                    // Remove converted students from list
+                    batchStudents = batchStudents.filter((_, i) => !batchSelected.has(i));
+                    batchSelected.clear();
+                    document.getElementById('batchSelectAll').checked = false;
+                    renderStudentList();
+
+                    const batch = document.getElementById('batchInput').value.trim();
+                    document.getElementById('batchLabel').textContent = batchStudents.length === 0
+                        ? `All students in batch ${batch} have been converted!`
+                        : `Batch ${batch} — ${batchStudents.length} student${batchStudents.length > 1 ? 's' : ''} remaining`;
+                } else {
+                    showBatchStatus('Error: ' + (data.message || 'Conversion failed. Please try again.'), 'error');
+                }
+            } catch (e) {
+                showBatchStatus('Network error. Could not reach server.', 'error');
+            }
+
+            btn.textContent = '🎓 Change to Alumni';
+            btn.disabled = false;
+            updateConvertBtn();
+        }
     </script>
 </body>
 

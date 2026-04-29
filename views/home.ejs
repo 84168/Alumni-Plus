@@ -107,7 +107,8 @@
         }
 
         /* BUTTON ENHANCEMENTS */
-        button, .action-btn {
+        button,
+        .action-btn {
             font-weight: 600;
             letter-spacing: 0.025em;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -115,7 +116,8 @@
             overflow: hidden;
         }
 
-        button::before, .action-btn::before {
+        button::before,
+        .action-btn::before {
             content: '';
             position: absolute;
             top: 50%;
@@ -128,16 +130,24 @@
             transition: width 0.6s, height 0.6s;
         }
 
-        button:hover::before, .action-btn:hover::before {
+        button:hover::before,
+        .action-btn:hover::before {
             width: 300px;
             height: 300px;
         }
 
-        .join-btn, .signup-btn, #exit_form, #join_network, #log-in {
+        .join-btn,
+        .signup-btn,
+        #exit_form,
+        #join_network,
+        #log-in {
             box-shadow: 0 4px 14px 0 rgba(30, 64, 175, 0.25);
         }
 
-        .join-btn:hover, #exit_form:hover, #join_network:hover, #log-in:hover {
+        .join-btn:hover,
+        #exit_form:hover,
+        #join_network:hover,
+        #log-in:hover {
             background-color: #1e3a8a;
             transform: translateY(-2px);
             box-shadow: 0 8px 24px 0 rgba(30, 64, 175, 0.35);
@@ -150,12 +160,14 @@
         }
 
         /* PROFILE ICON */
-        #profile-btn, #mobile-profile-btn {
+        #profile-btn,
+        #mobile-profile-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        #profile-btn:hover, #mobile-profile-btn:hover {
+        #profile-btn:hover,
+        #mobile-profile-btn:hover {
             color: #1e40af;
             transform: scale(1.15);
             filter: drop-shadow(0 4px 8px rgba(30, 64, 175, 0.3));
@@ -193,10 +205,23 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(20px, -20px) rotate(5deg); }
-            50% { transform: translate(-20px, 20px) rotate(-5deg); }
-            75% { transform: translate(20px, 20px) rotate(3deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(20px, -20px) rotate(5deg);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
+
+            75% {
+                transform: translate(20px, 20px) rotate(3deg);
+            }
         }
 
         #home .container {
@@ -226,6 +251,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -237,6 +263,7 @@
                 opacity: 0;
                 transform: translateX(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -274,6 +301,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -347,12 +375,20 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* CARD ENHANCEMENTS */
-        .announcement-card, .alumni-card, .mentorship-card, .job-card {
+        .announcement-card,
+        .alumni-card,
+        .mentorship-card,
+        .job-card {
             background: white;
             border-radius: 16px;
             padding: 2rem;
@@ -364,7 +400,10 @@
             border: 1px solid var(--border-color);
         }
 
-        .announcement-card::before, .alumni-card::before, .mentorship-card::before, .job-card::before {
+        .announcement-card::before,
+        .alumni-card::before,
+        .mentorship-card::before,
+        .job-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -383,7 +422,10 @@
             background: linear-gradient(90deg, #d97706, #f59e0b);
         }
 
-        .announcement-card:hover, .alumni-card:hover, .mentorship-card:hover, .job-card:hover {
+        .announcement-card:hover,
+        .alumni-card:hover,
+        .mentorship-card:hover,
+        .job-card:hover {
             transform: translateY(-12px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
             border-color: #1e40af;
@@ -397,8 +439,10 @@
             border-color: #d97706;
         }
 
-        .announcement-card:hover::before, .alumni-card:hover::before, 
-        .mentorship-card:hover::before, .job-card:hover::before {
+        .announcement-card:hover::before,
+        .alumni-card:hover::before,
+        .mentorship-card:hover::before,
+        .job-card:hover::before {
             height: 6px;
         }
 
@@ -454,7 +498,8 @@
         }
 
         /* ALUMNI CARD IMAGES */
-        .alumni-card img, .mentorship-card img {
+        .alumni-card img,
+        .mentorship-card img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -469,13 +514,15 @@
             border-color: #d1fae5;
         }
 
-        .alumni-card:hover img, .mentorship-card:hover img {
+        .alumni-card:hover img,
+        .mentorship-card:hover img {
             transform: scale(1.1);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
         /* ALUMNI CARD TEXT */
-        .alumni-card h3, .mentorship-card h3 {
+        .alumni-card h3,
+        .mentorship-card h3 {
             font-size: 1.375rem;
             font-weight: 700;
             color: var(--text-primary);
@@ -483,7 +530,8 @@
             letter-spacing: -0.01em;
         }
 
-        .alumni-card p, .mentorship-card p {
+        .alumni-card p,
+        .mentorship-card p {
             color: var(--text-secondary);
             font-size: 1rem;
             margin-bottom: 0.25rem;
@@ -741,16 +789,18 @@
             -webkit-text-fill-color: transparent;
         }
 
-        #profileModal{
+        #profileModal {
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
 
-        #profileModal input, #profileModal textarea {
+        #profileModal input,
+        #profileModal textarea {
             border: 2px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
-        #profileModal input:focus, #profileModal textarea:focus {
+        #profileModal input:focus,
+        #profileModal textarea:focus {
             outline: none;
             border-color: #1e40af;
             box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
@@ -767,6 +817,7 @@
             from {
                 transform: translateX(100%);
             }
+
             to {
                 transform: translateX(0);
             }
@@ -820,7 +871,8 @@
                 border-radius: 20px;
             }
 
-            .modal-header, .modal-body {
+            .modal-header,
+            .modal-body {
                 padding: 1.5rem;
             }
 
@@ -844,7 +896,8 @@
                 font-size: 1.25rem;
             }
 
-            .alumni-card img, .mentorship-card img {
+            .alumni-card img,
+            .mentorship-card img {
                 width: 80px;
                 height: 80px;
             }
@@ -921,9 +974,12 @@
 
         /* LOADING ANIMATION */
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 1;
             }
+
             50% {
                 opacity: 0.5;
             }
@@ -965,34 +1021,48 @@
         }
 
         /* ENHANCED FOCUS STATES FOR ACCESSIBILITY */
-        button:focus, a:focus, input:focus, textarea:focus {
+        button:focus,
+        a:focus,
+        input:focus,
+        textarea:focus {
             outline: 2px solid #1e40af;
             outline-offset: 2px;
         }
 
         /* ENHANCED CARD GRID ANIMATIONS */
-        .announcement-card, .alumni-card, .mentorship-card, .job-card {
+        .announcement-card,
+        .alumni-card,
+        .mentorship-card,
+        .job-card {
             animation: cardFadeIn 0.6s ease-out forwards;
             opacity: 0;
         }
 
-        .announcement-card:nth-child(1), .alumni-card:nth-child(1), 
-        .mentorship-card:nth-child(1), .job-card:nth-child(1) {
+        .announcement-card:nth-child(1),
+        .alumni-card:nth-child(1),
+        .mentorship-card:nth-child(1),
+        .job-card:nth-child(1) {
             animation-delay: 0.1s;
         }
 
-        .announcement-card:nth-child(2), .alumni-card:nth-child(2), 
-        .mentorship-card:nth-child(2), .job-card:nth-child(2) {
+        .announcement-card:nth-child(2),
+        .alumni-card:nth-child(2),
+        .mentorship-card:nth-child(2),
+        .job-card:nth-child(2) {
             animation-delay: 0.2s;
         }
 
-        .announcement-card:nth-child(3), .alumni-card:nth-child(3), 
-        .mentorship-card:nth-child(3), .job-card:nth-child(3) {
+        .announcement-card:nth-child(3),
+        .alumni-card:nth-child(3),
+        .mentorship-card:nth-child(3),
+        .job-card:nth-child(3) {
             animation-delay: 0.3s;
         }
 
-        .announcement-card:nth-child(4), .alumni-card:nth-child(4), 
-        .mentorship-card:nth-child(4), .job-card:nth-child(4) {
+        .announcement-card:nth-child(4),
+        .alumni-card:nth-child(4),
+        .mentorship-card:nth-child(4),
+        .job-card:nth-child(4) {
             animation-delay: 0.4s;
         }
 
@@ -1001,6 +1071,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1194,105 +1265,256 @@
             font-weight: 700;
             box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
         }
-        .ft { background: #1a1f5e; color: #c8cde8; font-family: system-ui, sans-serif; padding: 56px 0 0; }
-  .ft-inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
-  .ft-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
-  .ft-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .ft-logo-icon { width: 36px; height: 36px; background: #4f56d6; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-  .ft-logo-text { font-size: 18px; font-weight: 700; color: #fff; }
-  .ft-logo-text span { color: #4ade80; }
-  .ft-desc { font-size: 13.5px; line-height: 1.7; color: #9ba3c8; max-width: 260px; }
-  .ft-social { display: flex; gap: 10px; margin-top: 20px; }
-  .ft-social a { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; transition: background .2s; text-decoration: none; }
-  .ft-social a:hover { background: #4f56d6; }
-  .ft-col-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #fff; text-transform: uppercase; margin-bottom: 16px; }
-  .ft-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-  .ft-col ul li a { font-size: 13.5px; color: #9ba3c8; text-decoration: none; transition: color .2s; }
-  .ft-col ul li a:hover { color: #4ade80; }
-  .ft-divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 48px 0 0; }
-  .ft-bottom { max-width: 1100px; margin: 0 auto; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .ft-copy { font-size: 13px; color: #6b7499; }
-  .ft-bottom-links { display: flex; gap: 20px; }
-  .ft-bottom-links a { font-size: 13px; color: #6b7499; text-decoration: none; }
-  .ft-bottom-links a:hover { color: #fff; }
-  .ft-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); border-radius: 20px; padding: 5px 12px; margin-top: 18px; }
-  .ft-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; }
-  .ft-badge-text { font-size: 12px; color: #4ade80; }
-  @media (max-width: 700px) { .ft-grid { grid-template-columns: 1fr 1fr; } }
+
+        .ft {
+            background: #1a1f5e;
+            color: #c8cde8;
+            font-family: system-ui, sans-serif;
+            padding: 56px 0 0;
+        }
+
+        .ft-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .ft-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .ft-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .ft-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #4f56d6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ft-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .ft-logo-text span {
+            color: #4ade80;
+        }
+
+        .ft-desc {
+            font-size: 13.5px;
+            line-height: 1.7;
+            color: #9ba3c8;
+            max-width: 260px;
+        }
+
+        .ft-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .ft-social a {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+            text-decoration: none;
+        }
+
+        .ft-social a:hover {
+            background: #4f56d6;
+        }
+
+        .ft-col-title {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .ft-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ft-col ul li a {
+            font-size: 13.5px;
+            color: #9ba3c8;
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .ft-col ul li a:hover {
+            color: #4ade80;
+        }
+
+        .ft-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 48px 0 0;
+        }
+
+        .ft-bottom {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .ft-copy {
+            font-size: 13px;
+            color: #6b7499;
+        }
+
+        .ft-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .ft-bottom-links a {
+            font-size: 13px;
+            color: #6b7499;
+            text-decoration: none;
+        }
+
+        .ft-bottom-links a:hover {
+            color: #fff;
+        }
+
+        .ft-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(74, 222, 128, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            border-radius: 20px;
+            padding: 5px 12px;
+            margin-top: 18px;
+        }
+
+        .ft-badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+
+        .ft-badge-text {
+            font-size: 12px;
+            color: #4ade80;
+        }
+
+        @media (max-width: 700px) {
+            .ft-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
 
 
         /* PRINT STYLES */
         @media print {
-            header, footer, .action-btn, .button-container {
+
+            header,
+            footer,
+            .action-btn,
+            .button-container {
                 display: none;
             }
-            
+
             body {
                 background: white;
             }
-            
+
             .container {
                 box-shadow: none;
                 border: 1px solid #000;
             }
         }
+
         /* Toggle Switch Styles */
-    #anonymous-toggle:checked + .toggle-bg {
-        background: #48bb78 !important;
-    }
+        #anonymous-toggle:checked+.toggle-bg {
+            background: #48bb78 !important;
+        }
 
-    #anonymous-toggle:checked + .toggle-bg .toggle-dot {
-        transform: translateX(24px);
-    }
+        #anonymous-toggle:checked+.toggle-bg .toggle-dot {
+            transform: translateX(24px);
+        }
 
-    .amount-btn:hover {
-        background: #e6f2ff !important;
-        border-color: #3182ce !important;
-        color: #3182ce !important;
-    }
+        .amount-btn:hover {
+            background: #e6f2ff !important;
+            border-color: #3182ce !important;
+            color: #3182ce !important;
+        }
 
-    .amount-btn[data-amount].active {
-        background: #3182ce !important;
-        color: white !important;
-        border-color: #3182ce !important;
-    }
-    /* Header layout fix - position only */
-header nav.flex {
-  flex-wrap: nowrap;
-  height: 68px;
-}
+        .amount-btn[data-amount].active {
+            background: #3182ce !important;
+            color: white !important;
+            border-color: #3182ce !important;
+        }
 
-header nav > div:first-child {
-  flex-shrink: 0;
-}
+        /* Header layout fix - position only */
+        header nav.flex {
+            flex-wrap: nowrap;
+            height: 68px;
+        }
 
-header nav > div.hidden.lg\:flex {
-  flex: 1;
-  justify-content: center;
-  gap: 10px;
-}
+        header nav>div:first-child {
+            flex-shrink: 0;
+        }
 
-@media (min-width: 1280px) {
-  header nav > div.hidden.lg\:flex {
-    gap: 15px;
-  }
-}
+        header nav>div.hidden.lg\:flex {
+            flex: 1;
+            justify-content: center;
+            gap: 10px;
+        }
 
-header nav > div:last-child {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+        @media (min-width: 1280px) {
+            header nav>div.hidden.lg\:flex {
+                gap: 15px;
+            }
+        }
 
-#profile_btn {
-  display: flex;
-  align-items: center;
-}
+        header nav>div:last-child {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.nav-link {
-  white-space: nowrap;
-}
+        #profile_btn {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            white-space: nowrap;
+        }
     </style>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1314,11 +1536,12 @@ header nav > div:last-child {
                             Alumni<span class="text-black font-black"> Plus</span>
                         </span> -->
                         <div class="flex flex-col leading-tight">
-    <span class="text-2xl font-bold text-gray-800">
-        Alumni<span class="text-black font-black"> Plus</span>
-    </span>
-    <span class="text-xs text-blue-600 font-medium tracking-wide">SGSITS Indore — CSE Dept.</span>
-</div>
+                            <span class="text-2xl font-bold text-gray-800">
+                                Alumni<span class="text-black font-black"> Plus</span>
+                            </span>
+                            <span class="text-xs text-blue-600 font-medium tracking-wide">SGSITS Indore — CSE
+                                Dept.</span>
+                        </div>
                     </a>
                 </div>
 
@@ -1367,19 +1590,20 @@ header nav > div:last-child {
             <!-- Left: Heading + Typing Intro -->
             <div class="flex flex-col justify-center space-y-6">
                 <!-- <h1 class="text-4xl font-bold">Connect with CSE Alumni Network</h1> -->
-                 <h1 class="text-4xl font-bold">Connect with <span style="color: goldenrod !important;">SGSITS</span> CSE Alumni Network</h1>
-<p class="text-blue-600 font-semibold text-base">
-    Shri G.S. Institute of Technology & Science, Indore
-</p>
+                <h1 class="text-4xl font-bold">Connect with <span style="color: goldenrod !important;">SGSITS</span> CSE
+                    Alumni Network</h1>
+                <p class="text-blue-600 font-semibold text-base">
+                    Shri G.S. Institute of Technology & Science, Indore
+                </p>
 
                 <!-- Typing wrapper -->
                 <p id="typing-text" class="text-gray-700 text-lg leading-7"></p>
             </div>
 
             <!-- Right: Image -->
-            <img src="https://www.sgsits.ac.in/assets/078f1aafbbc7669a27d5b98905a27a9f3142a9b6-DwiCBLnG.png"
-    alt="CSE Alumni networking" 
-    class="rounded-xl shadow-lg hover:scale-[1.02] m-auto transform transition w-full h-80 object-cover" />
+            <img src="https://manage.collnod.com/Upload/Content/web_img_1_19_11_2025_15_6_7.jpg"
+                alt="CSE Alumni networking"
+                class="rounded-xl shadow-lg hover:scale-[1.02] m-auto transform transition w-full h-80 object-cover" />
         </div>
     </section>
 
@@ -1391,7 +1615,8 @@ header nav > div:last-child {
             <div class="announcements-container">
                 <div class="page-header">
                     <h1>📢 CSE Alumni </h1>
-                    <p>Celebrate achievements, reconnect with pears, and explore alumni opportunities — SGSITS CSE alumni worldwide</p>
+                    <p>Celebrate achievements, reconnect with pears, and explore alumni opportunities — SGSITS CSE
+                        alumni worldwide</p>
                 </div>
                 <div class="button-container">
                     <button id="alumni_list" class="action-btn">
@@ -1452,10 +1677,10 @@ header nav > div:last-child {
                         </h2>
                         <p class="text-gray-600 text-center mb-2">
                             <!-- <%=req.Session_Date%>> -->
-                            <p><strong>Session Date:</strong>
-                                <%= new Date(req.Session_Date).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long'
-                                    , year: 'numeric' }) %>
-                            </p>
+                        <p><strong>Session Date:</strong>
+                            <%= new Date(req.Session_Date).toLocaleDateString('en-IN', { day: 'numeric' , month: 'long'
+                                , year: 'numeric' }) %>
+                        </p>
 
                         </p>
                         <p class="text-gray-500 text-center text-sm mb-4">
@@ -1520,219 +1745,57 @@ header nav > div:last-child {
             <div class="announcements-container">
                 <div class="page-header">
                     <h1>📢 Endowment</h1>
-                    
+
                 </div>
                 <% if(authUser) {%>
 
                     <%if(authUser.Role=='alumni' ){%>
-                        <!-- <p>Support future excellence-learn how contributions shape scholarships, research and innovations -->
-                    </p>
+                        <!-- <p>Support future excellence-learn how contributions shape scholarships, research and innovations </p>-->
+
                         <div class="no-content">
+
+                            <h2 style="text-align: center; color: #2d3748; margin-bottom: 20px; font-size: 28px;">
+                                Make a Contribution</h2>
+                            <p style="text-align: center; color: #718096; margin-bottom: 30px; line-height: 1.6;">
+                                *Important first payment is verified by admin then it will be shown to Others
+                            </p>
+                            <!-- MY LOGIC FORM TO ADD PAYMENT  -->
                             <div
-                                style="max-width: 600px; margin: 0 auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                                <h2 style="text-align: center; color: #2d3748; margin-bottom: 20px; font-size: 28px;">
-                                    Make a Contribution</h2>
-                                <p style="text-align: center; color: #718096; margin-bottom: 30px; line-height: 1.6;">
-                                    Your generous contribution helps support scholarships, research initiatives, and
-                                    innovation programs for future generations.
-                                </p>
+                                style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px 0;">
 
-                                <div style="margin-bottom: 30px;">
-                                    <label for="amount-input"
-                                        style="display: block; margin-bottom: 10px; font-weight: 600; color: #2d3748;">Contribution
-                                        Amount (₹)</label>
-                                    <input type="number" id="amount-input" value="500" min="100" step="100"
-                                        style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s;"
-                                        onfocus="this.style.borderColor='#3182ce';"
-                                        onblur="this.style.borderColor='#e2e8f0';">
-                                    <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                                        <button onclick="setAmount(500)" class="amount-btn" data-amount="500"
-                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: #3182ce; color: white; border-color: #3182ce; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹500</button>
-                                        <button onclick="setAmount(1000)" class="amount-btn" data-amount="1000"
-                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹1,000</button>
-                                        <button onclick="setAmount(5000)" class="amount-btn" data-amount="5000"
-                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹5,000</button>
-                                        <button onclick="setAmount(10000)" class="amount-btn" data-amount="10000"
-                                            style="padding: 8px 16px; border: 2px solid #e2e8f0; background: white; border-radius: 6px; cursor: pointer; transition: all 0.3s;">₹10,000</button>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 30px; padding: 16px; background: #f7fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                <label style="display: flex; align-items: center; cursor: pointer; user-select: none;">
-                                    <div style="position: relative;">
-                                        <input type="checkbox" id="anonymous-toggle" 
-                                            style="position: absolute; opacity: 0; width: 0; height: 0;">
-                                        <div class="toggle-bg" 
-                                            style="width: 48px; height: 24px; background: #cbd5e0; border-radius: 12px; transition: background 0.3s; position: relative;">
-                                            <div class="toggle-dot" 
-                                                style="position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span style="margin-left: 12px; font-weight: 600; color: #2d3748;">
-                                        🕶️ Want to be Anonymous
-                                    </span>
-                                </label>
-                                <p style="margin: 8px 0 0 60px; font-size: 14px; color: #718096;">
-                                    Your contribution will be shown as "Anonymous Donor"
-                                </p>
-                            </div>
-                            
-                                <button id="pay-button"
-                                    style="width: 100%; background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%); color: white; border: none; padding: 16px 32px; font-size: 18px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 6px rgba(49,130,206,0.3);"
-                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(49,130,206,0.4)';"
-                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(49,130,206,0.3)';">
-                                    Contribute Now
-                                </button>
+                                <form action="/contribution" method="POST"
+                                    style="width: 100%; max-width: 450px; font-family: 'Segoe UI', sans-serif; text-align: left;">
+                                    <input type="hidden" name="Alumni_ID" value="<%= authUser.Alumni_ID %>">
 
-                                <div id="payment-status" style="margin-top: 20px; text-align: center; display: none;">
-                                </div>
+                                    <div style="margin-bottom: 20px;">
+                                        <label for="amount-input"
+                                            style="display: block; margin-bottom: 8px; font-weight: 600; color: #4a5568;">Contribution
+                                            Amount (₹)</label>
+                                        <input type="number" name="Amount" id="amount-input" value="10" min="1" step="1" required
+                                            style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+                                        <input type="checkbox" name="Is_Anonymous" id="anonymous-toggle" value="1"
+                                            style="width: 18px; height: 18px; cursor: pointer; accent-color: #3182ce;">
+                                        <label for="anonymous-toggle"
+                                            style="font-size: 14px; color: #4a5568; cursor: pointer;">
+                                            Keep my contribution anonymous
+                                        </label>
+                                    </div>
+
+                                    <button type="submit" id="pay-button"
+                                        style="width: 100%; background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%); color: white; border: none; padding: 16px 32px; font-size: 18px; font-weight: 600; cursor: pointer; border-radius: 8px; box-shadow: 0 4px 6px rgba(44, 90, 160, 0.2); transition: transform 0.1s ease;">
+                                        Contribute Now
+                                    </button>
+                                    
+                                </form>
+
                             </div>
                         </div>
                         <% }else{%>
                             <!-- Alumni Contributions Display for Students -->
-                        <div style="max-width: 1200px; margin: 40px auto;">
-                            <h2 style="text-align: center; color: #2d3748; margin-bottom: 30px; font-size: 28px;">
-                                🌟 Our Generous Alumni Contributors
-                            </h2>
-                            <p style="text-align: center; color: #718096; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;">
-                                These remarkable alumni have contributed to our department's growth through financial support and valuable services.
-                            </p>
-
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; padding: 20px;">
-                                
-                                <!-- Sample Contribution Card 1 -->
-                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
-                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
-                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
-                                    
-                                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white;">
-                                        <div style="display: flex; align-items: center; gap: 15px;">
-                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
-                                                👤
-                                            </div>
-                                            <div>
-                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Dhruve Patidar</h3>
-                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2025 • CS Department</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="padding: 20px;">
-                                        <div style="margin-bottom: 15px;">
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                                <span style="font-size: 20px;">💰</span>
-                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
-                                            </div>
-                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
-                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹50,000</p>
-                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Scholarship Fund</p>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                                <span style="font-size: 20px;">🎯</span>
-                                                <span style="font-weight: 600; color: #2d3748;">Additional Services</span>
-                                            </div>
-                                            <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
-                                                <li style="margin-bottom: 6px;">Guest lecture on AI/ML</li>
-                                                <li style="margin-bottom: 6px;">Mentorship program for final year students</li>
-                                            </ul>
-                                        </div>
-
-                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
-                                            <span>📅</span>
-                                            <span>Contributed: October 2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Sample Contribution Card 2 - Anonymous -->
-                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
-                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
-                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
-                                    
-                                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; color: white;">
-                                        <div style="display: flex; align-items: center; gap: 15px;">
-                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
-                                                🕶️
-                                            </div>
-                                            <div>
-                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Anonymous Donor</h3>
-                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2015 • CS Department</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="padding: 20px;">
-                                        <div style="margin-bottom: 15px;">
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                                <span style="font-size: 20px;">💰</span>
-                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
-                                            </div>
-                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
-                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹1,00,000</p>
-                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Lab Equipment</p>
-                                            </div>
-                                        </div>
-
-                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
-                                            <span>📅</span>
-                                            <span>Contributed: September 2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Sample Contribution Card 3 -->
-                                <div style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;"
-                                    onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 15px rgba(0,0,0,0.15)';"
-                                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
-                                    
-                                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; color: white;">
-                                        <div style="display: flex; align-items: center; gap: 15px;">
-                                            <div style="width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">
-                                                👤
-                                            </div>
-                                            <div>
-                                                <h3 style="margin: 0; font-size: 20px; font-weight: 700;">Ms. Priya Sharma</h3>
-                                                <p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">Batch of 2012 • CS Department</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="padding: 20px;">
-                                        <div style="margin-bottom: 15px;">
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                                <span style="font-size: 20px;">💰</span>
-                                                <span style="font-weight: 600; color: #2d3748;">Financial Contribution</span>
-                                            </div>
-                                            <div style="background: #f0fff4; border-left: 4px solid #48bb78; padding: 12px; border-radius: 6px;">
-                                                <p style="margin: 0; font-size: 24px; font-weight: 700; color: #22543d;">₹25,000</p>
-                                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #2f855a;">For Research Projects</p>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                                <span style="font-size: 20px;">🎯</span>
-                                                <span style="font-weight: 600; color: #2d3748;">Additional Services</span>
-                                            </div>
-                                            <ul style="margin: 0; padding-left: 20px; color: #4a5568;">
-                                                <li style="margin-bottom: 6px;">Industry collaboration for internships</li>
-                                                <li style="margin-bottom: 6px;">Career counseling sessions</li>
-                                                <li style="margin-bottom: 6px;">Donated programming books to library</li>
-                                            </ul>
-                                        </div>
-
-                                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 6px; color: #718096; font-size: 13px;">
-                                            <span>📅</span>
-                                            <span>Contributed: November 2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                            <!-- <h1>No Contribution Till Now </h1> -->
                             <% } %>
 
                                 <% }else if( !authUser){%>
@@ -1740,10 +1803,10 @@ header nav > div:last-child {
                                         <h3>🏗️ First Login to View Endowment</h3>
                                         <!-- <p>Endowment and giving programs will be available soon.</p> -->
                                     </div>
-                                <% } %>
+                                    <% } %>
             </div>
         </div>
-            </div>
+        </div>
         </div>
     </section>
 
@@ -1796,471 +1859,569 @@ header nav > div:last-child {
         <!-- <div class="container mx-auto px-6 py-8 text-center text-gray-500 text-sm">
             © 2025 CSE Alumni Connect. All rights reserved.
         </div> -->
-        
+
 
         <% if (authUser) { %>
-<div id="profileModal" class="profile-overlay hidden">
-    <div class="profile-modal">
+            <div id="profileModal" class="profile-overlay hidden">
+                <div class="profile-modal">
 
-        <!-- Close -->
-        <button id="closeModal" class="modal-close" title="Close">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                <path d="M18 6L6 18M6 6l12 12"/>
-            </svg>
-        </button>
+                    <!-- Close -->
+                    <button id="closeModal" class="modal-close" title="Close">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
+                            viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
 
-        <!-- Avatar -->
-        <div class="modal-avatar-wrap">
-            <div class="modal-avatar-ring">
-                <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/non_2x/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
-                     alt="Avatar" class="modal-avatar">
-                <button id="edit_profile" class="avatar-edit-btn" title="Edit profile">
-                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-role-badge"><%= authUser.Role %></div>
-        </div>
+                    <!-- Avatar -->
+                    <div class="modal-avatar-wrap">
+                        <div class="modal-avatar-ring">
+                            <img src="https://static.vecteezy.com/system/resources/previews/019/896/008/non_2x/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+                                alt="Avatar" class="modal-avatar">
+                            <button id="edit_profile" class="avatar-edit-btn" title="Edit profile">
+                                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    viewBox="0 0 24 24">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="modal-role-badge">
+                            <%= authUser.Role %>
+                        </div>
+                    </div>
 
-        <!-- Name -->
-        <div class="modal-name"><%= authUser.Full_Name %></div>
-        <div class="modal-email-top"><%= authUser.Email_ID %></div>
+                    <!-- Name -->
+                    <div class="modal-name">
+                        <%= authUser.Full_Name %>
+                    </div>
+                    <div class="modal-email-top">
+                        <%= authUser.Email_ID %>
+                    </div>
 
-        <div class="modal-divider"></div>
+                    <div class="modal-divider"></div>
 
-        <!-- Static Profile View -->
-        <div id="staticProfile" class="modal-fields">
+                    <!-- Static Profile View -->
+                    <div id="staticProfile" class="modal-fields">
 
-            <% if (authUser.Enrollment_No) { %>
-            <div class="modal-field">
-                <span class="field-icon">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-                    </svg>
-                </span>
-                <div>
-                    <div class="field-label">Enrollment No.</div>
-                    <div class="field-value"><%= authUser.Enrollment_No %></div>
+                        <% if (authUser.Enrollment_No) { %>
+                            <div class="modal-field">
+                                <span class="field-icon">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" />
+                                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                                    </svg>
+                                </span>
+                                <div>
+                                    <div class="field-label">Enrollment No.</div>
+                                    <div class="field-value">
+                                        <%= authUser.Enrollment_No %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <div class="modal-field">
+                                    <span class="field-icon">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z" />
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <div class="field-label">Contact</div>
+                                        <div class="field-value">
+                                            <%= authUser.Contact_no %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-field">
+                                    <span class="field-icon">
+                                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" />
+                                            <path d="M16 2v4M8 2v4M3 10h18" />
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <div class="field-label">Batch</div>
+                                        <div class="field-value">
+                                            <%= authUser.Batch %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                    </div>
+
+                    <!-- Editable Form -->
+                    <form id="profileForm" action="/update_profile" method="POST" enctype="multipart/form-data"
+                        class="modal-form hidden">
+                        <input type="hidden" name="Email_ID" value="<%= authUser.Email_ID %>">
+                        <input type="hidden" name="Role" value="<%= authUser.Role %>">
+
+                        <div class="form-field">
+                            <label>Full Name</label>
+                            <input type="text" value="<%= authUser.Full_Name %>" disabled style="background: #f0f0f0;">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Contact</label>
+                            <input type="text" name="Contact_no" value="<%= authUser.Contact_no %>"
+                                placeholder="Phone number">
+                        </div>
+                        <% if (authUser.Role.toLowerCase()==='alumni' ) { %>
+                            <div class="form-field checkbox-field"
+                                style="flex-direction: row; align-items: center; gap: 10px; margin-top: 10px;">
+                                <input type="checkbox" name="Mentorship" id="mentorship" value="1"
+                                    <%=(authUser.Mentorship==1 || authUser.Mentorship=="1" ) ? 'checked' : '' %>
+                                style="width: 18px; height: 18px; cursor: pointer;">
+                                <label for="mentorship"
+                                    style="text-transform: none; font-size: 13px; color: #1e3a5f; cursor: pointer;">
+                                    I want to be a mentor
+                                </label>
+                            </div>
+                            <% } %>
+                                <!-- <p>Debug: Bio is [<%= authUser.Bio %>] | Mentorship is [<%= authUser.Mentorship %>]</p> -->
+                                <div class="form-field">
+                                    <label>Bio <span class="optional">optional</span></label>
+                                    <textarea name="Bio"
+                                        placeholder="Write a short bio about yourself..."><%= authUser.Bio %></textarea>
+                                </div>
+
+                                <div class="form-field">
+                                    <label>Profile Photo <span class="optional">optional</span></label>
+                                    <input type="file" name="Profile_Image" accept="image/*" class="file-input">
+                                </div>
+
+                                <button type="submit" class="btn-update">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        viewBox="0 0 24 24">
+                                        <path d="M20 6L9 17l-5-5" />
+                                    </svg>
+                                    Save Changes
+                                </button>
+                    </form>
+
+                    <!-- Footer Actions -->
+                    <div class="modal-footer">
+                        <form action="/logout" method="POST" style="width:100%"
+                            onsubmit="sessionStorage.removeItem('chatUser')">
+                            <button type="submit" class="btn-logout">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"
+                                    viewBox="0 0 24 24">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+                                </svg>
+                                Sign Out
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
+
+            <style>
+                /* ── Overlay ── */
+                .profile-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(15, 25, 35, 0.45);
+                    backdrop-filter: blur(4px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    padding: 20px;
+                }
+
+                .profile-overlay.hidden {
+                    display: none;
+                }
+
+                /* ── Modal Box ── */
+                .profile-modal {
+                    background: #ffffff;
+                    border-radius: 20px;
+                    width: 100%;
+                    max-width: 400px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    scrollbar-width: none;
+                    box-shadow: 0 24px 64px rgba(15, 25, 35, 0.18);
+                    padding: 32px 28px 24px;
+                    position: relative;
+                    animation: modalIn 0.25s ease-out both;
+                    border: 1px solid #e8ecf2;
+                }
+
+                .profile-modal::-webkit-scrollbar {
+                    display: none;
+                }
+
+                @keyframes modalIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(12px) scale(0.97);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+
+                /* ── Close ── */
+                .modal-close {
+                    position: absolute;
+                    top: 16px;
+                    right: 16px;
+                    background: #f1f4f8;
+                    border: none;
+                    border-radius: 8px;
+                    width: 34px;
+                    height: 34px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #64748b;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .modal-close:hover {
+                    background: #e2e8f0;
+                    color: #0f1923;
+                }
+
+                /* ── Avatar ── */
+                .modal-avatar-wrap {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-bottom: 14px;
+                }
+
+                .modal-avatar-ring {
+                    position: relative;
+                    width: 88px;
+                    height: 88px;
+                    margin-bottom: 10px;
+                }
+
+                .modal-avatar {
+                    width: 88px;
+                    height: 88px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: 3px solid #e8ecf2;
+                }
+
+                .avatar-edit-btn {
+                    position: absolute;
+                    bottom: 2px;
+                    right: 2px;
+                    background: #1e3a5f;
+                    color: #fff;
+                    border: none;
+                    border-radius: 50%;
+                    width: 28px;
+                    height: 28px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+                }
+
+                .avatar-edit-btn:hover {
+                    background: #162d4a;
+                }
+
+                .modal-role-badge {
+                    background: #e8eef6;
+                    color: #1e3a5f;
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 1.5px;
+                    text-transform: uppercase;
+                    padding: 3px 12px;
+                    border-radius: 20px;
+                    border: 1px solid #c8d8ea;
+                }
+
+                /* ── Name & Email ── */
+                .modal-name {
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: #0f1923;
+                    margin-bottom: 3px;
+                    font-family: 'Playfair Display', serif;
+                }
+
+                .modal-email-top {
+                    text-align: center;
+                    font-size: 13px;
+                    color: #64748b;
+                    margin-bottom: 20px;
+                }
+
+                /* ── Divider ── */
+                .modal-divider {
+                    height: 1px;
+                    background: #edf0f5;
+                    margin-bottom: 20px;
+                }
+
+                /* ── Info Fields ── */
+                .modal-fields {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    margin-bottom: 8px;
+                }
+
+                .modal-field {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    padding: 12px 14px;
+                    border-radius: 11px;
+                    background: #f8fafc;
+                    border: 1px solid #edf0f5;
+                    transition: border-color 0.2s;
+                }
+
+                .modal-field:hover {
+                    border-color: #d4dce8;
+                }
+
+                .field-icon {
+                    width: 32px;
+                    height: 32px;
+                    background: #e8eef6;
+                    border-radius: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #1e3a5f;
+                    flex-shrink: 0;
+                    margin-top: 1px;
+                }
+
+                .field-label {
+                    font-size: 10.5px;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    color: #94a3b8;
+                    margin-bottom: 2px;
+                }
+
+                .field-value {
+                    font-size: 14.5px;
+                    font-weight: 600;
+                    color: #0f1923;
+                    line-height: 1.3;
+                }
+
+                /* ── Edit Form ── */
+                .modal-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                    margin-bottom: 8px;
+                }
+
+                .modal-form.hidden {
+                    display: none;
+                }
+
+                .form-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                }
+
+                .form-field label {
+                    font-size: 11px;
+                    font-weight: 700;
+                    letter-spacing: 0.8px;
+                    text-transform: uppercase;
+                    color: #374151;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .optional {
+                    font-size: 10px;
+                    font-weight: 400;
+                    color: #94a3b8;
+                    text-transform: none;
+                    letter-spacing: 0;
+                }
+
+                .form-field input[type="text"],
+                .form-field input[type="email"],
+                .form-field textarea {
+                    font-size: 14px;
+                    color: #0f1923;
+                    background: #f8fafc;
+                    border: 1.5px solid #dde3ec;
+                    border-radius: 10px;
+                    padding: 10px 13px;
+                    outline: none;
+                    font-family: inherit;
+                    transition: border-color 0.2s, box-shadow 0.2s;
+                    width: 100%;
+                }
+
+                .form-field input:focus,
+                .form-field textarea:focus {
+                    border-color: #1e3a5f;
+                    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.08);
+                    background: #fff;
+                }
+
+                .form-field textarea {
+                    resize: vertical;
+                    min-height: 80px;
+                    line-height: 1.6;
+                }
+
+                .file-input {
+                    font-size: 13px !important;
+                    color: #64748b !important;
+                    padding: 8px 12px !important;
+                    cursor: pointer;
+                }
+
+                .btn-update {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 7px;
+                    background: #1e3a5f;
+                    color: #fff;
+                    border: none;
+                    border-radius: 11px;
+                    padding: 12px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    font-family: inherit;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    box-shadow: 0 4px 14px rgba(30, 58, 95, 0.25);
+                    margin-top: 4px;
+                }
+
+                .btn-update:hover {
+                    background: #162d4a;
+                    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.32);
+                    transform: translateY(-1px);
+                }
+
+                /* ── Footer ── */
+                .modal-footer {
+                    border-top: 1px solid #edf0f5;
+                    padding-top: 18px;
+                    margin-top: 18px;
+                }
+
+                .btn-logout {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    width: 100%;
+                    background: transparent;
+                    color: #9b2c2c;
+                    border: 1.5px solid #f0d4d4;
+                    border-radius: 11px;
+                    padding: 11px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    font-family: inherit;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .btn-logout:hover {
+                    background: #fff5f5;
+                    border-color: #e8b4b4;
+                    color: #7a2020;
+                }
+            </style>
             <% } %>
+                <footer class="ft">
+                    <div class="ft-inner">
+                        <div class="ft-grid">
 
-            <div class="modal-field">
-                <span class="field-icon">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/>
-                    </svg>
-                </span>
-                <div>
-                    <div class="field-label">Contact</div>
-                    <div class="field-value"><%= authUser.Contact_no %></div>
-                </div>
-            </div>
-
-            <div class="modal-field">
-                <span class="field-icon">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
-                    </svg>
-                </span>
-                <div>
-                    <div class="field-label">Batch</div>
-                    <div class="field-value"><%= authUser.Batch %></div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Editable Form -->
-        <form id="profileForm" action="/update_profile" method="POST" enctype="multipart/form-data" class="modal-form hidden">
-    <input type="hidden" name="Email_ID" value="<%= authUser.Email_ID %>">
-    <input type="hidden" name="Role" value="<%= authUser.Role %>">
-
-    <div class="form-field">
-        <label>Full Name</label>
-        <input type="text" value="<%= authUser.Full_Name %>" disabled style="background: #f0f0f0;">
-    </div>
-
-    <div class="form-field">
-        <label>Contact</label>
-        <input type="text" name="Contact_no" value="<%= authUser.Contact_no %>" placeholder="Phone number">
-    </div>
-    <% if (authUser.Role.toLowerCase() === 'alumni') { %>
-    <div class="form-field checkbox-field" style="flex-direction: row; align-items: center; gap: 10px; margin-top: 10px;">
-        <input type="checkbox" name="Mentorship" id="mentorship" value="1" 
-       <%= (authUser.Mentorship == 1 || authUser.Mentorship == "1") ? 'checked' : '' %> 
-       style="width: 18px; height: 18px; cursor: pointer;">
-        <label for="mentorship" style="text-transform: none; font-size: 13px; color: #1e3a5f; cursor: pointer;">
-            I want to be a mentor
-        </label>
-    </div>
-<% } %>
-<!-- <p>Debug: Bio is [<%= authUser.Bio %>] | Mentorship is [<%= authUser.Mentorship %>]</p> -->
-    <div class="form-field">
-        <label>Bio <span class="optional">optional</span></label>
-        <textarea name="Bio" placeholder="Write a short bio about yourself..."><%= authUser.Bio %></textarea>
-    </div>
-
-    <div class="form-field">
-        <label>Profile Photo <span class="optional">optional</span></label>
-        <input type="file" name="Profile_Image" accept="image/*" class="file-input">
-    </div>
-
-    <button type="submit" class="btn-update">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path d="M20 6L9 17l-5-5"/>
-        </svg>
-        Save Changes
-    </button>
-</form>
-
-        <!-- Footer Actions -->
-        <div class="modal-footer">
-            <form action="/logout" method="POST" style="width:100%" onsubmit="sessionStorage.removeItem('chatUser')">
-    <button type="submit" class="btn-logout">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
-        </svg>
-        Sign Out
-    </button>
-</form>
-        </div>
-
-    </div>
-</div>
-
-<style>
-    /* ── Overlay ── */
-    .profile-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 25, 35, 0.45);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        padding: 20px;
-    }
-    .profile-overlay.hidden { display: none; }
-
-    /* ── Modal Box ── */
-    .profile-modal {
-        background: #ffffff;
-        border-radius: 20px;
-        width: 100%;
-        max-width: 400px;
-        max-height: 90vh;
-        overflow-y: auto;
-        scrollbar-width: none;
-        box-shadow: 0 24px 64px rgba(15,25,35,0.18);
-        padding: 32px 28px 24px;
-        position: relative;
-        animation: modalIn 0.25s ease-out both;
-        border: 1px solid #e8ecf2;
-    }
-    .profile-modal::-webkit-scrollbar { display: none; }
-
-    @keyframes modalIn {
-        from { opacity: 0; transform: translateY(12px) scale(0.97); }
-        to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* ── Close ── */
-    .modal-close {
-        position: absolute;
-        top: 16px; right: 16px;
-        background: #f1f4f8;
-        border: none;
-        border-radius: 8px;
-        width: 34px; height: 34px;
-        display: flex; align-items: center; justify-content: center;
-        color: #64748b;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .modal-close:hover { background: #e2e8f0; color: #0f1923; }
-
-    /* ── Avatar ── */
-    .modal-avatar-wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 14px;
-    }
-
-    .modal-avatar-ring {
-        position: relative;
-        width: 88px; height: 88px;
-        margin-bottom: 10px;
-    }
-
-    .modal-avatar {
-        width: 88px; height: 88px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #e8ecf2;
-    }
-
-    .avatar-edit-btn {
-        position: absolute;
-        bottom: 2px; right: 2px;
-        background: #1e3a5f;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 28px; height: 28px;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer;
-        transition: background 0.2s;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-    }
-    .avatar-edit-btn:hover { background: #162d4a; }
-
-    .modal-role-badge {
-        background: #e8eef6;
-        color: #1e3a5f;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        padding: 3px 12px;
-        border-radius: 20px;
-        border: 1px solid #c8d8ea;
-    }
-
-    /* ── Name & Email ── */
-    .modal-name {
-        text-align: center;
-        font-size: 20px;
-        font-weight: 700;
-        color: #0f1923;
-        margin-bottom: 3px;
-        font-family: 'Playfair Display', serif;
-    }
-
-    .modal-email-top {
-        text-align: center;
-        font-size: 13px;
-        color: #64748b;
-        margin-bottom: 20px;
-    }
-
-    /* ── Divider ── */
-    .modal-divider {
-        height: 1px;
-        background: #edf0f5;
-        margin-bottom: 20px;
-    }
-
-    /* ── Info Fields ── */
-    .modal-fields { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-
-    .modal-field {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 12px 14px;
-        border-radius: 11px;
-        background: #f8fafc;
-        border: 1px solid #edf0f5;
-        transition: border-color 0.2s;
-    }
-    .modal-field:hover { border-color: #d4dce8; }
-
-    .field-icon {
-        width: 32px; height: 32px;
-        background: #e8eef6;
-        border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        color: #1e3a5f;
-        flex-shrink: 0;
-        margin-top: 1px;
-    }
-
-    .field-label {
-        font-size: 10.5px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: #94a3b8;
-        margin-bottom: 2px;
-    }
-
-    .field-value {
-        font-size: 14.5px;
-        font-weight: 600;
-        color: #0f1923;
-        line-height: 1.3;
-    }
-
-    /* ── Edit Form ── */
-    .modal-form { display: flex; flex-direction: column; gap: 14px; margin-bottom: 8px; }
-    .modal-form.hidden { display: none; }
-
-    .form-field { display: flex; flex-direction: column; gap: 5px; }
-
-    .form-field label {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        text-transform: uppercase;
-        color: #374151;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .optional {
-        font-size: 10px;
-        font-weight: 400;
-        color: #94a3b8;
-        text-transform: none;
-        letter-spacing: 0;
-    }
-
-    .form-field input[type="text"],
-    .form-field input[type="email"],
-    .form-field textarea {
-        font-size: 14px;
-        color: #0f1923;
-        background: #f8fafc;
-        border: 1.5px solid #dde3ec;
-        border-radius: 10px;
-        padding: 10px 13px;
-        outline: none;
-        font-family: inherit;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        width: 100%;
-    }
-
-    .form-field input:focus,
-    .form-field textarea:focus {
-        border-color: #1e3a5f;
-        box-shadow: 0 0 0 3px rgba(30,58,95,0.08);
-        background: #fff;
-    }
-
-    .form-field textarea {
-        resize: vertical;
-        min-height: 80px;
-        line-height: 1.6;
-    }
-
-    .file-input {
-        font-size: 13px !important;
-        color: #64748b !important;
-        padding: 8px 12px !important;
-        cursor: pointer;
-    }
-
-    .btn-update {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        background: #1e3a5f;
-        color: #fff;
-        border: none;
-        border-radius: 11px;
-        padding: 12px;
-        font-size: 14px;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 14px rgba(30,58,95,0.25);
-        margin-top: 4px;
-    }
-    .btn-update:hover {
-        background: #162d4a;
-        box-shadow: 0 6px 20px rgba(30,58,95,0.32);
-        transform: translateY(-1px);
-    }
-
-    /* ── Footer ── */
-    .modal-footer {
-        border-top: 1px solid #edf0f5;
-        padding-top: 18px;
-        margin-top: 18px;
-    }
-
-    .btn-logout {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        background: transparent;
-        color: #9b2c2c;
-        border: 1.5px solid #f0d4d4;
-        border-radius: 11px;
-        padding: 11px;
-        font-size: 14px;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .btn-logout:hover {
-        background: #fff5f5;
-        border-color: #e8b4b4;
-        color: #7a2020;
-    }
-</style>
-<% } %>
-    <footer class="ft">
-  <div class="ft-inner">
-    <div class="ft-grid">
- 
-      <!-- Brand column -->
-      <div class="ft-col">
-        <div class="ft-logo">
-          <div class="ft-logo-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 3L2 9l10 6 10-6-10-6z" fill="#fff" opacity=".9"/>
-              <path d="M2 15l10 6 10-6" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".6"/>
-            </svg>
-          </div>
-          <span class="ft-logo-text">Alumni<span>Plus</span></span>
-        </div>
-        <p class="ft-desc">Connecting graduates worldwide. Build meaningful relationships, advance your career, and give back to your alma mater.</p>
-        <!-- <div class="ft-badge">
+                            <!-- Brand column -->
+                            <div class="ft-col">
+                                <div class="ft-logo">
+                                    <div class="ft-logo-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 3L2 9l10 6 10-6-10-6z" fill="#fff" opacity=".9" />
+                                            <path d="M2 15l10 6 10-6" stroke="#fff" stroke-width="2"
+                                                stroke-linecap="round" fill="none" opacity=".6" />
+                                        </svg>
+                                    </div>
+                                    <span class="ft-logo-text">Alumni<span>Plus</span></span>
+                                </div>
+                                <p class="ft-desc">Connecting graduates worldwide. Build meaningful relationships,
+                                    advance your career, and give back to your alma mater.</p>
+                                <!-- <div class="ft-badge">
           <div class="ft-badge-dot"></div>
           <span class="ft-badge-text">10,000+ alumni connected</span>
         </div> -->
-        <div class="ft-social">
-          <a href="https://www.linkedin.com/school/shri-g-s-institute-of-technology-&-science/posts/?feedView=all" title="LinkedIn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ba3c8"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2" fill="#9ba3c8"/></svg>
-          </a>
-          <!-- <a href="#" title="Twitter / X">
+                                <div class="ft-social">
+                                    <a href="https://www.linkedin.com/school/shri-g-s-institute-of-technology-&-science/posts/?feedView=all"
+                                        title="LinkedIn">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ba3c8">
+                                            <path
+                                                d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                                            <circle cx="4" cy="4" r="2" fill="#9ba3c8" />
+                                        </svg>
+                                    </a>
+                                    <!-- <a href="#" title="Twitter / X">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ba3c8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a> -->
-          <a href="https://www.instagram.com/sgsits.official?igsh=aXo0dnR6N2RzMXpj" title="Instagram">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ba3c8" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="#9ba3c8" stroke="none"/></svg>
-          </a>
-          <a href="#" title="Facebook">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ba3c8"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-          </a>
-        </div>
-      </div>
- 
-      <!-- Network links -->
-      <div class="ft-col">
-        <div class="ft-col-title">Network</div>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#alumni">Alumni Directory</a></li>
-          <li><a href="#mentorship">Mentorship Program</a></li>
-          <li><a href="#jobs">Job Board</a></li>
-          <li><a href="#announcements">Announcements</a></li>
-        </ul>
-      </div>
+                                    <a href="https://www.instagram.com/sgsits.official?igsh=aXo0dnR6N2RzMXpj"
+                                        title="Instagram">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ba3c8"
+                                            stroke-width="2">
+                                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                                            <circle cx="12" cy="12" r="5" />
+                                            <circle cx="17.5" cy="6.5" r="1" fill="#9ba3c8" stroke="none" />
+                                        </svg>
+                                    </a>
+                                    <a href="#" title="Facebook">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ba3c8">
+                                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
 
-      <!-- Resources links -->
-      <!-- <div class="ft-col">
+                            <!-- Network links -->
+                            <div class="ft-col">
+                                <div class="ft-col-title">Network</div>
+                                <ul>
+                                    <li><a href="#home">Home</a></li>
+                                    <li><a href="#alumni">Alumni Directory</a></li>
+                                    <li><a href="#mentorship">Mentorship Program</a></li>
+                                    <li><a href="#jobs">Job Board</a></li>
+                                    <li><a href="#announcements">Announcements</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Resources links -->
+                            <!-- <div class="ft-col">
         <div class="ft-col-title">Resources</div>
         <ul>
           <li><a href="#">Endowment Fund</a></li>
@@ -2270,25 +2431,27 @@ header nav > div:last-child {
           <li><a href="#">Alumni Magazine</a></li>
         </ul>
       </div> -->
- 
-      <!-- Support links -->
-      <div class="ft-col">
-        <div class="ft-col-title">Support</div>
-        <ul>
-          <!-- <li><a href="#">Contact Us</a></li> --><li><a href="mailto:csealumniplus1952@gmail.com?subject=Alumni%20Network%20Enquiry">Contact Us</a></li>
-          <!-- <li><a href="#">FAQ</a></li> -->
-          <!-- <li><a href="#">Report an Issue</a></li> -->
-          <!-- <li><a href="#">Update Profile</a></li> -->
-          <!-- <li><a href="#">Join Network</a></li> -->
-        </ul>
-      </div>
- 
-    </div>
-  </div>
- 
-  <hr class="ft-divider">
- 
-  <!-- <div class="ft-bottom">
+
+                            <!-- Support links -->
+                            <div class="ft-col">
+                                <div class="ft-col-title">Support</div>
+                                <ul>
+                                    <!-- <li><a href="#">Contact Us</a></li> -->
+                                    <li><a href="mailto:csealumniplus1952@gmail.com?subject=Alumni%20Network%20Enquiry">Contact
+                                            Us</a></li>
+                                    <!-- <li><a href="#">FAQ</a></li> -->
+                                    <!-- <li><a href="#">Report an Issue</a></li> -->
+                                    <!-- <li><a href="#">Update Profile</a></li> -->
+                                    <!-- <li><a href="#">Join Network</a></li> -->
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="ft-divider">
+
+                    <!-- <div class="ft-bottom">
     <span class="ft-copy">© 2025 AlumniPlus. All rights reserved.</span>
     <div class="ft-bottom-links">
       <a href="#">Privacy Policy</a>
@@ -2296,12 +2459,12 @@ header nav > div:last-child {
       <a href="#">Cookie Settings</a>
     </div>
   </div> -->
-</footer>
+                </footer>
 </body>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     const message = urlParams.get('message');
     if (message) {
@@ -2411,13 +2574,14 @@ header nav > div:last-child {
             btnLogin.addEventListener('click', () => {
                 <% if (authUser) { %>
                     const chatUser = {
-                    id: '<%= authUser.Enrollment || authUser.Alumni_ID || authUser.Employee_ID || "" %>',
-                    name: '<%= authUser.Full_Name %>',
-                    role: '<%= authUser.Role %>',
-                    email: '<%= authUser.Email_ID || "" %>'};
+                        id: '<%= authUser.Enrollment || authUser.Alumni_ID || authUser.Employee_ID || "" %>',
+                        name: '<%= authUser.Full_Name %>',
+                        role: '<%= authUser.Role %>',
+                        email: '<%= authUser.Email_ID || "" %>'
+                    };
                     sessionStorage.setItem('chatUser', JSON.stringify(chatUser));
                 <% } %>
-            window.location.href = "/chat_box.html";
+                    window.location.href = "/chat_box.html";
             });
 
             btnJoin.addEventListener('click', () => {
@@ -2649,119 +2813,119 @@ header nav > div:last-child {
         renderAnnouncements();
     });
 
-// CONTRIBUTION TABLE
-// 1. Amount Button Logic (Highlights the selected button)
-    function setAmount(amount) {
-        document.getElementById('amount-input').value = amount;
-        
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-            const btnAmount = parseInt(btn.getAttribute('data-amount'));
-            if (btnAmount === amount) {
-                btn.style.background = '#3182ce';
-                btn.style.borderColor = '#3182ce';
-                btn.style.color = 'white';
-            } else {
-                btn.style.background = 'white';
-                btn.style.borderColor = '#e2e8f0';
-                btn.style.color = '#2d3748';
-            }
-        });
-    }
+    // CONTRIBUTION TABLE
+    // 1. Amount Button Logic (Highlights the selected button)
+    // function setAmount(amount) {
+    //     document.getElementById('amount-input').value = amount;
+
+    //     document.querySelectorAll('.amount-btn').forEach(btn => {
+    //         const btnAmount = parseInt(btn.getAttribute('data-amount'));
+    //         if (btnAmount === amount) {
+    //             btn.style.background = '#3182ce';
+    //             btn.style.borderColor = '#3182ce';
+    //             btn.style.color = 'white';
+    //         } else {
+    //             btn.style.background = 'white';
+    //             btn.style.borderColor = '#e2e8f0';
+    //             btn.style.color = '#2d3748';
+    //         }
+    //     });
+    // }
 
     // 2. Main Payment Logic
-    const payButton = document.getElementById("pay-button");
+    // const payButton = document.getElementById("pay-button");
     const statusDiv = document.getElementById("payment-status");
 
-    payButton.onclick = async function () {
-        const amount = parseFloat(document.getElementById("amount-input").value);
-        const isAnonymous = document.getElementById("anonymous-toggle").checked;
-        const alumniId = "<%= authUser ? authUser.Alumni_ID : '' %>";
+    // payButton.onclick = async function () {
+    //     const amount = parseFloat(document.getElementById("amount-input").value);
+    //     const isAnonymous = document.getElementById("anonymous-toggle").checked;
+    //     const alumniId = "<%= authUser ? authUser.Alumni_ID : '' %>";
 
-        // Basic Validation
-        if (!amount || amount < 100) {
-            statusDiv.innerHTML = '<p style="color: #e53e3e;">⚠ Minimum amount is ₹100</p>';
-            statusDiv.style.display = 'block';
-            return;
-        }
+    //     // Basic Validation
+    //     if (!amount || amount < 100) {
+    //         statusDiv.innerHTML = '<p style="color: #e53e3e;">⚠ Minimum amount is ₹100</p>';
+    //         statusDiv.style.display = 'block';
+    //         return;
+    //     }
 
-        // UI State: Loading
-        payButton.disabled = true;
-        payButton.innerHTML = '⏳ Processing...';
-        statusDiv.style.display = 'none';
+    //     // UI State: Loading
+    //     payButton.disabled = true;
+    //     payButton.innerHTML = '⏳ Processing...';
+    //     statusDiv.style.display = 'none';
 
-        try {
-            // STEP 1: Create Order on your Server
-            const response = await fetch("/payment/create-order", { // Ensure this matches your route
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount: amount })
-            });
+    //     try {
+    //         // STEP 1: Create Order on your Server
+    //         const response = await fetch("/payment/create-order", { // Ensure this matches your route
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify({ amount: amount })
+    //         });
 
-            const order = await response.json();
+    //         const order = await response.json();
 
-            // STEP 2: Configure Razorpay Checkout
-            const options = {
-                key: "rzp_test_RPkDRcEzHfOY7w", // Your Public Test Key
-                amount: order.amount,
-                currency: "INR",
-                name: "CSE Alumni Network",
-                description: `Endowment Contribution ${isAnonymous ? '(Anonymous)' : ''}`,
-                order_id: order.id,
-                handler: async function (response) {
-                    // STEP 3: Verify Payment and Save to DB
-                    try {
-                        const verifyRes = await fetch("/payment/verify-payment", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature,
-                                amount: amount,
-                                isAnonymous: isAnonymous,
-                                alumniId: alumniId
-                            })
-                        });
+    //         // STEP 2: Configure Razorpay Checkout
+    //         const options = {
+    //             key: "rzp_test_RPkDRcEzHfOY7w", // Your Public Test Key
+    //             amount: order.amount,
+    //             currency: "INR",
+    //             name: "CSE Alumni Network",
+    //             description: `Endowment Contribution ${isAnonymous ? '(Anonymous)' : ''}`,
+    //             order_id: order.id,
+    //             handler: async function (response) {
+    //                 // STEP 3: Verify Payment and Save to DB
+    //                 try {
+    //                     const verifyRes = await fetch("/payment/verify-payment", {
+    //                         method: "POST",
+    //                         headers: { "Content-Type": "application/json" },
+    //                         body: JSON.stringify({
+    //                             razorpay_order_id: response.razorpay_order_id,
+    //                             razorpay_payment_id: response.razorpay_payment_id,
+    //                             razorpay_signature: response.razorpay_signature,
+    //                             amount: amount,
+    //                             isAnonymous: isAnonymous,
+    //                             alumniId: alumniId
+    //                         })
+    //                     });
 
-                        const verifyData = await verifyRes.json();
+    //                     const verifyData = await verifyRes.json();
 
-                        if (verifyData.success) {
-                            statusDiv.innerHTML = `
-                                <div style="background: #c6f6d5; color: #276749; padding: 15px; border-radius: 8px; text-align: center;">
-                                    <h3>✅ Contribution Successful!</h3>
-                                    <p>Thank you for supporting the department.</p>
-                                </div>`;
-                            statusDiv.style.display = 'block';
-                            setTimeout(() => location.reload(), 3000); // Reload to show new status
-                        }
-                    } catch (err) {
-                        console.error("Verification failed", err);
-                    }
-                },
-                prefill: {
-                    name: "<%= authUser ? authUser.Full_Name : '' %>",
-                    email: "<%= authUser ? authUser.Email_ID : '' %>",
-                    contact: "<%= authUser ? authUser.Contact_no : '' %>"
-                },
-                theme: { color: "#3182ce" },
-                modal: {
-                    ondismiss: function() {
-                        payButton.disabled = false;
-                        payButton.innerHTML = '💳 Contribute Now';
-                    }
-                }
-            };
+    //                     if (verifyData.success) {
+    //                         statusDiv.innerHTML = `
+    //                             <div style="background: #c6f6d5; color: #276749; padding: 15px; border-radius: 8px; text-align: center;">
+    //                                 <h3>✅ Contribution Successful!</h3>
+    //                                 <p>Thank you for supporting the department.</p>
+    //                             </div>`;
+    //                         statusDiv.style.display = 'block';
+    //                         setTimeout(() => location.reload(), 3000); // Reload to show new status
+    //                     }
+    //                 } catch (err) {
+    //                     console.error("Verification failed", err);
+    //                 }
+    //             },
+    //             prefill: {
+    //                 name: "<%= authUser ? authUser.Full_Name : '' %>",
+    //                 email: "<%= authUser ? authUser.Email_ID : '' %>",
+    //                 contact: "<%= authUser ? authUser.Contact_no : '' %>"
+    //             },
+    //             theme: { color: "#3182ce" },
+    //             modal: {
+    //                 ondismiss: function () {
+    //                     payButton.disabled = false;
+    //                     payButton.innerHTML = '💳 Contribute Now';
+    //                 }
+    //             }
+    //         };
 
-            const rzp = new Razorpay(options);
-            rzp.open();
+    //         const rzp = new Razorpay(options);
+    //         rzp.open();
 
-        } catch (error) {
-            statusDiv.innerHTML = `<p style="color: #e53e3e;">❌ Error: ${error.message}</p>`;
-            statusDiv.style.display = 'block';
-            payButton.disabled = false;
-            payButton.innerHTML = '💳 Contribute Now';
-        }
-    };
+    //     } catch (error) {
+    //         statusDiv.innerHTML = `<p style="color: #e53e3e;">❌ Error: ${error.message}</p>`;
+    //         statusDiv.style.display = 'block';
+    //         payButton.disabled = false;
+    //         payButton.innerHTML = '💳 Contribute Now';
+    //     }
+    // };
 
 
 
