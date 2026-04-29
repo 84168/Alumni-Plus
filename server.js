@@ -66,13 +66,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
     auth: {
-        user: "csealumniplus1952@gmail.com",
-        pass: process.env.EMAIL_PASS
+        user: process.env.BREVO_USER,     
+        pass: process.env.BREVO_PASS,     
     }
+
 });
 
 const otpStore = {};
@@ -730,45 +731,46 @@ app.post("/HandleSupportRequest", async (req, res) => {
 app.post("/HandleUserRequest", async (req, res) => {
     const { ID, action } = req.body;
     if (!ID || !action) return res.status(400).send("Missing required fields.");
-    
+
     try {
         const [rows] = await db.execute("SELECT * FROM user WHERE ID = ?", [ID]);
         if (rows.length === 0) return res.status(404).send("User not found.");
         const user = rows[0];
 
         if (action === "approve") {
+
+            // STEP 1: Send email first
+            await transporter.sendMail({
+                from: `"Alumni Plus" <${process.env.BREVO_USER}>`, 
+                to: user.Email_ID,
+                subject: "Application Approved - Welcome to Alumni Plus",
+                html: `<p>Dear ${user.Full_Name}, your application as 
+                       <strong>${user.Role}</strong> has been approved. 
+                       You can now log in.</p>`
+            });
+            console.log("✅ Email sent to:", user.Email_ID);
+
+            // STEP 2: DB writes only if email succeeded
             await db.execute("UPDATE user SET Status = 'Verified' WHERE ID = ?", [ID]);
-            
+
             if (user.Role === "Student") {
                 await db.execute(
                     "INSERT INTO student (Enrollment_No, Full_Name, Course, Contact_No, Email_ID, Batch, Password, Bio, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    [user.Enrollment_No, user.Full_Name, user.Course, user.Contact_No, user.Email_ID, user.Batch, user.Password, '', '']
+                    [user.Enrollment_No, user.Full_Name, user.Course, user.Contact_No, 
+                     user.Email_ID, user.Batch, user.Password, '', '']
                 );
             } else if (user.Role === "Alumni") {
                 await db.execute(
                     "INSERT INTO alumni (Full_Name, Contact_No, Course, Email_ID, Batch, Password, Bio, Image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                    [user.Full_Name, user.Contact_No, user.Course, user.Email_ID, user.Batch, user.Password, '', '']
+                    [user.Full_Name, user.Contact_No, user.Course, user.Email_ID, 
+                     user.Batch, user.Password, '', '']
                 );
-            }
-
-            // ✅ Email in separate try-catch — won't block page render
-            try {
-                await transporter.sendMail({
-                    from: process.env.EMAIL_USER,
-                    to: user.Email_ID,
-                    subject: "Application Approved - Welcome to Alumni Plus",
-                    html: `<p>Dear ${user.Full_Name}, your application as <strong>${user.Role}</strong> has been approved. You can now log in.</p>`
-                });
-                console.log("✅ Email sent to:", user.Email_ID);
-            } catch (emailErr) {
-                console.error("❌ Email failed:", emailErr.message);
             }
 
         } else if (action === "reject") {
             await db.execute("UPDATE user SET Status = 'Rejected' WHERE ID = ?", [ID]);
         }
 
-        // ✅ Always runs regardless of email success/failure
         await renderAdminPage(req, res);
 
     } catch (err) {
@@ -935,9 +937,17 @@ async function renderAdminPage(req, res) {
     }
 }
 transporter.sendMail({
-    from: process.env.EMAIL_USER,
+    from: '"Alumni Plus" <tarun221148@gmail.com>',
     to: "tarunparmar457@gmail.com",
     subject: "Test Email",
     text: "If you see this, email is working!"
 }).then(() => console.log("✅ Test email sent!"))
   .catch(err => console.error("❌ Email error:", err.message));
+  // Add this temporarily at the bottom of server.js
+transporter.verify((error, success) => {
+    if (error) {
+        console.log("❌ Transporter verify failed:", error);
+    } else {
+        console.log("✅ Transporter is ready to send emails");
+    }
+});
