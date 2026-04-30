@@ -442,13 +442,15 @@ app.post("/exit_form_submission", async (req, res) => {
 // SUPPORT DESK
 app.get('/support_desk', async (req, res) => {
     const [pendingSupport] = await db.execute("SELECT * FROM support WHERE Status = 'pending'");
-    const [verifiedSupport] = await db.execute("SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified'");
+    // const [verifiedSupport] = await db.execute("SELECT support.*, faculty.* FROM support JOIN faculty ON support.faculty_id = faculty.Employee_ID WHERE support.status = 'verified'");
+    const [verifiedSupport] = await db.execute(`SELECT * FROM support WHERE status = 'verified'`);
+console.log("verifiedSupport:", JSON.stringify(verifiedSupport, null, 2));
     const authUser = req.session.authUser;
     const message = req.query.message || '';
     const userID = authUser?.Enrollment || authUser?.Alumni_ID || authUser?.Employee_ID || '';
     const userIs = authUser?.Role;
     let isSupported = '';
-
+    console.log(verifiedSupport);
     if (userIs == "alumni" && userID) {
         const [rows] = await db.execute("SELECT needs_supported FROM alumni WHERE ID = ?", [userID]);
         isSupported = rows[0]?.needs_supported;

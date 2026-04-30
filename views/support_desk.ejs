@@ -1403,7 +1403,7 @@ button[type="submit"]:active, .register-btn:active {
                     <%= req.title || 'Untitled Request' %>
                   </h3>
                   <p class="desc">
-                    <%= req.description %>
+                    <%= req.description  %>
                   </p>
                   <div class="details">
                     <span>
@@ -1428,37 +1428,31 @@ button[type="submit"]:active, .register-btn:active {
               </article>
               <% }) %>
                 <%} else { %>
-                  <% verifiedSupport.forEach((req)=> { %>
-                    <article class="card">
-                      <img src="http://static.photos/technology/250x140/1"
-                        alt="<%= req.title || 'Support Request' %>" />
-                      <div class="card-content">
-                        <h3 class="card-title">
-                          <%= req.title || 'Untitled Request' %>
-                        </h3>
-                        <p class="desc">
-                          <%= req.description %>
-                        </p>
-                        <div class="details">
-                          <span>
-                            <strong>Verified By:</strong> ADMIN
-                            <span class="verified">&#10003;</span>
-                          </span>
-                          <span><strong>Supported By:</strong>
-                            <%= req.alumni_id || 'Not Accepted' %>
-                          </span>
-                          <span><strong>Submitted On:</strong>
-                            <%= new Date(req.created_at).toLocaleDateString('en-GB') %>
-
-                          </span>
-                          <!-- <span><strong>Assigned Faculty: </strong>
-                            <%= // req.Full_Name %>
-
-                          </span> -->
-                        </div>
-
-                    </article>
-                    <% })%>
+                   <% verifiedSupport.forEach((req)=> { %>
+    <article class="card">
+      <img src="http://static.photos/technology/250x140/1" alt="<%= req.Request_Title || 'Support Request' %>" />
+      <div class="card-content">
+        <h3 class="card-title">
+          <%= req.Request_Title || 'Untitled Request' %>
+        </h3>
+        <p class="desc">
+          <%= req.Request_Description %>
+        </p>
+        <div class="details">
+          <span>
+            <strong>Verified By:</strong> ADMIN
+            <span class="verified">&#10003;</span>
+          </span>
+          <span><strong>Supported By:</strong>
+            <%= req.alumni_id || 'Not Accepted' %>
+          </span>
+          <span><strong>Submitted On:</strong>
+            <%= new Date(req.created_at).toLocaleDateString('en-GB') %>
+          </span>
+        </div>
+      </div>
+    </article>
+  <% })%>
                       <%}%>
         </div>
       </div>
