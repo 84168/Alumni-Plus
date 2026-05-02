@@ -11,6 +11,7 @@ import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
 import paymentRoutes from './routes/payment.js';
+// import mysql from 'mysql2/promise';
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -46,15 +47,31 @@ app.use(session({
 app.use('/api', paymentRoutes);
 app.use('/payment', paymentRoutes);
 
-const db = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 3306,
-    connectTimeout: 30000,
-    ssl: { rejectUnauthorized: false }
+// const db = await mysql.createConnection({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME,
+//     port: process.env.DB_PORT || 3306,
+//     connectTimeout: 30000,
+//     ssl: { rejectUnauthorized: false }
+// });
+
+// ✅ Replace with this
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
+  connectTimeout: 30000,
+  ssl: { rejectUnauthorized: false },
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
+
+// const db = pool.promise();
 
 const storage = multer.diskStorage({
     destination: 'uploads/',
